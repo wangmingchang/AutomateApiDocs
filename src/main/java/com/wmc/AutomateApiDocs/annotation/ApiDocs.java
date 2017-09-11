@@ -33,6 +33,11 @@ public @interface ApiDocs {
      * 请求方式
      */
 	String type() default "post";
+	/**
+	 * 方法说明
+	 * @return
+	 */
+	String methodExplain() default "";
 
     final class Null{
 

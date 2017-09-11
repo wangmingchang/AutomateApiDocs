@@ -17,11 +17,13 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocs;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.annotation.ApiDocs.Null;
 import com.wmc.AutomateApiDocs.pojo.dto.ClassExplainDto;
 import com.wmc.AutomateApiDocs.pojo.dto.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.dto.ClassMoreRemarkDto;
 import com.wmc.AutomateApiDocs.pojo.dto.MethodExplainDto;
+import com.wmc.AutomateApiDocs.pojo.dto.MethodInfoDto;
 import com.wmc.AutomateApiDocs.pojo.dto.RequestParamDto;
 import com.wmc.AutomateApiDocs.pojo.dto.ResponseDataDto;
 import com.wmc.AutomateApiDocs.utils.ClassUtil;
@@ -61,16 +63,32 @@ public class AnnotationParsing {
 
 		try {
 			List<String> classNames = ClassUtil.getClassName("com.wmc.AutomateApiDocs.controller");
-			String savePath = "H:\\eclipse_4.7_worksapace\\AutomateApiDocs\\resources\\static\\apiDocs";
+			String savePath = "F:\\eclipse-jee-oxyen-workspace\\AutomateApiDocs\\resources\\static\\apiDocs";
+			
+			
 			for (String classNameStr : classNames) {
+				ClassExplainDto classExplainDto = new ClassExplainDto(); //类的头部相关信息
+				List<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); //类中的方法多行注释的信息
+				List<String> methodDescriptions = new ArrayList<String>(); //方法业务说明
+				List<MethodInfoDto> methodInfoDtos = new ArrayList<MethodInfoDto>(); //方法信息
+				
+				
 				Class<?> className = Class.forName(classNameStr);
 				System.out.println(className);
+				if(!className.isAnnotationPresent(ApiDocsClass.class)) {
+					System.out.println(className+"没有在类上注解ApiDocsClass");
+					//不是生成api文档类
+					continue;
+				}
+				
 				ClassMoreRemarkDto classMoreRemark = ClassUtil.getClassMoreRemark(className);
-				ClassExplainDto classExplainDto = classMoreRemark.getClassExplainDto(); // 类的头部相关信息
-				List<MethodExplainDto> methodExplainDtos = classMoreRemark.getMethodExplainDtos(); // 类中的方法多行注释的信息
+				classExplainDto = classMoreRemark.getClassExplainDto(); // 类的头部相关信息
+				methodExplainDtos = classMoreRemark.getMethodExplainDtos(); // 类中的方法多行注释的信息
 				System.out.println("类的头部相关信息：" + classExplainDto);
 				System.out.println("类中的方法多行注释的信息："+ methodExplainDtos);
-
+				if(classExplainDto == null || methodExplainDtos.size() == 0) {
+					continue;
+				}
 				
 				StringBuilder path = new StringBuilder();// 请求类路径
 				if (className.isAnnotationPresent(RequestMapping.class)) {
@@ -81,33 +99,32 @@ public class AnnotationParsing {
 						path.append(string);
 					}
 				}
-				System.out.println(methodExplainDtos.size() +"*****"+className.getDeclaredMethods().length+"*****"+ className.getMethods().length);
+				System.out.println(methodExplainDtos +"*******"+methodExplainDtos.size() +"*****"+className.getDeclaredMethods().length+"*****"+ className.getMethods().length);
 				if(methodExplainDtos.size() != className.getDeclaredMethods().length) {
 					throw new RuntimeErrorException(null, className + ":类的方法和方法上的多行注释不一致");
 				}
 				
 				for (int i = 0; i < className.getDeclaredMethods().length; i++) {
 					Method method = className.getDeclaredMethods()[i];
-					System.out.println(method.getName());
-					MethodExplainDto methodExplainDto = methodExplainDtos.get(i);
-					String methodDescription = methodExplainDto.getExplain(); //方法说明
-					List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); //请求的参数
 					
 					String methodPath = ""; //方法请求路径
-					if (method.isAnnotationPresent(RequestMapping.class)) {
+					if (method.isAnnotationPresent(ApiDocs.class)) {
+						System.out.println(method.getName()+"8888888888"+methodExplainDtos.get(i)+"*******"+i);
+						MethodExplainDto methodExplainDto = methodExplainDtos.get(i);
+						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); //请求的参数
+						
 						RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-						String[] value = requestMapping.value();
+						String[] value = requestMapping.value(); //获取方法上的路径 
 						for (String string : value) {
 							methodPath = path + string;
 						}
-					}
-					
-					if (method.isAnnotationPresent(ApiDocs.class)) {
+						
 						ApiDocs apiDocs = method.getAnnotation(ApiDocs.class);
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
 						String type = apiDocs.type(); // 请求方式
 						String url = apiDocs.url(); //请求方法路径
+						String methodDescription = apiDocs.methodExplain(); //方法说明
 						url = StringUtils.isBlank(url) ? methodPath : path + url;
 						List<ResponseDataDto> responseDataDtos = new ArrayList<ResponseDataDto>(); //响应字段信息
 						if(requestBean != Null.class) {
@@ -144,50 +161,49 @@ public class AnnotationParsing {
 							}
 							
 						} 
-						
+						methodDescriptions.add(methodDescription);
+						MethodInfoDto methodInfoDto = new MethodInfoDto();
+						methodInfoDto.setMethodDescription(methodDescription);
+						methodInfoDto.setType(type);
+						methodInfoDto.setUrl(url);
+						methodInfoDto.setRequestParamDtos(requestParamDtos);
+						methodInfoDto.setResponseDataDtos(responseDataDtos);
+						methodInfoDtos.add(methodInfoDto );
 						System.out.println("方法业务说明：" + methodDescription);
 						System.out.println("方法请求路径：" + url);
 						System.out.println("请求方法方式：" + type);
 						System.out.println("请求字段信息：" + requestParamDtos);
 						System.out.println("响应字段信息：" + responseDataDtos);
 						
-						//构造模板引擎
-						ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-				        resolver.setPrefix("templates/apiDocs/");//模板所在目录，相对于当前classloader的classpath。
-				        resolver.setSuffix(".html");//模板文件后缀
-				        resolver.setTemplateMode("HTML5");
-				        resolver.setCharacterEncoding(CharEncoding.UTF_8);
-				        TemplateEngine templateEngine = new TemplateEngine();
- 				        templateEngine.setTemplateResolver(resolver);
-
-				        //构造上下文(Model)
-				        Context context = new Context();
-				        //context.setVariable("name", "蔬菜列表");
-				        //context.setVariable("array", new String[]{"土豆", "番茄", "白菜", "芹菜"});
-				        context.setVariable("methodDescription", methodDescription); //方法业务名称
-				        context.setVariable("className", classExplainDto.getExplain()); //类的说明
-				        String fileName = classExplainDto.getExplain()+".html";
-				        if(StringUtils.isNotBlank(savePath)) {
-				        	ClassUtil.createFolder(savePath);
-				        }
-				        String filePath = savePath+"\\"+fileName;
-				        //渲染模板
-				        FileWriter write = new FileWriter(Paths.get(filePath).toFile());
-				        templateEngine.process("methodApi", context, write);
-
-				
 					}
 				}
+				
+				//构造模板引擎
+				ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+		        resolver.setPrefix("templates/apiDocs/");//模板所在目录，相对于当前classloader的classpath。
+		        resolver.setSuffix(".html");//模板文件后缀
+		        resolver.setTemplateMode("HTML");
+		        resolver.setCharacterEncoding(CharEncoding.UTF_8);
+		        TemplateEngine templateEngine = new TemplateEngine();
+			    templateEngine.setTemplateResolver(resolver);
+			        
+
+		        //构造上下文(Model)
+		        Context context = new Context();
+		        context.setVariable("classExplainDto", classExplainDto); //类的头部相关信息
+		        context.setVariable("methodDescriptions", methodDescriptions); //方法业务名称
+		        context.setVariable("methodInfoDtos", methodInfoDtos); //方法信息
+		        String fileName = classExplainDto.getExplain()+".html";
+		        if(StringUtils.isNotBlank(savePath)) {
+		        	ClassUtil.createFolder(savePath);
+		        }
+		        String filePath = savePath+"\\"+fileName;
+		        //渲染模板
+		        FileWriter write = new FileWriter(Paths.get(filePath).toFile());
+		        templateEngine.process("methodApi", context, write);
 
 			}
-			// System.out.println(com.wmc.AutomateApiDocs.controller.HtmlController.class.getAnnotations());
-			/*
-			 * List<String> classNames2 =
-			 * ClassUtil.getClassName("com.wmc.AutomateApiDocs.pojo"); for (String
-			 * classNameStr : classNames2) { Class<?> className =
-			 * Class.forName(classNameStr); List<String> oneWayRemark =
-			 * ClassUtil.getOneWayRemark(ClassUtil.getClassPath(className)); }
-			 */
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

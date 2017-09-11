@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocs;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.pojo.dto.PageDto;
 import com.wmc.AutomateApiDocs.pojo.vo.BaseResponseVo;
 import com.wmc.AutomateApiDocs.pojo.vo.DemoVo;
@@ -20,6 +21,7 @@ import com.wmc.AutomateApiDocs.pojo.vo.DemoVo;
  */
 @Controller
 @RequestMapping("/api/index/v1")
+@ApiDocsClass()
 public class HtmlController {
 
 	private PageDto PageDto;
@@ -30,6 +32,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/")
+	@ApiDocs(methodExplain="index方法")
 	public String index() {
 		return "index";
 	}
@@ -42,21 +45,11 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/helloHtml")
-	@ApiDocs(requestBean = PageDto.class, responseBean = BaseResponseVo.class, type = "post")
+	@ApiDocs(requestBean = PageDto.class, responseBean = BaseResponseVo.class, type = "post",methodExplain="hell方法")
 	public String helloHtml(@RequestBody Map<String, Object> map) {
 
 		map.put("hello", "from TemplateController.helloHtml");
 		return "/helloHtml";
-	}
-
-
-	/**
-	 * 获取路径
-	 * @param path
-	 * @return
-	 */
-	private String getUrl(String path) {
-		return path;
 	}
 	/**
 	 * 获老师信息
@@ -68,9 +61,19 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/getTeacharInfo")
-	@ApiDocs(responseBean = DemoVo.class)
+	@ApiDocs(responseBean = DemoVo.class,methodExplain="获老师信息")
 	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
 
 		return "/helloHtml";
 	}
+
+	/**
+	 * 获取路径
+	 * @param path
+	 * @return
+	 */
+	private String getUrl(String path) {
+		return path;
+	}
+
 }
