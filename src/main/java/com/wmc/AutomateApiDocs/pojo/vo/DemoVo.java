@@ -1,9 +1,5 @@
 package com.wmc.AutomateApiDocs.pojo.vo;
 
-import java.util.List;
-
-import com.wmc.AutomateApiDocs.pojo.Student;
-
 /**
  * 测试返回类
  * 
@@ -15,15 +11,7 @@ public class DemoVo {
 	private String id; // 主键
 	private String name; // 姓名
 	private Double socre; // 分数
-	private List<Student> students; // 学生类
-
-	public List<Student> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}
+	
 
 	public String getId() {
 		return id;

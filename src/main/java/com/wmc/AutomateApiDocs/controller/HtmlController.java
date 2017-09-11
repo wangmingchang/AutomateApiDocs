@@ -45,7 +45,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/helloHtml")
-	@ApiDocs(requestBean = PageDto.class, responseBean = BaseResponseVo.class, type = "post",methodExplain="hell方法")
+	@ApiDocs(requestBean = PageDto.class, baseResponseBean=BaseResponseVo.class ,responseBean = DemoVo.class, type = "post",methodExplain="hell方法")
 	public String helloHtml(@RequestBody Map<String, Object> map) {
 
 		map.put("hello", "from TemplateController.helloHtml");

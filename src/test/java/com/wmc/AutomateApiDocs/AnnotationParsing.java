@@ -5,7 +5,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
@@ -17,8 +20,8 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocs;
-import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.annotation.ApiDocs.Null;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.pojo.dto.ClassExplainDto;
 import com.wmc.AutomateApiDocs.pojo.dto.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.dto.ClassMoreRemarkDto;
@@ -63,7 +66,7 @@ public class AnnotationParsing {
 
 		try {
 			List<String> classNames = ClassUtil.getClassName("com.wmc.AutomateApiDocs.controller");
-			String savePath = "F:\\eclipse-jee-oxyen-workspace\\AutomateApiDocs\\resources\\static\\apiDocs";
+			String savePath = "H:\\eclipse_4.7_worksapace\\AutomateApiDocs\\resources\\static\\apiDocs";
 			
 			
 			for (String classNameStr : classNames) {
@@ -121,11 +124,13 @@ public class AnnotationParsing {
 						
 						ApiDocs apiDocs = method.getAnnotation(ApiDocs.class);
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
+						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
 						String type = apiDocs.type(); // 请求方式
 						String url = apiDocs.url(); //请求方法路径
 						String methodDescription = apiDocs.methodExplain(); //方法说明
 						url = StringUtils.isBlank(url) ? methodPath : path + url;
+						List<ResponseDataDto> baseResponseDataDtos = new ArrayList<ResponseDataDto>(); //响应字段信息(基础类)
 						List<ResponseDataDto> responseDataDtos = new ArrayList<ResponseDataDto>(); //响应字段信息
 						if(requestBean != Null.class) {
 							System.out.println("请求字段信息CLASS："+requestBean);
@@ -145,22 +150,64 @@ public class AnnotationParsing {
 							System.out.println("响应字段信息CLASS："+responseBean);
 							List<ClassFiedInfoDto>  responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBean,true);
 							if(responseFieldInfos != null && responseFieldInfos.size() > 0) {
+								Map<String,List<ResponseDataDto>> map = new HashMap<String,List<ResponseDataDto>>();
 								for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
 									ResponseDataDto responseDataDto = new ResponseDataDto();
 									responseDataDto.setName(classFiedInfoDto.getName());
 									responseDataDto.setType(classFiedInfoDto.getType());
 									responseDataDto.setDescription(classFiedInfoDto.getDescription());
-									if(classFiedInfoDto.getChildNode()  != null) {
-										responseDataDto.setChildNode(classFiedInfoDto.getChildNode());
+									String childNode = classFiedInfoDto.getChildNode();
+									if(childNode != null) {
+										responseDataDto.setChildNode(childNode);
+										boolean containsKey = map.containsKey(childNode);
+										if(containsKey) {
+											//有子节点
+											responseDataDto.setResponseDataDtos(map.get(childNode));
+										}
+										System.out.println("当前父节点数据为:"+responseDataDto);
 									}
-									if(classFiedInfoDto.getParentNode() != null) {
-										responseDataDto.setParentNode(classFiedInfoDto.getParentNode());
+									String parentNode = classFiedInfoDto.getParentNode();
+									if(parentNode != null) {
+										boolean containsKey = map.containsKey(parentNode);
+										List<ResponseDataDto> list = new ArrayList<ResponseDataDto>();
+										if(containsKey) {
+											list = map.get(parentNode);
+											list.add(responseDataDto);
+										}else {
+											list.add(responseDataDto);
+										}
+										//将父节点名的为key,子节点的对象为value
+										map.put(parentNode, list);
+										System.out.println("将子节点保存在父节点中:"+map.toString());
+										continue;
 									}
 									responseDataDtos.add(responseDataDto);
 								}
 							}
 							
 						} 
+						
+						if(baseResponseBean != Null.class) {
+							//有基础类返回
+							List<ClassFiedInfoDto>  responseFieldInfos = ClassUtil.getClassFieldAndMethod(baseResponseBean,true);
+							if(responseFieldInfos != null && responseFieldInfos.size() > 0) {
+								for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
+									ResponseDataDto responseDataDto = new ResponseDataDto();
+									responseDataDto.setName(classFiedInfoDto.getName());
+									responseDataDto.setType(classFiedInfoDto.getType());
+									responseDataDto.setDescription(classFiedInfoDto.getDescription());
+									String[] types = {"list","object","map"};
+									List<String> typesList = Arrays.asList(types);
+									if(typesList.contains(classFiedInfoDto.getType())) {
+										//存在
+										responseDataDto.setResponseDataDtos(responseDataDtos);
+									}
+									baseResponseDataDtos.add(responseDataDto);
+								}
+							}
+							System.out.println("baseResponseBean:"+baseResponseBean);
+						}
+						
 						methodDescriptions.add(methodDescription);
 						MethodInfoDto methodInfoDto = new MethodInfoDto();
 						methodInfoDto.setMethodDescription(methodDescription);
@@ -174,6 +221,8 @@ public class AnnotationParsing {
 						System.out.println("请求方法方式：" + type);
 						System.out.println("请求字段信息：" + requestParamDtos);
 						System.out.println("响应字段信息：" + responseDataDtos);
+						System.out.println("响应字段basRespons信息：" + baseResponseDataDtos);
+						
 						
 					}
 				}

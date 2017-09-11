@@ -41,8 +41,16 @@
 			<p>返回结果: </p>
 			<div class="prettyprint lang-json">
 			{
+			
+				<span th:text="${#lists.size(methodInfoDto.responseDataDtos)}"></span>
 				<div th:each="responseDataDto:${methodInfoDto.responseDataDtos}">
-				  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>",
+				  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
+				  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
+				  	<div th:if="${userStat.first}">[
+				  	</div>
+			  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+                	<div th:if="${userStat.last}">]</div>
+			  	  </div>
 				</div>
 			}
 			</div>

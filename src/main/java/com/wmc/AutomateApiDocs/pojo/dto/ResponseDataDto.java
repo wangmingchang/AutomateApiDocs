@@ -1,5 +1,7 @@
 package com.wmc.AutomateApiDocs.pojo.dto;
 
+import java.util.List;
+
 /**
  * 响应数据DTO
  * 
@@ -12,6 +14,7 @@ public class ResponseDataDto {
 	private String description; // 字段注释
 	private String childNode; // 子节点
 	private String parentNode; // 父节点
+	private List<ResponseDataDto> responseDataDtos;
 
 	public String getName() {
 		return name;
@@ -53,10 +56,18 @@ public class ResponseDataDto {
 		this.parentNode = parentNode;
 	}
 
+	public List<ResponseDataDto> getResponseDataDtos() {
+		return responseDataDtos;
+	}
+
+	public void setResponseDataDtos(List<ResponseDataDto> responseDataDtos) {
+		this.responseDataDtos = responseDataDtos;
+	}
+
 	@Override
 	public String toString() {
 		return "ResponseDataDto [name=" + name + ", type=" + type + ", description=" + description + ", childNode="
-				+ childNode + ", parentNode=" + parentNode + "]";
+				+ childNode + ", parentNode=" + parentNode + ", responseDataDtos=" + responseDataDtos + "]";
 	}
 
 }
