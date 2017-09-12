@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 
 import com.wmc.AutomateApiDocs.controller.HtmlController;
-import com.wmc.AutomateApiDocs.pojo.dto.ClassExplainDto;
-import com.wmc.AutomateApiDocs.utils.ClassUtil;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
+import com.wmc.AutomateApiDocs.utils.apidocs.ClassUtil;
 
 public class PrintComments {
 	/**

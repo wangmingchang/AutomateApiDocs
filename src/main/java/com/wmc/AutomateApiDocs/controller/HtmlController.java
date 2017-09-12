@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocs;
 import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
-import com.wmc.AutomateApiDocs.pojo.dto.PageDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.PageDto;
 import com.wmc.AutomateApiDocs.pojo.vo.BaseResponseVo;
 import com.wmc.AutomateApiDocs.pojo.vo.DemoVo;
 
@@ -32,7 +32,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/")
-	@ApiDocs(methodExplain="index方法")
+	@ApiDocs(baseResponseBean=BaseResponseVo.class,methodExplain="index方法")
 	public String index() {
 		return "index";
 	}

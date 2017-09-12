@@ -8,8 +8,8 @@
 <body>
 <div id="wmd-preview" class="wmd-preview">
   <h1>API 列表:</h1>
-  <ul class="toc">
-  <li><a href="HTML-controller.html">HTML-controller</a></li>
+  <ul class="toc" th:each="classExplain:${classExplains}">
+  <li><a th:href="@{${classExplain.explain}+'.html'}" th:text="${classExplain.explain}"></a></li>
   </ul>
 </div>	
 </body>

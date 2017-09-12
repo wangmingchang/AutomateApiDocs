@@ -10,9 +10,8 @@
 </head>
 <body onload="PR.prettyPrint()">
 	<div id="wmd-preview" class="wmd-preview">
-		<h1 th:text="${classExplainDto.explain}">
-			<a href="index.html">《首页</a>
-		</h1>
+		<h1><a href="index.html">《首页</a><span th:text="${classExplainDto.explain}"></span></h1>
+		
 		<ul class="toc" th:each="methodDescription: ${methodDescriptions}">
 			<li><a th:href="@{'#'+${methodDescription}}" th:text="${methodDescription}"></a></li>
 		</ul>
@@ -42,16 +41,32 @@
 			<div class="prettyprint lang-json">
 			{
 			
-				<span th:text="${#lists.size(methodInfoDto.responseDataDtos)}"></span>
-				<div th:each="responseDataDto:${methodInfoDto.responseDataDtos}">
-				  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
-				  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
-				  	<div th:if="${userStat.first}">[
-				  	</div>
-			  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
-                	<div th:if="${userStat.last}">]</div>
-			  	  </div>
-				</div>
+				<span th:if="${#lists.size(methodInfoDto.baseResponseDataDtos) > 0}">
+					<div th:each="baseResponseDataDto:${methodInfoDto.baseResponseDataDtos}">
+						"<span th:text="${baseResponseDataDto.name}"></span>": "<span th:text="${baseResponseDataDto.type}"></span> //<span th:text="${baseResponseDataDto.description}"></span>"
+					</div>
+					<div th:each="responseDataDto,responseDataDtoStat:${methodInfoDto.responseDataDtos}">
+						<div th:if="${responseDataDtoStat.first}">[</div>
+					  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
+					  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
+					  	<div th:if="${userStat.first}">[</div>
+				  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+	                	<div th:if="${userStat.last}">]</div>
+				  	  </div>
+				  	  <div th:if="${responseDataDtoStat.last}">]</div>
+					</div>
+				</span>
+				<span th:if="${#lists.size(methodInfoDto.baseResponseDataDtos) == 0}">
+					<div th:each="responseDataDto:${methodInfoDto.responseDataDtos}">
+					  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
+					  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
+					  	<div th:if="${userStat.first}">[
+					  	</div>
+				  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+	                	<div th:if="${userStat.last}">]</div>
+				  	  </div>
+					</div>
+				</span>
 			}
 			</div>
 			
@@ -282,5 +297,6 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     pre .atn, code .atn { color: #c71585;  font-weight: normal; }
     pre .atv, code .atv { color: #088;  font-weight: normal; }
 }
+
 </style> 
 </html>

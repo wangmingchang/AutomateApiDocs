@@ -21,15 +21,16 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocs;
 import com.wmc.AutomateApiDocs.annotation.ApiDocs.Null;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.MethodExplainDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.MethodInfoDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
+import com.wmc.AutomateApiDocs.utils.apidocs.ApiDocsUtil;
+import com.wmc.AutomateApiDocs.utils.apidocs.ClassUtil;
 import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
-import com.wmc.AutomateApiDocs.pojo.dto.ClassExplainDto;
-import com.wmc.AutomateApiDocs.pojo.dto.ClassFiedInfoDto;
-import com.wmc.AutomateApiDocs.pojo.dto.ClassMoreRemarkDto;
-import com.wmc.AutomateApiDocs.pojo.dto.MethodExplainDto;
-import com.wmc.AutomateApiDocs.pojo.dto.MethodInfoDto;
-import com.wmc.AutomateApiDocs.pojo.dto.RequestParamDto;
-import com.wmc.AutomateApiDocs.pojo.dto.ResponseDataDto;
-import com.wmc.AutomateApiDocs.utils.ClassUtil;
 
 public class AnnotationParsing {
 
@@ -63,12 +64,12 @@ public class AnnotationParsing {
 	}
 
 	public static void main(String[] args) {
-
-		try {
+		ApiDocsUtil.generateApi("com.wmc.AutomateApiDocs.controller", "F:\\eclipse-jee-oxyen-workspace\\AutomateApiDocs\\resources\\static\\apiDocs");
+		/*try {
 			List<String> classNames = ClassUtil.getClassName("com.wmc.AutomateApiDocs.controller");
-			String savePath = "H:\\eclipse_4.7_worksapace\\AutomateApiDocs\\resources\\static\\apiDocs";
+			String savePath = "F:\\eclipse-jee-oxyen-workspace\\AutomateApiDocs\\resources\\static\\apiDocs";
 			
-			
+			List<ClassExplainDto> classExplains = new ArrayList<ClassExplainDto>(); //类的业务说明
 			for (String classNameStr : classNames) {
 				ClassExplainDto classExplainDto = new ClassExplainDto(); //类的头部相关信息
 				List<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); //类中的方法多行注释的信息
@@ -93,6 +94,7 @@ public class AnnotationParsing {
 					continue;
 				}
 				
+				classExplains.add(classExplainDto);
 				StringBuilder path = new StringBuilder();// 请求类路径
 				if (className.isAnnotationPresent(RequestMapping.class)) {
 					// 获取类请求路径
@@ -112,7 +114,6 @@ public class AnnotationParsing {
 					
 					String methodPath = ""; //方法请求路径
 					if (method.isAnnotationPresent(ApiDocs.class)) {
-						System.out.println(method.getName()+"8888888888"+methodExplainDtos.get(i)+"*******"+i);
 						MethodExplainDto methodExplainDto = methodExplainDtos.get(i);
 						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); //请求的参数
 						
@@ -184,7 +185,6 @@ public class AnnotationParsing {
 									responseDataDtos.add(responseDataDto);
 								}
 							}
-							
 						} 
 						
 						if(baseResponseBean != Null.class) {
@@ -215,6 +215,7 @@ public class AnnotationParsing {
 						methodInfoDto.setUrl(url);
 						methodInfoDto.setRequestParamDtos(requestParamDtos);
 						methodInfoDto.setResponseDataDtos(responseDataDtos);
+						methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
 						methodInfoDtos.add(methodInfoDto );
 						System.out.println("方法业务说明：" + methodDescription);
 						System.out.println("方法请求路径：" + url);
@@ -253,10 +254,37 @@ public class AnnotationParsing {
 
 			}
 			
+			if(classExplains.size() > 0) {
+				//构造模板引擎
+				ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+				resolver.setPrefix("templates/apiDocs/");//模板所在目录，相对于当前classloader的classpath。
+				resolver.setSuffix(".html");//模板文件后缀
+				resolver.setTemplateMode("HTML");
+				resolver.setCharacterEncoding(CharEncoding.UTF_8);
+				TemplateEngine templateEngine = new TemplateEngine();
+				templateEngine.setTemplateResolver(resolver);
+				
+				
+				//构造上下文(Model)
+				Context context = new Context();
+				context.setVariable("classExplains", classExplains); //类的头部相关信息
+				String fileName = "index.html";
+				if(StringUtils.isNotBlank(savePath)) {
+					ClassUtil.createFolder(savePath);
+				}
+				String filePath = savePath+"\\"+fileName;
+				//渲染模板
+				FileWriter write = new FileWriter(Paths.get(filePath).toFile());
+				templateEngine.process("index", context, write);
+			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
 	}
+	
+	
 
 }
