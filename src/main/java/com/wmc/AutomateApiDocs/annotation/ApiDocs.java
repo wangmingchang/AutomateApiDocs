@@ -23,7 +23,11 @@ public @interface ApiDocs {
      * 响应对象
      */
 	Class<?> responseBean() default Null.class;
-
+	/**
+	 * 多个返回对象，以数组方式传入
+	 * @return
+	 */
+	String[] responseBeans() default {};
     /**
      * 请求url
      */

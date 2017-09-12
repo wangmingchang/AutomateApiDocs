@@ -45,26 +45,35 @@
 					<div th:each="baseResponseDataDto:${methodInfoDto.baseResponseDataDtos}">
 						"<span th:text="${baseResponseDataDto.name}"></span>": "<span th:text="${baseResponseDataDto.type}"></span> //<span th:text="${baseResponseDataDto.description}"></span>"
 					</div>
-					<div th:each="responseDataDto,responseDataDtoStat:${methodInfoDto.responseDataDtos}">
-						<div th:if="${responseDataDtoStat.first}">[</div>
-					  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
-					  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
-					  	<div th:if="${userStat.first}">[</div>
-				  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
-	                	<div th:if="${userStat.last}">]</div>
-				  	  </div>
-				  	  <div th:if="${responseDataDtoStat.last}">]</div>
-					</div>
+					[<div th:each="responseClassDto,responseClassDtoStat:${methodInfoDto.responseClassDtos}">
+						<div th:if="${responseClassDtoStat.first}"><span th:text="${responseClassDto.className}"></spapn>***{</div>
+							<span th:text="${responseClassDtoStat.index}"></span>
+							<div th:each="responseDataDto,responseDataDtoStat:${responseClassDto.responseDataDtos}">
+								<div th:if="${responseDataDtoStat.first}">{</div>
+								<span th:text="${responseDataDtoStat.index}"></span>
+								  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
+								  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
+							  		<div th:if="${userStat.first}">[</div>
+						  			<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+			                		<div th:if="${userStat.last}">]</div>
+						  	  </div>
+						  	  <div th:if="${responseDataDtoStat.last}">}</div>
+							</div>
+						<div th:if="${responseClassDtoStat.last}">}</div>
+					</div>]
 				</span>
 				<span th:if="${#lists.size(methodInfoDto.baseResponseDataDtos) == 0}">
-					<div th:each="responseDataDto:${methodInfoDto.responseDataDtos}">
-					  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
-					  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
-					  	<div th:if="${userStat.first}">[
-					  	</div>
-				  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
-	                	<div th:if="${userStat.last}">]</div>
-				  	  </div>
+					<div th:each="responseClassDto,responseClassDtoStat:${methodInfoDto.responseClassDtos}">
+						<div th:if="${responseClassDtoStat.first}"><span th:text="${responseClassDto.className}"></spapn>[</div>
+							<div th:each="responseDataDto,responseDataDtoStat:${responseClassDto.responseDataDtos}">
+							  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
+							  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}">
+							  	<div th:if="${userStat.first}">[</div>
+						  		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+			                	<div th:if="${userStat.last}">]</div>
+						  	  </div>
+							</div>
+						<div th:if="${responseClassDtoStat.last}">]</div>
 					</div>
 				</span>
 			}

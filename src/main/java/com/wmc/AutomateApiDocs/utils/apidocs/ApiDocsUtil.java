@@ -20,14 +20,15 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocs;
-import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.annotation.ApiDocs.Null;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.MethodExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.MethodInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseClassDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
 
 /**
@@ -96,7 +97,8 @@ public class ApiDocsUtil {
 					if (method.isAnnotationPresent(ApiDocs.class)) {
 						MethodExplainDto methodExplainDto = methodExplainDtos.get(i);
 						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); // 请求的参数
-
+						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
+						
 						RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
 						String[] value = requestMapping.value(); // 获取方法上的路径
 						for (String string : value) {
@@ -107,6 +109,7 @@ public class ApiDocsUtil {
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
+						String[] responseBeans = apiDocs.responseBeans(); //多个响应数据Bean
 						String type = apiDocs.type(); // 请求方式
 						String url = apiDocs.url(); // 请求方法路径
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
@@ -130,12 +133,12 @@ public class ApiDocsUtil {
 						}
 						if (responseBean != Null.class) {
 							System.out.println("响应字段信息CLASS：" + responseBean);
-							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBean,
-									true);
+							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBean,true);
 							if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
 								Map<String, List<ResponseDataDto>> map = new HashMap<String, List<ResponseDataDto>>();
 								for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
 									ResponseDataDto responseDataDto = new ResponseDataDto();
+									responseDataDto.setClassName(responseBean.getSimpleName());
 									responseDataDto.setName(classFiedInfoDto.getName());
 									responseDataDto.setType(classFiedInfoDto.getType());
 									responseDataDto.setDescription(classFiedInfoDto.getDescription());
@@ -168,6 +171,52 @@ public class ApiDocsUtil {
 								}
 							}
 						}
+						
+						if(responseBeans != null && responseBeans.length > 0) {
+							for (int j = 0; j < responseBeans.length; j++) {
+								Class<?> responseBeanClass = Class.forName(responseBeans[j]);
+								List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBeanClass,false);
+								if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
+									System.out.println("List的数据："+responseDataDtos);
+									Map<String, List<ResponseDataDto>> map = new HashMap<String, List<ResponseDataDto>>();
+									for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
+										ResponseDataDto responseDataDto = new ResponseDataDto();
+										responseDataDto.setClassName(responseBeanClass.getSimpleName());
+										responseDataDto.setName(classFiedInfoDto.getName());
+										responseDataDto.setType(classFiedInfoDto.getType());
+										responseDataDto.setDescription(classFiedInfoDto.getDescription());
+										String childNode = classFiedInfoDto.getChildNode();
+										if (childNode != null) {
+											responseDataDto.setChildNode(childNode);
+											boolean containsKey = map.containsKey(childNode);
+											if (containsKey) {
+												// 有子节点
+												responseDataDto.setResponseDataDtos(map.get(childNode));
+											}
+											System.out.println("当前父节点数据为:" + responseDataDto);
+										}
+										String parentNode = classFiedInfoDto.getParentNode();
+										if (parentNode != null) {
+											boolean containsKey = map.containsKey(parentNode);
+											List<ResponseDataDto> list = new ArrayList<ResponseDataDto>();
+											if (containsKey) {
+												list = map.get(parentNode);
+												list.add(responseDataDto);
+											} else {
+												list.add(responseDataDto);
+											}
+											// 将父节点名的为key,子节点的对象为value
+											map.put(parentNode, list);
+											System.out.println("将子节点保存在父节点中:" + map.toString());
+											continue;
+										}
+										responseDataDtos.add(responseDataDto);
+									}
+									
+								}
+								
+							}
+						}
 
 						if (baseResponseBean != Null.class) {
 							// 有基础类返回
@@ -190,6 +239,28 @@ public class ApiDocsUtil {
 							}
 							System.out.println("baseResponseBean:" + baseResponseBean);
 						}
+						Map<String,List<ResponseDataDto>> classNameMap = new HashMap<String,List<ResponseDataDto>>();
+						for (ResponseDataDto responseDataDto : responseDataDtos) {
+							String csName = responseDataDto.getClassName();
+							boolean containsKey = classNameMap.containsKey(csName);
+							List<ResponseDataDto> list = new ArrayList<ResponseDataDto>();
+							if(containsKey) {
+								list = classNameMap.get(csName);
+								list.add(responseDataDto);
+							}else {
+								list.add(responseDataDto);
+							}
+							classNameMap.put(csName, list);
+						}
+						for (Map.Entry<String, List<ResponseDataDto>> entry : classNameMap.entrySet()) {  
+							ResponseClassDto responseClassDto = new ResponseClassDto();
+							responseClassDto.setClassName(entry.getKey());
+							responseClassDto.setResponseDataDtos(entry.getValue());
+							responseClassDtos.add(responseClassDto);
+							
+						    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+						  
+						}   
 
 						methodDescriptions.add(methodDescription);
 						MethodInfoDto methodInfoDto = new MethodInfoDto();
@@ -197,14 +268,14 @@ public class ApiDocsUtil {
 						methodInfoDto.setType(type);
 						methodInfoDto.setUrl(url);
 						methodInfoDto.setRequestParamDtos(requestParamDtos);
-						methodInfoDto.setResponseDataDtos(responseDataDtos);
+						methodInfoDto.setResponseClassDtos(responseClassDtos);
 						methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
 						methodInfoDtos.add(methodInfoDto);
 						System.out.println("方法业务说明：" + methodDescription);
 						System.out.println("方法请求路径：" + url);
 						System.out.println("请求方法方式：" + type);
 						System.out.println("请求字段信息：" + requestParamDtos);
-						System.out.println("响应字段信息：" + responseDataDtos);
+						System.out.println("响应字段信息：" + responseClassDtos);
 						System.out.println("响应字段basRespons信息：" + baseResponseDataDtos);
 
 					}

@@ -1,7 +1,6 @@
 package com.wmc.AutomateApiDocs.utils.apidocs;
 
 import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -10,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.JarURLConnection;
@@ -439,8 +437,6 @@ public class ClassUtil {
 
 					// 获取list中的真实类型
 					Class genericClazz = (Class) pt.getActualTypeArguments()[0];
-					System.out.println("123213123123123" + genericClazz);
-
 					if (!genericClazz.getName().startsWith("java.lang")
 							&& !genericClazz.getName().startsWith("java.util.Date")
 							&& !genericClazz.getName().startsWith("javax")

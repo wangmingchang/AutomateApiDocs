@@ -14,7 +14,16 @@ public class ResponseDataDto {
 	private String description; // 字段注释
 	private String childNode; // 子节点
 	private String parentNode; // 父节点
+	private String className; // 类名
 	private List<ResponseDataDto> responseDataDtos;
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
 	public String getName() {
 		return name;
@@ -67,7 +76,8 @@ public class ResponseDataDto {
 	@Override
 	public String toString() {
 		return "ResponseDataDto [name=" + name + ", type=" + type + ", description=" + description + ", childNode="
-				+ childNode + ", parentNode=" + parentNode + ", responseDataDtos=" + responseDataDtos + "]";
+				+ childNode + ", parentNode=" + parentNode + ", className=" + className + ", responseDataDtos="
+				+ responseDataDtos + "]";
 	}
 
 }
