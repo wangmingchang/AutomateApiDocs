@@ -1,5 +1,7 @@
 package com.wmc.AutomateApiDocs.utils.apidocs;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -7,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.JarURLConnection;
@@ -396,8 +400,9 @@ public class ClassUtil {
 	 * 
 	 * @param cur_class
 	 * @return key:name;value:type
+	 * @throws IntrospectionException 
 	 */
-	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class,boolean isDelete) {
+	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class,boolean isDelete) throws Exception {
 		if(isDelete) {
 			System.out.println(isDelete);
 			fieldInfos.clear(); //清空List
@@ -406,17 +411,26 @@ public class ClassUtil {
 		String class_name = cur_class.getName();
 		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
-		if (oneWayRemarks.size() != obj_fields.length) {
-			throw new RuntimeErrorException(null, class_name + "：类有字段没有注释");
-		}
+		int fieldNum = 0;//字段数
+		List<Field> fields = new ArrayList<Field>();
 		for (int i = 0; i < obj_fields.length; i++) {
-			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
+			//获取get方法的字段
 			Field field = obj_fields[i];
+			field.setAccessible(true);
+			if(getGetMethod(cur_class, field.getName()) != null) {
+				fields.add(field);
+				fieldNum++;
+			}
+		}
+		if (oneWayRemarks.size() != fieldNum) {
+			throw new RuntimeErrorException(null, class_name + "：类有get方法的字段没有注释");
+		}
+		for (int i = 0; i < fields.size(); i++) {
+			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
+			Field field = fields.get(i);
 			field.setAccessible(true);
 			classFiedInfoDto.setName(field.getName());
 			String type = getClassFieldType(field.getType());
-			System.out.println("field.getName():"+field.getName());
-			
 			
 			if (type.equals("list")) {
 				Type listType = field.getGenericType();
@@ -796,4 +810,47 @@ public class ClassUtil {
 		}
 		return txt;
 	}
+	/** 
+	    * java反射bean的get方法 
+	    *  
+	    * @param objectClass 
+	    * @param fieldName 
+	    * @return 
+	    */  
+	   @SuppressWarnings("unchecked")  
+	   public static Method getGetMethod(Class objectClass, String fieldName) {  
+	       StringBuffer sb = new StringBuffer();  
+	       sb.append("get");  
+	       sb.append(fieldName.substring(0, 1).toUpperCase());  
+	       sb.append(fieldName.substring(1));  
+	       try {  
+	           return objectClass.getMethod(sb.toString());  
+	       } catch (Exception e) {  
+	       }  
+	       return null;  
+	   }  
+	   /** 
+	     * java反射bean的set方法 
+	     *  
+	     * @param objectClass 
+	     * @param fieldName 
+	     * @return 
+	     */  
+	    @SuppressWarnings("unchecked")  
+	    public static Method getSetMethod(Class objectClass, String fieldName) {  
+	        try {  
+	            Class[] parameterTypes = new Class[1];  
+	            Field field = objectClass.getDeclaredField(fieldName);  
+	            parameterTypes[0] = field.getType();  
+	            StringBuffer sb = new StringBuffer();  
+	            sb.append("set");  
+	            sb.append(fieldName.substring(0, 1).toUpperCase());  
+	            sb.append(fieldName.substring(1));  
+	            Method method = objectClass.getMethod(sb.toString(), parameterTypes);  
+	            return method;  
+	        } catch (Exception e) {  
+	            e.printStackTrace();  
+	        }  
+	        return null;  
+	    } 
 }
