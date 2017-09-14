@@ -19,9 +19,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import com.wmc.AutomateApiDocs.annotation.ApiDocs;
-import com.wmc.AutomateApiDocs.annotation.ApiDocs.Null;
 import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsMethod;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsMethod.Null;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
@@ -94,7 +94,7 @@ public class ApiDocsUtil {
 					Method method = className.getDeclaredMethods()[i];
 
 					String methodPath = ""; // 方法请求路径
-					if (method.isAnnotationPresent(ApiDocs.class)) {
+					if (method.isAnnotationPresent(ApiDocsMethod.class)) {
 						MethodExplainDto methodExplainDto = methodExplainDtos.get(i);
 						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); // 请求的参数
 						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
@@ -105,7 +105,7 @@ public class ApiDocsUtil {
 							methodPath = path + string;
 						}
 
-						ApiDocs apiDocs = method.getAnnotation(ApiDocs.class);
+						ApiDocsMethod apiDocs = method.getAnnotation(ApiDocsMethod.class);
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
@@ -123,11 +123,14 @@ public class ApiDocsUtil {
 							if (requestFieldInfos != null && requestFieldInfos.size() > 0) {
 								requestParamDtos.clear(); // 清空多行注释中的参数，以ApiDocs中的为主
 								for (ClassFiedInfoDto classFiedInfoDto : requestFieldInfos) {
-									RequestParamDto RequestParamDto = new RequestParamDto();
-									RequestParamDto.setName(classFiedInfoDto.getName());
-									RequestParamDto.setType(classFiedInfoDto.getType());
-									RequestParamDto.setDescription(classFiedInfoDto.getDescription());
-									requestParamDtos.add(RequestParamDto);
+									RequestParamDto requestParamDto = new RequestParamDto();
+									requestParamDto.setName(classFiedInfoDto.getName());
+									requestParamDto.setType(classFiedInfoDto.getType());
+									requestParamDto.setDescription(classFiedInfoDto.getDescription());
+									if(classFiedInfoDto.getIfPass() != null) {
+										requestParamDto.setRequired(classFiedInfoDto.getIfPass());
+									}
+									requestParamDtos.add(requestParamDto);
 								}
 							}
 						}
@@ -175,7 +178,7 @@ public class ApiDocsUtil {
 						if(responseBeans != null && responseBeans.length > 0) {
 							for (int j = 0; j < responseBeans.length; j++) {
 								Class<?> responseBeanClass = Class.forName(responseBeans[j]);
-								List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBeanClass,false);
+								List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBeanClass,true);
 								if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
 									System.out.println("List的数据："+responseDataDtos);
 									Map<String, List<ResponseDataDto>> map = new HashMap<String, List<ResponseDataDto>>();

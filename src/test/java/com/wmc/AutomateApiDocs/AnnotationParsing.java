@@ -1,36 +1,9 @@
 package com.wmc.AutomateApiDocs;
 
-import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
-import org.apache.commons.lang.CharEncoding;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-
-import com.wmc.AutomateApiDocs.annotation.ApiDocs;
-import com.wmc.AutomateApiDocs.annotation.ApiDocs.Null;
-import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.MethodExplainDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.MethodInfoDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
 import com.wmc.AutomateApiDocs.utils.apidocs.ApiDocsUtil;
-import com.wmc.AutomateApiDocs.utils.apidocs.ClassUtil;
-import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 
 public class AnnotationParsing {
 
@@ -64,7 +37,7 @@ public class AnnotationParsing {
 	}
 
 	public static void main(String[] args) {
-		ApiDocsUtil.generateApi("com.wmc.AutomateApiDocs.controller", "F:\\eclipse-jee-oxyen-workspace\\AutomateApiDocs\\resources\\static\\apiDocs");
+		ApiDocsUtil.generateApi("com.wmc.AutomateApiDocs.controller", "H:\\eclipse_4.7_worksapace\\AutomateApiDocs\\resources\\static\\apiDocs");
 		/*try {
 			List<String> classNames = ClassUtil.getClassName("com.wmc.AutomateApiDocs.controller");
 			String savePath = "F:\\eclipse-jee-oxyen-workspace\\AutomateApiDocs\\resources\\static\\apiDocs";

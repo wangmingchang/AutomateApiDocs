@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wmc.AutomateApiDocs.annotation.ApiDocsParam;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
@@ -427,6 +428,13 @@ public class ClassUtil {
 			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
 			Field field = fields.get(i);
 			field.setAccessible(true);
+			if(field.isAnnotationPresent(ApiDocsParam.class)) {
+				ApiDocsParam apiDocsParam = field.getAnnotation(ApiDocsParam.class);
+				if(!apiDocsParam.value()) {
+					//不是必传字段
+					classFiedInfoDto.setIfPass(false);
+				}
+			}
 			classFiedInfoDto.setName(field.getName());
 			String type = getClassFieldType(field.getType());
 			

@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wmc.AutomateApiDocs.annotation.ApiDocs;
 import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
+import com.wmc.AutomateApiDocs.annotation.ApiDocsMethod;
 import com.wmc.AutomateApiDocs.pojo.vo.BaseResponseVo;
 import com.wmc.AutomateApiDocs.pojo.vo.CarVo;
 import com.wmc.AutomateApiDocs.pojo.vo.DemoVo;
 import com.wmc.AutomateApiDocs.pojo.vo.PageDto;
 
 /**
- * HTML-controller
+ * 测试-controller
  * 
  * @author 王明昌
  * @date 2017年9月3日
@@ -36,7 +36,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/")
-	@ApiDocs(baseResponseBean=BaseResponseVo.class,methodExplain="index方法",responseBean = DemoVo.class,
+	@ApiDocsMethod(baseResponseBean=BaseResponseVo.class,methodExplain="index方法",responseBean = DemoVo.class,
 	responseBeans= {"com.wmc.AutomateApiDocs.pojo.vo.CarVo","com.wmc.AutomateApiDocs.pojo.vo.CatVo"})
 	public String index() {
 		return "index";
@@ -50,7 +50,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/helloHtml")
-	@ApiDocs(requestBean = PageDto.class, baseResponseBean=BaseResponseVo.class ,responseBean = DemoVo.class, type = "post",methodExplain="hell方法")
+	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean=BaseResponseVo.class ,responseBean = DemoVo.class, type = "post",methodExplain="hell方法")
 	public String helloHtml(@RequestBody Map<String, Object> map) {
 		List<PageDto> pageDtos;
 		
@@ -60,14 +60,12 @@ public class HtmlController {
 	/**
 	 * 获老师信息
 	 * 
-	 * @param id
-	 *            主键
-	 * @param name
-	 *            姓名
+	 * @param id 主键
+	 * @param name 姓名
 	 * @return
 	 */
 	@RequestMapping("/getTeacharInfo")
-	@ApiDocs(responseBean = DemoVo.class,methodExplain="获老师信息")
+	@ApiDocsMethod(responseBean = DemoVo.class,methodExplain="获老师信息")
 	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
 
 		return "/helloHtml";

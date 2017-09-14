@@ -1,5 +1,7 @@
 package com.wmc.AutomateApiDocs.pojo.vo;
 
+import com.wmc.AutomateApiDocs.annotation.ApiDocsParam;
+
 /**
  * 分页DTO
  * 
@@ -7,7 +9,9 @@ package com.wmc.AutomateApiDocs.pojo.vo;
  * @date 2017年9月9日
  */
 public class PageDto extends BaseResponseVo {
+	@ApiDocsParam(false)
 	private long pageNo; // 页码
+	@ApiDocsParam(false)
 	private long pageSize; // 页数
 
 	public PageDto(long pageNo, long pageSize) {

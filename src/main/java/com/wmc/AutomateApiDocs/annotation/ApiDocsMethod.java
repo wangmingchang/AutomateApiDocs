@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface ApiDocs {
+public @interface ApiDocsMethod {
 
     /**
      * 请求对象

@@ -12,6 +12,15 @@ public class ClassFiedInfoDto {
 	private String description; // 字段注释
 	private String childNode; // 子节点
 	private String parentNode; // 父节点
+	private Boolean ifPass; // 请求字段是否是必传字段
+
+	public Boolean getIfPass() {
+		return ifPass;
+	}
+
+	public void setIfPass(Boolean ifPass) {
+		this.ifPass = ifPass;
+	}
 
 	public String getName() {
 		return name;
