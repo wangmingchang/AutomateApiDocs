@@ -1,5 +1,8 @@
 package com.wmc.AutomateApiDocs.utils.apidocs;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -9,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.management.RuntimeErrorException;
 
@@ -38,6 +42,21 @@ import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
  *
  */
 public class ApiDocsUtil {
+	
+	/**
+	 * 执行自动生成api方法
+	 */
+	public static void init() {
+		String rootPate = System.getProperty("user.dir")+"/resources/";
+		Properties properties = PropertiesUtil.loadProps(rootPate+"apiDocs.properties");
+		String packageName = properties.getProperty("packageName");
+		String savePath = properties.getProperty("savePath");
+		if(savePath == null || savePath == "") {
+			savePath = rootPate +"apiDocs";
+		}
+		generateApi(packageName, savePath);
+	}
+	
 	/**
 	 * 生成api
 	 * 
@@ -47,6 +66,7 @@ public class ApiDocsUtil {
 	 *            保存的路径
 	 *            （绝对路径，如：‘F:\eclipse-jee-oxyen-workspace\AutomateApiDocs\resources\templates\apiDocs’）
 	 */
+	@SuppressWarnings("resource")
 	public static void generateApi(String packageName, String savePath) {
 		try {
 			List<String> classNames = ClassUtil.getClassName(packageName);
@@ -287,12 +307,42 @@ public class ApiDocsUtil {
 			}
 			if (classExplains.size() > 0) {
 				getIndexTemplate(savePath, classExplains);
+				//添加样式
+				addCss(savePath);
+				
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 添加Css样式
+	 * @param savePath
+	 */
+	private static void addCss(String savePath) {
+		try {
+			String rootPath = System.getProperty("user.dir");
+			File file = new File(rootPath+"/resources/templates/apiDocs/css/style.css");
+			if(file.exists()) {
+				String fileSavePath = savePath + "/" + file.getName(); //保存路径
+				FileInputStream fileInputStream = new FileInputStream(file);
+				FileOutputStream fileOutputStream = new FileOutputStream(Paths.get(fileSavePath).toFile());
+				byte[] bytearray = new byte[1024];
+				while (fileInputStream.read() > 0) {
+					fileInputStream.read(bytearray, 0, 1024);
+					fileOutputStream.write(bytearray);
+					
+				}
+				fileInputStream.close();
+				fileOutputStream.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}
+	
 	
 	/**
 	 * 方法api模版输出
