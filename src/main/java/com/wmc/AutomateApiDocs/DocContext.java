@@ -1,5 +1,7 @@
 package com.wmc.AutomateApiDocs;
 
+import com.wmc.AutomateApiDocs.utils.apidocs.ApiDocsUtil;
+
 /**
  * 提取注解的主类
  * @author 王明昌
@@ -8,9 +10,9 @@ package com.wmc.AutomateApiDocs;
 public class DocContext {
 
     
+	public static void main(String[] args) {
+		
+		ApiDocsUtil.init();
 
-    public static void init(){
-      
-    }
-
+	}
 }

@@ -2,6 +2,7 @@ package com.wmc.AutomateApiDocs;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
 
 import com.wmc.AutomateApiDocs.utils.apidocs.ApiDocsUtil;
 
@@ -37,6 +38,7 @@ public class AnnotationParsing {
 	}
 
 	public static void main(String[] args) {
+		
 		ApiDocsUtil.init();
 
 	}

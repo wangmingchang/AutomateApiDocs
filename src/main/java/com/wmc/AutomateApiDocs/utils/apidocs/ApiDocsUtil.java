@@ -5,7 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +37,14 @@ import com.wmc.AutomateApiDocs.pojo.apidocs.MethodInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseClassDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.WordContentDto;
+import com.wmc.AutomateApiDocs.utils.FileUtil;
+
+import freemarker.core.Configurable;
+import freemarker.core.TemplateConfiguration;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.Version;
 
 /**
  * 自动生成API工具
@@ -71,6 +82,7 @@ public class ApiDocsUtil {
 		try {
 			List<String> classNames = ClassUtil.getClassName(packageName);
 			List<ClassExplainDto> classExplains = new ArrayList<ClassExplainDto>(); // 类的业务说明
+			List<WordContentDto> wordContentDtos = new ArrayList<WordContentDto>(); //word文档返回list
 			for (String classNameStr : classNames) {
 				ClassExplainDto classExplainDto = new ClassExplainDto(); // 类的头部相关信息
 				List<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); // 类中的方法多行注释的信息
@@ -294,24 +306,30 @@ public class ApiDocsUtil {
 						methodInfoDto.setResponseClassDtos(responseClassDtos);
 						methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
 						methodInfoDtos.add(methodInfoDto);
+						System.out.println("类的说明 ：" + classExplainDto.getExplain());
 						System.out.println("方法业务说明：" + methodDescription);
 						System.out.println("方法请求路径：" + url);
 						System.out.println("请求方法方式：" + type);
 						System.out.println("请求字段信息：" + requestParamDtos);
 						System.out.println("响应字段信息：" + responseClassDtos);
 						System.out.println("响应字段basRespons信息：" + baseResponseDataDtos);
+						
 
 					}
 				}
-				getMethodApiTemplate(savePath, classExplainDto, methodDescriptions, methodInfoDtos);
+				setMethodApiTemplate(savePath, classExplainDto, methodDescriptions, methodInfoDtos);
+				WordContentDto wordContentDto = new WordContentDto();
+				wordContentDto.setMethodInfoDtos(methodInfoDtos);
+				wordContentDto.setClassExplainDto(classExplainDto);
+				wordContentDtos.add(wordContentDto);
 			}
 			if (classExplains.size() > 0) {
-				getIndexTemplate(savePath, classExplains);
+				setIndexTemplate(savePath, classExplains);
 				//添加样式
 				addCss(savePath);
 				
+				setWordTemplate(savePath,wordContentDtos);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -351,7 +369,7 @@ public class ApiDocsUtil {
 	 * @param methodDescriptions 方法业务名称
 	 * @param methodInfoDtos 方法信息
 	 */
-	private static void getMethodApiTemplate(String savePath, ClassExplainDto classExplainDto, List<String> methodDescriptions,List<MethodInfoDto> methodInfoDtos ) {
+	private static void setMethodApiTemplate(String savePath, ClassExplainDto classExplainDto, List<String> methodDescriptions,List<MethodInfoDto> methodInfoDtos ) {
 		try {
 			// 构造模板引擎
 			ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -387,7 +405,7 @@ public class ApiDocsUtil {
 	 * @param classExplains 类的头部信息
 	 * @throws IOException
 	 */
-	private static void getIndexTemplate(String savePath,List<ClassExplainDto> classExplains){
+	private static void setIndexTemplate(String savePath,List<ClassExplainDto> classExplains){
 		try {
 		// 构造模板引擎
 			ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -413,5 +431,32 @@ public class ApiDocsUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void setWordTemplate(String savePath, List<WordContentDto> wordContentDtos) {
+		URL classpath = Thread.currentThread().getContextClassLoader().getResource("");    
+        String path = classpath.getPath(); 
+        System.out.println("**********路径**********"+path);
+		File file = new File(savePath + "/api.doc");
+		//创建一个freemarker.template.Configuration实例，它是存储 FreeMarker 应用级设置的核心部分
+		Configuration configuration = new Configuration(Configuration.VERSION_2_3_25);
+		try {
+			File dir = new File(path + "/templates/word");
+			 //设置模板目录
+			configuration.setDirectoryForTemplateLoading(dir);
+			configuration.setDefaultEncoding("UTF-8");
+			//从设置的目录中获得模板
+			Template template = configuration.getTemplate("api.ftl");
+			//将数据与模板渲染的结果写入文件中
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
+			HashMap<String, Object> map = new HashMap<String,Object>();
+			map.put("wordContentDtos", wordContentDtos);
+			template.process(map, writer);
+			writer.flush();
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
