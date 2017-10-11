@@ -16,6 +16,16 @@ public class ResponseDataDto {
 	private String parentNode; // 父节点
 	private String className; // 类名
 	private List<ResponseDataDto> responseDataDtos;
+	private int grade; // 当前类所在的级别
+	private int sequence; // 顺序号
+
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
 
 	public String getClassName() {
 		return className;
@@ -73,11 +83,19 @@ public class ResponseDataDto {
 		this.responseDataDtos = responseDataDtos;
 	}
 
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+
 	@Override
 	public String toString() {
 		return "ResponseDataDto [name=" + name + ", type=" + type + ", description=" + description + ", childNode="
 				+ childNode + ", parentNode=" + parentNode + ", className=" + className + ", responseDataDtos="
-				+ responseDataDtos + "]";
+				+ responseDataDtos + ", grade=" + grade + ", sequence=" + sequence + "]";
 	}
 
 }

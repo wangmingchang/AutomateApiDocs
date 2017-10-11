@@ -17,10 +17,15 @@ import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
@@ -38,6 +43,7 @@ import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.MethodExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
 
 /**
  * 类相关的工具类
@@ -393,7 +399,7 @@ public class ClassUtil {
 	public static ClassUtil getInstance() {
 		return classUtil;
 	}
-
+	private static int gradeNum = 1; //级别
 	/**
 	 * 获取类的所有字段属性名称（包括父类）
 	 * 
@@ -401,7 +407,7 @@ public class ClassUtil {
 	 * @return key:name;value:type
 	 * @throws IntrospectionException 
 	 */
-	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class,boolean isDelete) throws Exception {
+	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class,boolean isDelete,int gradeNum) throws Exception {
 		if(isDelete) {
 			System.out.println(isDelete);
 			fieldInfos.clear(); //清空List
@@ -456,21 +462,109 @@ public class ClassUtil {
 						// 设置子节点
 						classFiedInfoDto.setChildNode(field.getName());
 						// 获取list中对象
-						getClassFieldAndMethodForChildNode(genericClazz, field.getName());
+						getClassFieldAndMethodForChildNode(genericClazz, field.getName(),gradeNum + 1);
+					}
+				}
+			}
+			//可能字段是一个对象
+			if(type.indexOf("class") != -1) {
+				System.out.println(type);
+				Class<?> forName = Class.forName(type.substring(6, type.length()));
+				// 设置子节点
+				classFiedInfoDto.setChildNode(field.getName());
+				getClassFieldAndMethodForChildNode(forName, field.getName(),gradeNum + 1);
+				type = "class";
+			}
+			classFiedInfoDto.setType(type);
+			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
+			classFiedInfoDto.setGrade(gradeNum);
+			fieldInfos.add(classFiedInfoDto);
+		}
+
+		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
+			getClassFieldAndMethod(cur_class.getSuperclass(),false,gradeNum + 1);
+			System.out.println("父类：" + cur_class.getSuperclass());
+		}
+		return fieldInfos;
+	}
+	
+	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
+	/**
+	 * 获取类的所有字段属性名称（包括父类）-当前的线程
+	 * 
+	 * @param cur_class
+	 * @return key:name;value:type
+	 * @throws IntrospectionException 
+	 */
+	public static List<ClassFiedInfoDto> getCurrnetClassFieldAndMethod(Class<?> cur_class,boolean isDelete,int gradeNum) throws Exception {
+		if(isDelete) {
+			System.out.println(isDelete);
+			fieldInfoList.clear(); //清空List
+		}
+		System.out.println("new:"+fieldInfoList);
+		String class_name = cur_class.getName();
+		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
+		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
+		int fieldNum = 0;//字段数
+		List<Field> fields = new ArrayList<Field>();
+		for (int i = 0; i < obj_fields.length; i++) {
+			//获取get方法的字段
+			Field field = obj_fields[i];
+			field.setAccessible(true);
+			if(getGetMethod(cur_class, field.getName()) != null) {
+				fields.add(field);
+				fieldNum++;
+			}
+		}
+		if (oneWayRemarks.size() != fieldNum) {
+			throw new RuntimeErrorException(null, class_name + "：类有get方法的字段没有注释");
+		}
+		for (int i = 0; i < fields.size(); i++) {
+			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
+			Field field = fields.get(i);
+			field.setAccessible(true);
+			if(field.isAnnotationPresent(ApiDocsParam.class)) {
+				ApiDocsParam apiDocsParam = field.getAnnotation(ApiDocsParam.class);
+				if(!apiDocsParam.value()) {
+					//不是必传字段
+					classFiedInfoDto.setIfPass(false);
+				}
+			}
+			classFiedInfoDto.setName(field.getName());
+			String type = getClassFieldType(field.getType());
+			
+			if (type.equals("list")) {
+				Type listType = field.getGenericType();
+				if (listType instanceof ParameterizedType) {
+					ParameterizedType pt = (ParameterizedType) listType;
+					
+					// 获取list中的真实类型
+					Class genericClazz = (Class) pt.getActualTypeArguments()[0];
+					if (!genericClazz.getName().startsWith("java.lang")
+							&& !genericClazz.getName().startsWith("java.util.Date")
+							&& !genericClazz.getName().startsWith("javax")
+							&& !genericClazz.getName().startsWith("com.sun")
+							&& !genericClazz.getName().startsWith("sun")
+							&& !genericClazz.getName().startsWith("boolean")
+							&& !genericClazz.getName().startsWith("double")
+							&& !genericClazz.getName().startsWith("int")) {
+						// 设置子节点
+						classFiedInfoDto.setChildNode(field.getName());
+						// 获取list中对象
+						getClassFieldAndMethodForChildNode(genericClazz, field.getName(),gradeNum + 1);
 					}
 				}
 			}
 			classFiedInfoDto.setType(type);
 			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
-
-			fieldInfos.add(classFiedInfoDto);
+			fieldInfoList.add(classFiedInfoDto);
 		}
-
+		
 		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
-			getClassFieldAndMethod(cur_class.getSuperclass(),false);
+			getCurrnetClassFieldAndMethod(cur_class.getSuperclass(),false,gradeNum + 1);
 			System.out.println("父类：" + cur_class.getSuperclass());
 		}
-		return fieldInfos;
+		return fieldInfoList;
 	}
 
 	/**
@@ -480,19 +574,28 @@ public class ClassUtil {
 	 * @param parentNode
 	 *            父节点名称
 	 */
-	public static void getClassFieldAndMethodForChildNode(Class<?> cur_class, String parentNode) {
+	public static void getClassFieldAndMethodForChildNode(Class<?> cur_class, String parentNode,int gradeNum) {
 		String class_name = cur_class.getName();
 		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
-		if (oneWayRemarks.size() != obj_fields.length) {
+		List<Field> fieldList = Arrays.asList(obj_fields);
+		fieldList = new ArrayList<Field>(fieldList);
+		Iterator<Field> iterator = fieldList.iterator();
+		while (iterator.hasNext()) {
+			Field field = (Field) iterator.next();
+			if("serialVersionUID".equals(field.getName())) {
+				iterator.remove();
+			}
+		}
+		if (oneWayRemarks.size() != fieldList.size()) {
 			throw new RuntimeErrorException(null, class_name + "：类有字段没有注释");
 		}
-		for (int i = 0; i < obj_fields.length; i++) {
+		for (int i = 0; i < fieldList.size(); i++) {
 			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
 			if (parentNode != null) {
 				classFiedInfoDto.setParentNode(parentNode);
 			}
-			Field field = obj_fields[i];
+			Field field = fieldList.get(i);
 			field.setAccessible(true);
 			classFiedInfoDto.setName(field.getName());
 			String type = getClassFieldType(field.getType());
@@ -503,7 +606,7 @@ public class ClassUtil {
 		}
 
 		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
-			getClassFieldAndMethodForChildNode(cur_class.getSuperclass(), parentNode);
+			getClassFieldAndMethodForChildNode(cur_class.getSuperclass(), parentNode, gradeNum + 1);
 			System.out.println("父类：" + cur_class.getSuperclass());
 		}
 	}
@@ -791,6 +894,7 @@ public class ClassUtil {
 		}
 		return dest;
 	}
+
 	/**
 	 * 新建目录
 	 * 

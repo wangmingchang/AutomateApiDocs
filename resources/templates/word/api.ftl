@@ -346,7 +346,7 @@
 					<w:trPr><w:trHeight w:val="252" /></w:trPr>
 					<w:tc>
 						<w:tcPr>
-							<w:tcW w:w="2097" w:type="dxa" />
+							<w:tcW w:w="2500" w:type="dxa" />
 							<w:tcBorders><w:bottom w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="000000" /></w:tcBorders>
 							<w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" />
 						</w:tcPr>
@@ -375,7 +375,7 @@
 				</w:tr>
 				<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
 					<w:tc>
-						<w:tcPr><w:tcW w:w="2097" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" /></w:tcPr>
+						<w:tcPr><w:tcW w:w="2500" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="D9D9D9" /></w:tcPr>
 						<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 						<w:pPr>
 							<w:jc w:val="center" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
@@ -410,7 +410,7 @@
 				</w:tr>
 				<#list methodInfoDto.baseResponseDataDtos as baseResponseDataDto>
 				<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
-					<w:tc><w:tcPr><w:tcW w:w="2097" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
+					<w:tc><w:tcPr><w:tcW w:w="2500" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
 						<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 							<w:pPr>
 								<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" /><wx:font wx:val="Times New Roman" />
@@ -451,75 +451,37 @@
 				</#list>
 				<#if (methodInfoDto.responseClassDtos?size > 0) >
 				<#list methodInfoDto.responseClassDtos as responseClassDto>
-				<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
-					<w:tc>
-					<w:tcPr><w:tcW w:w="2097" w:type="dxa" />
-					<w:gridSpan w:val="4" />
-					<w:shd w:val="clear" w:color="auto" w:fill="FFD965" /></w:tcPr>
-					<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
-						<w:pPr>
-							<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
-							<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-						</w:pPr>
-						<w:proofErr w:type="spellStart" />
-							<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
-								<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-								<w:t>${responseClassDto.className}</w:t>
-							</w:r>
-						<w:proofErr w:type="spellEnd" />
-					</w:p>
-					</w:tc>
-				</w:tr>
-
-				<#list responseClassDto.responseDataDtos as responseDataDto>
-				<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
-					<w:tc>
-					<w:tcPr><w:tcW w:w="2097" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
-					<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
-						<w:pPr>
-							<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
-							<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-						</w:pPr>
-						<w:proofErr w:type="spellStart" />
-							<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
-								<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-								<w:t>${responseDataDto.name}</w:t>
-							</w:r>
-						<w:proofErr w:type="spellEnd" />
-					</w:p>
-					</w:tc>
-					<w:tc>
-						<w:tcPr><w:tcW w:w="5391" w:type="dxa" /><w:gridSpan w:val="2" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
-						<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
-							<w:pPr>
-								<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" /><wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-							</w:pPr>
-							<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
-								<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-								<w:t>${responseDataDto.description}</w:t>
-							</w:r>
-						</w:p>
-					</w:tc>
-					<w:tc>
-						<w:tcPr><w:tcW w:w="1341" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
-						<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
-							<w:pPr>
-								<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" /><wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-							</w:pPr>
-							<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
-								<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-								<w:t>${responseDataDto.type}</w:t>
-							</w:r>
-						</w:p>
-					</w:tc>
-				</w:tr>
-					<#if responseDataDto.responseDataDtos?exists && (responseDataDto.responseDataDtos?size > 0) >
-						<#list responseDataDto.responseDataDtos as responseDataDto>
+					<#if responseClassDto_index == 0 || (methodInfoDto.responseClassDtos[responseClassDto_index-1].className != responseClassDto.className)>
 						<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
 							<w:tc>
-							<w:tcPr><w:tcW w:w="2097" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
+							<w:tcPr><w:tcW w:w="2500" w:type="dxa" />
+							<w:gridSpan w:val="4" />
+							<w:shd w:val="clear" w:color="auto" w:fill="FFD965" /></w:tcPr>
 							<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 								<w:pPr>
+									<!-- 添加缩进 -->
+									<w:ind w:left-chars="<#if (methodInfoDto.baseResponseDataDtos?size > 0)>${50 * responseClassDto.grade }<#else>${50 * (responseClassDto.grade -1) }</#if>" />
+									<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
+									<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+								</w:pPr>
+								<w:proofErr w:type="spellStart" />
+									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
+										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+										<w:t>${responseClassDto.className}----${responseClassDto.grade}级</w:t>
+									</w:r>
+								<w:proofErr w:type="spellEnd" />
+							</w:p>
+							</w:tc>
+						</w:tr>
+					</#if>
+				<#list responseClassDto.responseDataDtos as responseDataDto>
+					<#if responseDataDto.type != 'list'>
+					<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
+						<w:tc>
+							<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
+								<w:pPr>
+									<!-- 添加缩进 -->
+									<w:ind w:left-chars="<#if (methodInfoDto.baseResponseDataDtos?size > 0)>${50 * responseDataDto.grade }<#else>${50 * (responseDataDto.grade-1)}</#if>" />
 									<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 									<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
 								</w:pPr>
@@ -527,6 +489,73 @@
 									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
 										<w:t>${responseDataDto.name}</w:t>
+									</w:r>
+								<w:proofErr w:type="spellEnd" />
+							</w:p>
+						</w:tc>
+						<w:tc>
+							<w:tcPr><w:tcW w:w="5391" w:type="dxa" /><w:gridSpan w:val="2" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
+							<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
+								<w:pPr>
+									<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" /><wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
+								</w:pPr>
+								<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
+									<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
+									<w:t>${responseDataDto.description}</w:t>
+								</w:r>
+							</w:p>
+						</w:tc>
+						<w:tc>
+							<w:tcPr><w:tcW w:w="1341" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
+							<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
+								<w:pPr>
+									<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" /><wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
+								</w:pPr>
+								<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
+									<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+									<w:t>${responseDataDto.type}</w:t>
+								</w:r>
+							</w:p>
+						</w:tc>
+					</w:tr>
+					</#if>
+					<#if responseDataDto.responseDataDtos?exists && (responseDataDto.responseDataDtos?size > 0) >
+						<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
+							<w:tc>
+							<w:tcPr><w:tcW w:w="2500" w:type="dxa" />
+							<w:gridSpan w:val="4" />
+							<w:shd w:val="clear" w:color="auto" w:fill="FFD965" /></w:tcPr>
+							<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
+								<w:pPr>
+									<!-- 添加缩进 -->
+									<w:ind w:left-chars="<#if (methodInfoDto.baseResponseDataDtos?size > 0)>${50 * responseClassDto.grade }<#else>${50 * (responseClassDto.grade -1) }</#if>" />
+									<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
+									<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+								</w:pPr>
+								<w:proofErr w:type="spellStart" />
+									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
+										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+										<w:t>${responseDataDto.name}（${responseDataDto.type}）----${responseDataDto.grade}级</w:t>
+									</w:r>
+								<w:proofErr w:type="spellEnd" />
+							</w:p>
+							</w:tc>
+						</w:tr>
+						<#list responseDataDto.responseDataDtos as responseDataChildDto>
+						<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
+							<w:tc>
+							<w:tcPr><w:tcW w:w="2500" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="auto" /></w:tcPr>
+							<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
+								<w:pPr>
+									<!-- 添加缩进 -->
+									<w:ind w:left-chars="<#if (methodInfoDto.baseResponseDataDtos?size > 0)>${50 * responseDataDto.grade }<#else>${50 * (responseDataDto.grade-1) }</#if>" />
+									<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
+									<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+								</w:pPr>
+								<w:proofErr w:type="spellStart" />
+									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
+										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
+										<w:t>${responseDataChildDto.name}</w:t>
 									</w:r>
 								<w:proofErr w:type="spellEnd" />
 							</w:p>
@@ -539,7 +568,7 @@
 									</w:pPr>
 									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-										<w:t>${responseDataDto.description}</w:t>
+										<w:t>${responseDataChildDto.description}</w:t>
 									</w:r>
 								</w:p>
 							</w:tc>
@@ -551,7 +580,7 @@
 									</w:pPr>
 									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-										<w:t>${responseDataDto.type}</w:t>
+										<w:t>${responseDataChildDto.type}</w:t>
 									</w:r>
 								</w:p>
 							</w:tc>

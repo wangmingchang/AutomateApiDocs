@@ -16,10 +16,7 @@ public class CarVo implements Serializable {
 	private String color; // 颜色
 	private String displacement; // 排量
 	private Double price; // 售价
-	
-    public static void init() {
-    	System.out.println("这是一个init方法");
-    }
+
 
 	public CarVo() {
 		super();

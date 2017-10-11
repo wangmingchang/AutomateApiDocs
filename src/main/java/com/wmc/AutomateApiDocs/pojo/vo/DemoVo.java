@@ -8,13 +8,21 @@ import java.io.Serializable;
  * @author 王明昌
  * @date 2017年9月9日
  */
-public class DemoVo implements Serializable{
+public class DemoVo implements Serializable {
 
 	private static final long serialVersionUID = -550552481238025259L;
 	private String id; // 主键
 	private String name; // 姓名
 	private Double socre; // 分数
-	
+	private CarVo carVo; // 车
+
+	public CarVo getCarVo() {
+		return carVo;
+	}
+
+	public void setCarVo(CarVo carVo) {
+		this.carVo = carVo;
+	}
 
 	public String getId() {
 		return id;

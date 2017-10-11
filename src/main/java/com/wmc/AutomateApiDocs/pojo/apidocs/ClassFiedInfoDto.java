@@ -13,6 +13,15 @@ public class ClassFiedInfoDto {
 	private String childNode; // 子节点
 	private String parentNode; // 父节点
 	private Boolean ifPass; // 请求字段是否是必传字段
+	private int grade; // 级别
+
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
 
 	public Boolean getIfPass() {
 		return ifPass;
@@ -65,7 +74,7 @@ public class ClassFiedInfoDto {
 	@Override
 	public String toString() {
 		return "ClassFiedInfoDto [name=" + name + ", type=" + type + ", description=" + description + ", childNode="
-				+ childNode + ", parentNode=" + parentNode + "]";
+				+ childNode + ", parentNode=" + parentNode + ", ifPass=" + ifPass + ", grade=" + grade + "]";
 	}
 
 }

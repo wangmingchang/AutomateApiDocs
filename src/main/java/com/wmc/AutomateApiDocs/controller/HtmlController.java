@@ -18,7 +18,7 @@ import com.wmc.AutomateApiDocs.pojo.vo.DemoVo;
 import com.wmc.AutomateApiDocs.pojo.vo.PageDto;
 
 /**
- * 测试-controller
+ * HTML-controller
  * 
  * @author 王明昌
  * @date 2017年9月3日
@@ -37,7 +37,7 @@ public class HtmlController {
 	 */
 	@RequestMapping("/")
 	@ApiDocsMethod(baseResponseBean=BaseResponseVo.class,methodExplain="index方法",responseBean = DemoVo.class,
-	responseBeans= {"com.wmc.AutomateApiDocs.pojo.vo.CarVo","com.wmc.AutomateApiDocs.pojo.vo.CatVo"})
+	responseBeans= {"com.wmc.AutomateApiDocs.pojo.vo.Fish","com.wmc.AutomateApiDocs.pojo.vo.CatVo"})
 	public String index() {
 		return "index";
 	}
