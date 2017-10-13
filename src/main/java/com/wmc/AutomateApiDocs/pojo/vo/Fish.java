@@ -9,6 +9,15 @@ package com.wmc.AutomateApiDocs.pojo.vo;
 public class Fish {
 	private String type; // 种类
 	private String name; // 名字
+	private PageDto pageDto; // 分页信息
+
+	public PageDto getPageDto() {
+		return pageDto;
+	}
+
+	public void setPageDto(PageDto pageDto) {
+		this.pageDto = pageDto;
+	}
 
 	public String getType() {
 		return type;

@@ -264,7 +264,7 @@ public class ApiDocsUtil {
 								
 							}
 						}
-
+						
 						if (baseResponseBean != Null.class) {
 							// 有基础类返回
 							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil
@@ -321,6 +321,11 @@ public class ApiDocsUtil {
 								list.clear();
 								list.add(responseDataDto);
 								groupKeyList.add(groupKey);
+							}
+							String[] fieldTypeArr = {"list","class"};
+							if(ClassUtil.containsStr(fieldTypeArr,fieldType)) {
+								//如果字段是以上数组，级别就减1
+								grade--;
 							}
 							//classNameMap.put(groupKey, list);
 							ResponseClassDto responseClassDto = new ResponseClassDto();
