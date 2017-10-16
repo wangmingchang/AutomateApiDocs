@@ -49,7 +49,7 @@
 								  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
 								  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}" style="margin-left: 20px;">
 							  		<div th:if="${userStat.first}">[</div>
-						  			<div>"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+						  			<div style="padding-left: 20px;">"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
 			                		<div th:if="${userStat.last}">]</div>
 						  	  </div>
 							</div>
@@ -64,7 +64,7 @@
 							  "<span th:text="${responseDataDto.name}"></span>": "<span th:text="${responseDataDto.type}"></span> //<span th:text="${responseDataDto.description}"></span>"
 							  <div th:each="respDataDto,userStat:${responseDataDto.responseDataDtos}" style="margin-left: 20px;">
 							  	<div th:if="${userStat.first}">[</div>
-						  		<div>"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
+						  		<div style="padding-left: 20px;">"<span th:text="${respDataDto.name}"></span>": "<span th:text="${respDataDto.type}"></span> //<span th:text="${respDataDto.description}"></span>"</div>
 			                	<div th:if="${userStat.last}">]</div>
 						  	  </div>
 							</div>
