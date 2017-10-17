@@ -33,6 +33,7 @@ import com.wmc.AutomateApiDocs.annotation.ApiDocsMethod.Null;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
+import com.wmc.AutomateApiDocs.pojo.apidocs.HtmlMethonContentDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.MethodExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.MethodInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
@@ -66,7 +67,7 @@ public class ApiDocsUtil {
         System.out.println("**********路径**********"+rootPate);
 		//String rootPate = path + "/resources/";
 		Properties properties = PropertiesUtil.loadProps(rootPate+"apiDocs.properties");
-		String packageName = properties.getProperty("packageName");
+		String packageNameStr = properties.getProperty("packageName");
 		String savePath = properties.getProperty("savePath");
 		String isWordStr = properties.getProperty("isWord");
 		String isHTMLStr = properties.getProperty("isHTML");
@@ -76,11 +77,29 @@ public class ApiDocsUtil {
 		if(savePath == null || savePath == "") {
 			savePath = rootPate +"apiDocs";
 		}
-		
-		generateApi(packageName, savePath);
+		String[] packageNames= packageNameStr.split(",");
+		for (String packageName : packageNames) {
+			generateApi(packageName, savePath);
+		}
+		if (classExplains.size() > 0) {
+			if(isHTML) {
+				//添加样式
+				addCss(savePath);
+				setIndexTemplate(savePath, classExplains);
+				for (HtmlMethonContentDto htmlMethonContentDto : htmlMethonContentDtos) {
+					setMethodApiTemplate(savePath, htmlMethonContentDto.getClassExplainDto(), htmlMethonContentDto.getMethodDescriptions(), htmlMethonContentDto.getMethodInfoDtos());
+				}
+			}
+			if(isWord) {
+				setWordTemplate(savePath,wordContentDtos);
+			}
+		}
 	}
 	
 	private static int sequence = 0; //顺序号
+	private static List<WordContentDto> wordContentDtos = new ArrayList<WordContentDto>();//word文档返回list
+	private static List<ClassExplainDto> classExplains = new ArrayList<ClassExplainDto>(); // 类的业务说明
+	private static List<HtmlMethonContentDto> htmlMethonContentDtos = new ArrayList<HtmlMethonContentDto>();//方法的html页面返回list
 	/**
 	 * 生成api
 	 * 
@@ -94,8 +113,6 @@ public class ApiDocsUtil {
 	public static void generateApi(String packageName, String savePath) {
 		try {
 			List<String> classNames = ClassUtil.getClassName(packageName);
-			List<ClassExplainDto> classExplains = new ArrayList<ClassExplainDto>(); // 类的业务说明
-			List<WordContentDto> wordContentDtos = new ArrayList<WordContentDto>(); //word文档返回list
 			for (String classNameStr : classNames) {
 				ClassExplainDto classExplainDto = new ClassExplainDto(); // 类的头部相关信息
 				List<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); // 类中的方法多行注释的信息
@@ -276,7 +293,9 @@ public class ApiDocsUtil {
 					}
 				}
 				if(isHTML) {
-					setMethodApiTemplate(savePath, classExplainDto, methodDescriptions, methodInfoDtos);
+					HtmlMethonContentDto htmlMethonContentDto = new HtmlMethonContentDto(classExplainDto, methodDescriptions, methodInfoDtos);
+					htmlMethonContentDtos.add(htmlMethonContentDto);
+					//setMethodApiTemplate(savePath, classExplainDto, methodDescriptions, methodInfoDtos);
 				}
 				if(isWord) {
 					WordContentDto wordContentDto = new WordContentDto();
@@ -285,16 +304,7 @@ public class ApiDocsUtil {
 					wordContentDtos.add(wordContentDto);
 				}
 			}
-			if (classExplains.size() > 0) {
-				if(isHTML) {
-					setIndexTemplate(savePath, classExplains);
-					//添加样式
-					addCss(savePath);
-				}
-				if(isWord) {
-					setWordTemplate(savePath,wordContentDtos);
-				}
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
