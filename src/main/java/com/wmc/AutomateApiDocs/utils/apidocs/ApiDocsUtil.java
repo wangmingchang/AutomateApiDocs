@@ -12,15 +12,10 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.management.RuntimeErrorException;
@@ -44,13 +39,9 @@ import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseClassDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.WordContentDto;
-import com.wmc.AutomateApiDocs.utils.FileUtil;
 
-import freemarker.core.Configurable;
-import freemarker.core.TemplateConfiguration;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.Version;
 
 /**
  * 自动生成API工具
@@ -60,17 +51,32 @@ import freemarker.template.Version;
  */
 public class ApiDocsUtil {
 	
+	private static boolean isWord; //是否生成word格式api;
+	private static boolean isHTML; //是否生成HTML格式api;
+	private static String htmlpackageName = "/api-html/";//生成html保存的包名
+	private static String wordPackageName = "/api-doc/";//生成word保存的包名
+	
+	
 	/**
 	 * 执行自动生成api方法
 	 */
 	public static void init() {
-		String rootPate = System.getProperty("user.dir")+"/resources/";
+		URL classpath = Thread.currentThread().getContextClassLoader().getResource("");    
+        String rootPate = classpath.getPath(); 
+        System.out.println("**********路径**********"+rootPate);
+		//String rootPate = path + "/resources/";
 		Properties properties = PropertiesUtil.loadProps(rootPate+"apiDocs.properties");
 		String packageName = properties.getProperty("packageName");
 		String savePath = properties.getProperty("savePath");
+		String isWordStr = properties.getProperty("isWord");
+		String isHTMLStr = properties.getProperty("isHTML");
+		
+		isWord = isWordStr == "" || isWordStr == null ? true : Boolean.valueOf(isWordStr);
+		isHTML = isHTMLStr == "" || isHTMLStr == null ? true : Boolean.valueOf(isHTMLStr);
 		if(savePath == null || savePath == "") {
 			savePath = rootPate +"apiDocs";
 		}
+		
 		generateApi(packageName, savePath);
 	}
 	
@@ -149,7 +155,7 @@ public class ApiDocsUtil {
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
-						String[] responseBeans = apiDocs.responseBeans(); //多个响应数据Bean
+						Class<?>[] responseBeans = apiDocs.responseBeans(); //多个响应数据Bean
 						String type = apiDocs.type(); // 请求方式
 						String url = apiDocs.url(); // 请求方法路径
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
@@ -177,91 +183,13 @@ public class ApiDocsUtil {
 							System.out.println("响应字段信息CLASS：" + responseBean);
 							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBean,true,1);
 							saveFiledInfo(responseBean, responseFieldInfos, responseDataDtos);
-							/*if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
-								Map<String, List<ResponseDataDto>> map = new HashMap<String, List<ResponseDataDto>>();
-								for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
-									ResponseDataDto responseDataDto = new ResponseDataDto();
-									responseDataDto.setClassName(responseBean.getSimpleName());
-									responseDataDto.setName(classFiedInfoDto.getName());
-									responseDataDto.setType(classFiedInfoDto.getType());
-									responseDataDto.setDescription(classFiedInfoDto.getDescription());
-									String childNode = classFiedInfoDto.getChildNode();
-									if (childNode != null) {
-										responseDataDto.setChildNode(childNode);
-										boolean containsKey = map.containsKey(childNode);
-										if (containsKey) {
-											// 有子节点
-											responseDataDto.setResponseDataDtos(map.get(childNode));
-										}
-										System.out.println("当前父节点数据为:" + responseDataDto);
-									}
-									String parentNode = classFiedInfoDto.getParentNode();
-									if (parentNode != null) {
-										boolean containsKey = map.containsKey(parentNode);
-										List<ResponseDataDto> list = new ArrayList<ResponseDataDto>();
-										if (containsKey) {
-											list = map.get(parentNode);
-											list.add(responseDataDto);
-										} else {
-											list.add(responseDataDto);
-										}
-										// 将父节点名的为key,子节点的对象为value
-										map.put(parentNode, list);
-										System.out.println("将子节点保存在父节点中:" + map.toString());
-										continue;
-									}
-									responseDataDtos.add(responseDataDto);
-								}
-							}*/
 						}
 						
 						if(responseBeans != null && responseBeans.length > 0) {
 							for (int j = 0; j < responseBeans.length; j++) {
-								Class<?> responseBeanClass = Class.forName(responseBeans[j]);
+								Class<?> responseBeanClass = responseBeans[j];
 								List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBeanClass,true,1);
 								saveFiledInfo(responseBeanClass, responseFieldInfos, responseDataDtos);
-								/*if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
-									System.out.println("List的数据："+responseDataDtos);
-									Map<String, List<ResponseDataDto>> map = new HashMap<String, List<ResponseDataDto>>();
-									for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
-										ResponseDataDto responseDataDto = new ResponseDataDto();
-										responseDataDto.setClassName(responseBeanClass.getSimpleName());
-										responseDataDto.setName(classFiedInfoDto.getName());
-										//可能字段是一个对象
-										 List<ClassFiedInfoDto> classFieldAndMethods = ClassUtil.getClassFieldAndMethod(Class.forName(classFiedInfoDto.getType()),true);
-										 
-										responseDataDto.setType(classFiedInfoDto.getType());
-										responseDataDto.setDescription(classFiedInfoDto.getDescription());
-										String childNode = classFiedInfoDto.getChildNode();
-										if (childNode != null) {
-											responseDataDto.setChildNode(childNode);
-											boolean containsKey = map.containsKey(childNode);
-											if (containsKey) {
-												// 有子节点
-												responseDataDto.setResponseDataDtos(map.get(childNode));
-											}
-											System.out.println("当前父节点数据为:" + responseDataDto);
-										}
-										String parentNode = classFiedInfoDto.getParentNode();
-										if (parentNode != null) {
-											boolean containsKey = map.containsKey(parentNode);
-											List<ResponseDataDto> list = new ArrayList<ResponseDataDto>();
-											if (containsKey) {
-												list = map.get(parentNode);
-												list.add(responseDataDto);
-											} else {
-												list.add(responseDataDto);
-											}
-											// 将父节点名的为key,子节点的对象为value
-											map.put(parentNode, list);
-											System.out.println("将子节点保存在父节点中:" + map.toString());
-											continue;
-										}
-										responseDataDtos.add(responseDataDto);
-									}
-									
-								}*/
-								
 							}
 						}
 						
@@ -286,20 +214,7 @@ public class ApiDocsUtil {
 							}
 							System.out.println("baseResponseBean:" + baseResponseBean);
 						}
-						//classNameMap中的key包含了类名、当前类的级别信息、排序号和字段的类型，以‘,’为隔开
-						//Map<String,List<ResponseDataDto>> classNameMap = new HashMap<String,List<ResponseDataDto>>();
-						Map<String,List<ResponseDataDto>> classNameMap = new TreeMap<String,List<ResponseDataDto>>(
-					            /*new Comparator<String>() {
-					                public int compare(String obj1, String obj2) {
-					                	String[] obj1Split = obj1.split(",");
-					                	String[] obj2Split = obj2.split(",");
-					                	
-					                	System.out.println(obj1+":"+obj1Split[1]+"******obj1obj2****"+obj2+":"+obj2Split[1]);
-					                	System.out.println(obj1Split[1].compareTo(obj2Split[1]));
-					                    // 升序排序
-					                    return Integer.valueOf(obj1Split[1])-Integer.valueOf(obj2Split[1]);
-					                }
-					            }*/);
+
 						ArrayList<String> groupKeyList = new ArrayList<String>(); //来确定分组key集合
 						List<ResponseDataDto> list = null;
 						List<ResponseClassDto> responseClassDtoList = new ArrayList<ResponseClassDto>();
@@ -307,9 +222,7 @@ public class ApiDocsUtil {
 						for (ResponseDataDto responseDataDto : responseDataDtos) {
 							String csName = responseDataDto.getClassName();
 							int grade = responseDataDto.getGrade();
-							int sequence = responseDataDto.getSequence();
 							String fieldType = responseDataDto.getType();
-							String key = csName + "," + grade + "," + sequence + "," + fieldType;
 							String groupKey  = csName; //分组的key
 							boolean containsKey = groupKeyList.contains(groupKey);
 							if(containsKey) {
@@ -343,38 +256,6 @@ public class ApiDocsUtil {
 							responseClassDtos.add(responseClassDto);
 						}
 						
-						/*Set<String> keySet = classNameMap.keySet();
-				        Iterator<String> iter = keySet.iterator();
-				        while (iter.hasNext()) {
-				            ResponseClassDto responseClassDto = new ResponseClassDto();
-				            String key = iter.next();
-							String[] keySplit = key.split(",");
-							if(keySplit[1] != null && keySplit[1] != "") {
-								responseClassDto.setGrade(Integer.valueOf(keySplit[1]));
-							}
-							//responseClassDto.setFieldType(keySplit[3]);
-							responseClassDto.setClassName(keySplit[0]);
-							responseClassDto.setResponseDataDtos(classNameMap.get(key));
-							responseClassDtos.add(responseClassDto);
-							//System.out.println("排序号"+Integer.valueOf(keySplit[2]));
-						    System.out.println("Key = " + key + ", Value = " + classNameMap.get(key)); 
-				            
-				        }*/
-						/*for (Map.Entry<String, List<ResponseDataDto>> entry : classNameMap.entrySet()) {  
-							ResponseClassDto responseClassDto = new ResponseClassDto();
-							String key = entry.getKey();
-							String[] keySplit = key.split(",");
-							if(keySplit[1] != null && keySplit[1] != "") {
-								responseClassDto.setGrade(Integer.valueOf(keySplit[1]));
-							}
-							responseClassDto.setClassName(keySplit[0]);
-							responseClassDto.setResponseDataDtos(entry.getValue());
-							responseClassDtos.add(responseClassDto);
-							System.out.println("排序号"+Integer.valueOf(keySplit[2]));
-						    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
-						  
-						}   */
-
 						methodDescriptions.add(methodDescription);
 						MethodInfoDto methodInfoDto = new MethodInfoDto();
 						methodInfoDto.setMethodDescription(methodDescription);
@@ -391,22 +272,28 @@ public class ApiDocsUtil {
 						System.out.println("请求字段信息：" + requestParamDtos);
 						System.out.println("响应字段信息：" + responseClassDtos);
 						System.out.println("响应字段basRespons信息：" + baseResponseDataDtos);
-						
 
 					}
 				}
-				setMethodApiTemplate(savePath, classExplainDto, methodDescriptions, methodInfoDtos);
-				WordContentDto wordContentDto = new WordContentDto();
-				wordContentDto.setMethodInfoDtos(methodInfoDtos);
-				wordContentDto.setClassExplainDto(classExplainDto);
-				wordContentDtos.add(wordContentDto);
+				if(isHTML) {
+					setMethodApiTemplate(savePath, classExplainDto, methodDescriptions, methodInfoDtos);
+				}
+				if(isWord) {
+					WordContentDto wordContentDto = new WordContentDto();
+					wordContentDto.setMethodInfoDtos(methodInfoDtos);
+					wordContentDto.setClassExplainDto(classExplainDto);
+					wordContentDtos.add(wordContentDto);
+				}
 			}
 			if (classExplains.size() > 0) {
-				setIndexTemplate(savePath, classExplains);
-				//添加样式
-				addCss(savePath);
-				
-				setWordTemplate(savePath,wordContentDtos);
+				if(isHTML) {
+					setIndexTemplate(savePath, classExplains);
+					//添加样式
+					addCss(savePath);
+				}
+				if(isWord) {
+					setWordTemplate(savePath,wordContentDtos);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -431,14 +318,6 @@ public class ApiDocsUtil {
 				responseDataDto.setGrade(classFiedInfoDto.getGrade());
 				responseDataDto.setClassName(obj.getSimpleName());
 				responseDataDto.setName(classFiedInfoDto.getName());
-				/*//可能字段是一个对象
-				System.out.println("*********"+classFiedInfoDto.getType()+"*********");
-				if(classFiedInfoDto.getType().indexOf("class") != -1) {
-					Class<?> forName = Class.forName(classFiedInfoDto.getType().substring(6, classFiedInfoDto.getType().length()));
-					List<ClassFiedInfoDto> classFieldAndMethods = ClassUtil.getCurrnetClassFieldAndMethod(forName,true);
-					saveFiledInfo(forName, classFieldAndMethods, responseDataDtos);
-					continue;
-				}*/
 				
 				sequence++;
 				responseDataDto.setSequence(sequence);
@@ -481,10 +360,12 @@ public class ApiDocsUtil {
 	 */
 	private static void addCss(String savePath) {
 		try {
-			String rootPath = System.getProperty("user.dir");
-			File file = new File(rootPath+"/resources/templates/apiDocs/css/style.css");
+			URL classpath = Thread.currentThread().getContextClassLoader().getResource("");    
+	        String rootPath = classpath.getPath(); 
+	        System.out.println("**********路径**********"+rootPath);
+			File file = new File(rootPath+"/templates/apiDocs/css/style.css");
 			if(file.exists()) {
-				String fileSavePath = savePath + "/" + file.getName(); //保存路径
+				String fileSavePath = savePath + htmlpackageName + file.getName(); //保存路径
 				FileInputStream fileInputStream = new FileInputStream(file);
 				FileOutputStream fileOutputStream = new FileOutputStream(Paths.get(fileSavePath).toFile());
 				byte[] bytearray = new byte[1024];
@@ -503,7 +384,7 @@ public class ApiDocsUtil {
 	
 	
 	/**
-	 * 方法api模版输出
+	 * 方法api的HTML模版输出
 	 * @param savePath 输出路径 
 	 * @param classExplainDto 类的头部相关信息
 	 * @param methodDescriptions 方法业务名称
@@ -526,10 +407,11 @@ public class ApiDocsUtil {
 			context.setVariable("methodDescriptions", methodDescriptions); // 方法业务名称
 			context.setVariable("methodInfoDtos", methodInfoDtos); // 方法信息
 			String fileName = classExplainDto.getExplain() + ".html";
+			savePath += htmlpackageName;
 			if (StringUtils.isNotBlank(savePath)) {
 				ClassUtil.createFolder(savePath);
 			}
-			String filePath = savePath + "\\" + fileName;
+			String filePath = savePath + fileName;
 			// 渲染模板
 			FileWriter write = new FileWriter(Paths.get(filePath).toFile());
 			templateEngine.process("methodApi", context, write);
@@ -540,7 +422,7 @@ public class ApiDocsUtil {
 	
 	
 	/**
-	 * indx模版输出
+	 * indx的HTML模版输出
 	 * @param savePath 输出路径
 	 * @param classExplains 类的头部信息
 	 * @throws IOException
@@ -560,10 +442,11 @@ public class ApiDocsUtil {
 			Context context = new Context();
 			context.setVariable("classExplains", classExplains); // 类的头部相关信息
 			String fileName = "index.html";
+			savePath += htmlpackageName;
 			if (StringUtils.isNotBlank(savePath)) {
 				ClassUtil.createFolder(savePath);
 			}
-			String filePath = savePath + "\\" + fileName;
+			String filePath = savePath + fileName;
 			// 渲染模板
 			FileWriter write;
 				write = new FileWriter(Paths.get(filePath).toFile());
@@ -582,6 +465,10 @@ public class ApiDocsUtil {
         String path = classpath.getPath(); 
         System.out.println("**********路径**********"+path);
         System.out.println("数据："+wordContentDtos);
+        savePath += wordPackageName;
+        if (StringUtils.isNotBlank(savePath)) {
+			ClassUtil.createFolder(savePath);
+		}
 		File file = new File(savePath + "/api.doc");
 		//创建一个freemarker.template.Configuration实例，它是存储 FreeMarker 应用级设置的核心部分
 		Configuration configuration = new Configuration(Configuration.VERSION_2_3_25);

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import javax.validation.constraints.Null;
 /**
  * 类是否被生成api文档
- * @author OP-T-PC-0036
+ * @author 王明昌
  *
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -14,7 +14,9 @@ import com.wmc.AutomateApiDocs.annotation.ApiDocsClass;
 import com.wmc.AutomateApiDocs.annotation.ApiDocsMethod;
 import com.wmc.AutomateApiDocs.pojo.vo.BaseResponseVo;
 import com.wmc.AutomateApiDocs.pojo.vo.CarVo;
+import com.wmc.AutomateApiDocs.pojo.vo.CatVo;
 import com.wmc.AutomateApiDocs.pojo.vo.DemoVo;
+import com.wmc.AutomateApiDocs.pojo.vo.Fish;
 import com.wmc.AutomateApiDocs.pojo.vo.PageDto;
 
 /**
@@ -37,7 +39,7 @@ public class HtmlController {
 	 */
 	@RequestMapping("/")
 	@ApiDocsMethod(baseResponseBean=BaseResponseVo.class,methodExplain="index方法",responseBean = DemoVo.class,
-	responseBeans= {"com.wmc.AutomateApiDocs.pojo.vo.Fish","com.wmc.AutomateApiDocs.pojo.vo.CatVo"})
+	responseBeans= {Fish.class,CatVo.class})
 	public String index() {
 		return "index";
 	}
