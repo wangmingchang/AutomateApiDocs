@@ -47,7 +47,7 @@ import freemarker.template.Template;
 /**
  * 自动生成API工具
  * 
- * @author OP-T-PC-0036
+ * @author 王明昌
  *
  */
 public class ApiDocsUtil {
@@ -56,6 +56,10 @@ public class ApiDocsUtil {
 	private static boolean isHTML; //是否生成HTML格式api;
 	private static String htmlpackageName = "/api-html/";//生成html保存的包名
 	private static String wordPackageName = "/api-doc/";//生成word保存的包名
+	private static int sequence = 0; //顺序号
+	private static List<WordContentDto> wordContentDtos = new ArrayList<WordContentDto>();//word文档返回list
+	private static List<ClassExplainDto> classExplains = new ArrayList<ClassExplainDto>(); // 类的业务说明
+	private static List<HtmlMethonContentDto> htmlMethonContentDtos = new ArrayList<HtmlMethonContentDto>();//方法的html页面返回list
 	
 	
 	/**
@@ -83,12 +87,12 @@ public class ApiDocsUtil {
 		}
 		if (classExplains.size() > 0) {
 			if(isHTML) {
-				//添加样式
-				addCss(savePath);
 				setIndexTemplate(savePath, classExplains);
 				for (HtmlMethonContentDto htmlMethonContentDto : htmlMethonContentDtos) {
 					setMethodApiTemplate(savePath, htmlMethonContentDto.getClassExplainDto(), htmlMethonContentDto.getMethodDescriptions(), htmlMethonContentDto.getMethodInfoDtos());
 				}
+				//添加样式
+				addCss(savePath);
 			}
 			if(isWord) {
 				setWordTemplate(savePath,wordContentDtos);
@@ -96,10 +100,6 @@ public class ApiDocsUtil {
 		}
 	}
 	
-	private static int sequence = 0; //顺序号
-	private static List<WordContentDto> wordContentDtos = new ArrayList<WordContentDto>();//word文档返回list
-	private static List<ClassExplainDto> classExplains = new ArrayList<ClassExplainDto>(); // 类的业务说明
-	private static List<HtmlMethonContentDto> htmlMethonContentDtos = new ArrayList<HtmlMethonContentDto>();//方法的html页面返回list
 	/**
 	 * 生成api
 	 * 
