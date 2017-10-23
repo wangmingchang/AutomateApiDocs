@@ -9,9 +9,9 @@
 <div id="wmd-preview" class="wmd-preview">
   <h1>API 列表:</h1>
   <ul class="toc" >
-	  	  	<li><a href="HTML-controller.html" >HTML-controller</a></li>
-	  	<li><a href="测试Controller.html" >测试Controller</a></li>
-	  	<li><a href="HTML-controller2.html" >HTML-controller2</a></li>
+	  <#list classExplains as classExplain>
+	  	<li><a href="${classExplain.explain+'.html'}" >${classExplain.explain}</a></li>
+	  </#list>
   </ul>
 </div>	
 </body>

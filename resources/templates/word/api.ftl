@@ -504,7 +504,7 @@
 								<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 									<w:pPr>
 										<!-- 添加缩进 -->
-										<w:ind w:left-chars="<#if (methodInfoDto.baseResponseDataDtos?size > 0)>${50 * responseDataDto.grade }<#else>${50 * (responseDataDto.grade-1)}</#if>" />
+										<w:ind w:left-chars="<#if (methodInfoDto.baseResponseDataDtos?size > 0)>${50 * (responseDataDto.grade+1) }<#else>${50 * (responseDataDto.grade-1)}</#if>" />
 										<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
 									</w:pPr>
@@ -575,7 +575,7 @@
 								<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 									<w:pPr>
 										<!-- 添加缩进 -->
-										<w:ind w:left-chars="<#if (responseDataDto.responseDataDtos?size > 0)>${50 * responseDataDto.responseDataDtos[0].grade }<#else>${50 * (responseDataDto.responseDataDtos[0].grade -1) }</#if>" />
+										<w:ind w:left-chars="<#if (responseDataDto.responseDataDtos?size > 0)>${50 * (responseDataDto.responseDataDtos[0].grade+1) }<#else>${50 * (responseDataDto.responseDataDtos[0].grade -1) }</#if>" />
 										<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
 									</w:pPr>
@@ -622,7 +622,7 @@
 									<w:p wsp:rsidR="005F16F9" wsp:rsidRPr="00EF7CE5" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 										<w:pPr>
 											<!-- 添加缩进 -->
-											<w:ind w:left-chars="<#if (responseDataChildDto.responseDataDtos?size > 0)>${50 * responseDataChildDto.responseDataDtos[0].grade }<#else>${50 * (responseDataChildDto.responseDataDtos[0].grade-1) }</#if>" />
+											<w:ind w:left-chars="<#if (responseDataChildDto.responseDataDtos?size > 0)>${50 * (responseDataChildDto.responseDataDtos[0].grade+1) }<#else>${50 * (responseDataChildDto.responseDataDtos[0].grade-1) }</#if>" />
 											<w:jc w:val="left" /><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 											<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
 										</w:pPr>

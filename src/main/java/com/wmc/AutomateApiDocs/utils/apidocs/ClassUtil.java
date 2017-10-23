@@ -18,13 +18,11 @@ import java.net.URLDecoder;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -34,8 +32,6 @@ import java.util.regex.Pattern;
 import javax.management.RuntimeErrorException;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.wmc.AutomateApiDocs.annotation.ApiDocsParam;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassExplainDto;
@@ -43,7 +39,6 @@ import com.wmc.AutomateApiDocs.pojo.apidocs.ClassFiedInfoDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.ClassMoreRemarkDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.MethodExplainDto;
 import com.wmc.AutomateApiDocs.pojo.apidocs.RequestParamDto;
-import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
 
 /**
  * 类相关的工具类
@@ -52,7 +47,7 @@ import com.wmc.AutomateApiDocs.pojo.apidocs.ResponseDataDto;
  * @date 2017年9月9日
  */
 public class ClassUtil {
-	private static final Logger logger = LoggerFactory.getLogger(ClassUtil.class);
+	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
 
 	public static void main(String[] args) throws Exception {
 		List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
@@ -189,7 +184,6 @@ public class ClassUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(classes + "88888888888888");
 		return classes;
 	}
 
@@ -228,8 +222,6 @@ public class ClassUtil {
 				try {
 					// 添加到集合中去
 					classes.add(Class.forName(packageName + '.' + className));
-					System.out.println(packageName + "*****************" + className + "********"
-							+ Class.forName(packageName + '.' + className));
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -391,7 +383,6 @@ public class ClassUtil {
 
 	private ClassUtil() {
 		super();
-		System.out.println("当前的fieldInfos：" + fieldInfos);
 		fieldInfos.clear();
 		fieldInfos = new ArrayList<ClassFiedInfoDto>();
 	}
@@ -412,10 +403,8 @@ public class ClassUtil {
 	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class, boolean isDelete, int gradeNum)
 			throws Exception {
 		if (isDelete) {
-			System.out.println(isDelete);
 			fieldInfos.clear(); // 清空List
 		}
-		System.out.println("new:" + fieldInfos);
 		String class_name = cur_class.getName();
 		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
@@ -471,7 +460,6 @@ public class ClassUtil {
 				classFiedInfoDto.setGrade(gradeNum + 1);
 			} else if (type.indexOf("class") != -1) {
 				// 可能字段是一个对象
-				System.out.println(type);
 				Class<?> forName = Class.forName(type.substring(6, type.length()));
 				// 设置子节点
 				classFiedInfoDto.setChildNode(field.getName());
@@ -490,12 +478,11 @@ public class ClassUtil {
 
 		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
 			getClassFieldAndMethod(cur_class.getSuperclass(), false, gradeNum + 1);
-			System.out.println("父类：" + cur_class.getSuperclass());
+			//.out.println("父类：" + cur_class.getSuperclass());
 		}
 		return fieldInfos;
 	}
 
-	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
 
 	/**
 	 * 获取类的所有字段属性名称（包括父类）-当前的线程
@@ -507,10 +494,8 @@ public class ClassUtil {
 	public static List<ClassFiedInfoDto> getCurrnetClassFieldAndMethod(Class<?> cur_class, boolean isDelete,
 			int gradeNum) throws Exception {
 		if (isDelete) {
-			System.out.println(isDelete);
 			fieldInfoList.clear(); // 清空List
 		}
-		System.out.println("new:" + fieldInfoList);
 		String class_name = cur_class.getName();
 		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
@@ -566,7 +551,6 @@ public class ClassUtil {
 				classFiedInfoDto.setGrade(gradeNum + 1);
 			} else if (type.indexOf("class") != -1) {
 				// 可能字段是一个对象
-				System.out.println(type);
 				Class<?> forName = Class.forName(type.substring(6, type.length()));
 				// 设置子节点
 				classFiedInfoDto.setChildNode(field.getName());
@@ -584,7 +568,6 @@ public class ClassUtil {
 
 		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
 			getCurrnetClassFieldAndMethod(cur_class.getSuperclass(), false, gradeNum + 1);
-			System.out.println("父类：" + cur_class.getSuperclass());
 		}
 		return fieldInfoList;
 	}
@@ -647,7 +630,6 @@ public class ClassUtil {
 				classFiedInfoDto.setGrade(gradeNum + 1);
 			} else if (type.indexOf("class") != -1) {
 				// 可能字段是一个对象
-				System.out.println(type);
 				Class<?> forName = Class.forName(type.substring(6, type.length()));
 				// 设置子节点
 				classFiedInfoDto.setChildNode(field.getName());
@@ -662,10 +644,9 @@ public class ClassUtil {
 			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
 			fieldInfos.add(classFiedInfoDto);
 		}
-
+		//有父类
 		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
 			getClassFieldAndMethodForChildNode(cur_class.getSuperclass(), parentNode, gradeNum + 1);
-			System.out.println("父类：" + cur_class.getSuperclass());
 		}
 		
 	}
@@ -748,7 +729,6 @@ public class ClassUtil {
 					sb.append(src.substring(leftmatcher1.start(), rightmatcher1.end()));
 					begin = rightmatcher1.end();
 				}
-				System.out.println(remarks);
 			} catch (IOException e) {
 				System.out.println("类：" + className + "文件读取失败");
 			} finally {
@@ -967,10 +947,10 @@ public class ClassUtil {
 			java.io.File myFilePath = new java.io.File(txt);
 			txt = folderPath;
 			if (!myFilePath.exists()) {
-				System.out.println("====================目录不存在====================");
+				System.out.println("====================目录不存在,重新创建====================");
 				myFilePath.mkdirs();
 			} else {
-				System.out.println("====================目录存在====================");
+				//System.out.println("====================目录存在====================");
 			}
 		} catch (Exception e) {
 			System.out.println("创建目录操作出错");

@@ -4,56 +4,29 @@
 
 	<groupId>com.wmc</groupId>
 	<artifactId>AutomateApiDocs</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>AutomateApiDocs</name>
 	<url>http://maven.apache.org</url>
 
-	<!-- Inherit defaults from Spring Boot -->
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.2.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
-	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<thymeleaf.version> 3.0.2.RELEASE </thymeleaf.version>
-		<thymeleaf-layout-dialect.version> 2.1.1 </thymeleaf-layout-dialect.version>
 	</properties>
 
 	<!-- Add typical dependencies for a web application -->
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<!-- <scope>provided</scope> -->
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.23</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
-			<!-- <scope>provided</scope> -->
-		</dependency>
-		<!-- Spring Boot thymeleaf 依赖 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-			<!-- <scope>provided</scope> -->
-		</dependency>
-		<!-- Spring Boot Freemarker 依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -84,28 +57,19 @@
 			<artifactId>ognl</artifactId>
 			<version>3.2</version>
 		</dependency>
-		
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker-gae</artifactId>
-			<version>2.3.26-incubating</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.3.12.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
 		</dependency>
 
 	</dependencies>
-
-
-
-	<!-- Package as an executable jar -->
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					true
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

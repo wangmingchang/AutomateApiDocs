@@ -5,7 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.validation.constraints.Null;
+import org.apache.commons.lang.ObjectUtils.Null;
+
 /**
  * 类是否被生成api文档
  * @author 王明昌
