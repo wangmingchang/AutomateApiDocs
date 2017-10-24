@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wmc</groupId>
-	<artifactId>automateApiDocs</artifactId>
+	<artifactId>automateapidocs</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>automateApiDocs</name>
+	<name>automateapidocs</name>
 	<url>http://mvnrepository.com/</url>
 
 	<parent>
@@ -24,9 +24,9 @@
 	</licenses>
 	<!--原码地址-->
 	<scm>              
-		<url> https://github.com/CallThink/Tools</url>
-		<connection>https://github.com/CallThink/Tools.git</connection>
-		<developerConnection>https://github.com/CallThink/Tools</developerConnection>
+		<url> https://github.com/wangmingchang/AutomateApiDocs</url>
+		<connection>https://github.com/wangmingchang/AutomateApiDocs.git</connection>
+		<developerConnection>https://github.com/wangmingchang/AutomateApiDocs</developerConnection>
 	</scm>
 	<!--作者信息-->
 	<developers> 
