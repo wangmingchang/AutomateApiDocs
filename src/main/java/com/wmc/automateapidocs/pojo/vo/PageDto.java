@@ -6,7 +6,7 @@ import com.wmc.automateapidocs.annotation.ApiDocsParam;
  * 分页DTO
  * 
  * @author 王明昌
- * @date 2017年9月9日
+ * @since 2017年9月9日
  */
 public class PageDto extends BaseResponseVo {
 	@ApiDocsParam(false)

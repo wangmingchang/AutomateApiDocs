@@ -19,7 +19,7 @@ import com.wmc.automateapidocs.pojo.vo.PageDto;
 /**
  * 测试Controller
  * @author 王明昌
- * @date 2017年10月11日
+ * @since 2017年10月11日
  */
 @Controller
 @RequestMapping("/test")
@@ -30,7 +30,7 @@ public class TestController {
 	/**
 	 * index方法
 	 * 
-	 * @return
+	 * @return 请求的路径
 	 */
 	@RequestMapping("/")
 	@ApiDocsMethod(baseResponseBean=BaseResponseVo.class,methodExplain="index方法",responseBean = DemoVo.class)
@@ -43,7 +43,7 @@ public class TestController {
 	 * 
 	 * @param map
 	 *            请求参数
-	 * @return
+	 * @return 请求的路径
 	 */
 	@RequestMapping("/helloHtml")
 	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean=BaseResponseVo.class ,responseBean = DemoVo.class, type = "post",methodExplain="hell方法")
@@ -58,7 +58,7 @@ public class TestController {
 	 * 
 	 * @param id 主键
 	 * @param name 姓名
-	 * @return
+	 * @return 请求的路径
 	 */
 	@RequestMapping("/getTeacharInfo")
 	@ApiDocsMethod(responseBean = DemoVo.class,methodExplain="获老师信息")
@@ -70,7 +70,7 @@ public class TestController {
 	
 	/**
 	 * 返回数据
-	 * @return
+	 * @return 返回数据
 	 */
 	@RequestMapping("/getData")
 	public BaseResponseVo getData(){
@@ -91,7 +91,7 @@ public class TestController {
 	/**
 	 * 获取路径
 	 * @param path
-	 * @return
+	 * @return 请求的路径
 	 */
 	private String getUrl(String path) {
 		return path;

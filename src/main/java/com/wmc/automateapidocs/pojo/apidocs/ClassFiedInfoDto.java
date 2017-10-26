@@ -4,7 +4,7 @@ package com.wmc.automateapidocs.pojo.apidocs;
  * 类的字段信息
  * 
  * @author 王明昌
- * @date 2017年9月10日
+ * @since 2017年9月10日
  */
 public class ClassFiedInfoDto {
 	private String name; // 字段名

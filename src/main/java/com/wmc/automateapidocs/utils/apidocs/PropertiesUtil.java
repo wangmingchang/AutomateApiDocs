@@ -10,7 +10,7 @@ import java.util.Properties;
  * properties配置文件工具类
  * 
  * @author 王明昌
- * @date 2017年9月16日
+ * @since 2017年9月16日
  */
 public class PropertiesUtil {
 	/**
@@ -18,7 +18,7 @@ public class PropertiesUtil {
 	 * 
 	 * @param filePath
 	 *            文件路径
-	 * @return
+	 * @return 加载属性文件
 	 */
 	public static Properties loadProps(String filePath) {
 		Properties properties = new Properties();
@@ -34,21 +34,27 @@ public class PropertiesUtil {
 	/**
 	 * 读取配置文件
 	 * 
-	 * @param props
+	 * @param properties
+	 *            properties文件
 	 * @param key
-	 * @return
+	 *            key值
+	 * @return 取配置文件
 	 */
 	public static String getString(Properties properties, String key) {
 		return properties.getProperty(key);
 	}
 
 	/**
-	 * 更新properties文件的键值对 如果该主键已经存在，更新该主键的值； 如果该主键不存在，则插入一对键值。
+	 * * 更新properties文件的键值对 如果该主键已经存在，更新该主键的值； 如果该主键不存在，则插入一对键值。
 	 * 
+	 * @param properties
+	 *            properties文件
+	 * @param filePath
+	 *            路径
 	 * @param keyname
-	 *            键名
+	 *            key值
 	 * @param keyvalue
-	 *            键值
+	 *            value值
 	 */
 	public static void updateProperty(Properties properties, String filePath, String keyname, String keyvalue) {
 		try {

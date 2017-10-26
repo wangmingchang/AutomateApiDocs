@@ -2847,6 +2847,25 @@
 						</w:p>
 					</w:tc>
 				</w:tr>
+				<w:tr wsp:rsidR="00EF7CE5" wsp:rsidTr="00EF7CE5">
+					<w:trPr><w:trHeight w:val="90" /></w:trPr>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="1865" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>path</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="3256" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>@return</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="1340" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>string</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="2058" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>NO</w:t></w:r></w:p>
+					</w:tc>
+				</w:tr>
 			</w:tbl>
 				<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="005F16F9" /><w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="005F16F9" />
 			<w:tbl>
@@ -5001,6 +5020,25 @@
 						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 							<w:pPr><w:jc w:val="center" /></w:pPr><w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" /><wx:font wx:val="宋体" /><w:kern w:val="0" /></w:rPr><w:t>是否可空</w:t></w:r>
 						</w:p>
+					</w:tc>
+				</w:tr>
+				<w:tr wsp:rsidR="00EF7CE5" wsp:rsidTr="00EF7CE5">
+					<w:trPr><w:trHeight w:val="90" /></w:trPr>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="1865" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>path</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="3256" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>@return</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="1340" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>string</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="2058" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>NO</w:t></w:r></w:p>
 					</w:tc>
 				</w:tr>
 			</w:tbl>
@@ -8158,6 +8196,25 @@
 						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5" wsp:rsidP="00EF7CE5">
 							<w:pPr><w:jc w:val="center" /></w:pPr><w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" /><wx:font wx:val="宋体" /><w:kern w:val="0" /></w:rPr><w:t>是否可空</w:t></w:r>
 						</w:p>
+					</w:tc>
+				</w:tr>
+				<w:tr wsp:rsidR="00EF7CE5" wsp:rsidTr="00EF7CE5">
+					<w:trPr><w:trHeight w:val="90" /></w:trPr>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="1865" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>path</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="3256" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>@return</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="1340" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>string</w:t></w:r></w:p>
+					</w:tc>
+					<w:tc>
+						<w:tcPr><w:tcW w:w="2058" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>NO</w:t></w:r></w:p>
 					</w:tc>
 				</w:tr>
 			</w:tbl>

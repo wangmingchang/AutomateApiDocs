@@ -7,7 +7,7 @@ import java.util.List;
  * 猫类
  * 
  * @author 王明昌
- * @date 2017年10月11日
+ * @since 2017年10月11日
  */
 public class CatVo {
 	private String catName; // 猫名

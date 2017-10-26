@@ -6,7 +6,7 @@ import java.util.List;
  * 生成word文档api输出参数
  * 
  * @author 王明昌
- * @date 2017年10月9日
+ * @since 2017年10月9日
  */
 public class WordContentDto {
 	private ClassExplainDto classExplainDto; // 类的说明

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 车信息
  * 
  * @author 王明昌
- * @date 2017年9月12日
+ * @since 2017年9月12日
  */
 public class CarVo implements Serializable {
 

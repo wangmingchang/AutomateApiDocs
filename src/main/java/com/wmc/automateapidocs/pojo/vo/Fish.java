@@ -4,7 +4,7 @@ package com.wmc.automateapidocs.pojo.vo;
  * 鱼类
  * 
  * @author 王明昌
- * @date 2017年10月11日
+ * @since 2017年10月11日
  */
 public class Fish {
 	private String type; // 种类

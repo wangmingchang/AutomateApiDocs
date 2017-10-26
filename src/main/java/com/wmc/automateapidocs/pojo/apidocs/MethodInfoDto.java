@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 方法信息DTO
  * 
- * @author OP-T-PC-0036
+ * @since OP-T-PC-0036
  *
  */
 public class MethodInfoDto {

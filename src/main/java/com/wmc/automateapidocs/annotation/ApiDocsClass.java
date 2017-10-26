@@ -17,6 +17,7 @@ public @interface ApiDocsClass {
 
 	/**
 	 * 请求对象
+	 * @return 类的名称
 	 */
 	Class<?> value() default Null.class;
 

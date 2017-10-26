@@ -6,7 +6,7 @@ import java.util.List;
  * 响应数据DTO
  * 
  * @author 王明昌
- * @date 2017年9月10日
+ * @since 2017年9月10日
  */
 public class ResponseDataDto {
 	private String name; // 字段名

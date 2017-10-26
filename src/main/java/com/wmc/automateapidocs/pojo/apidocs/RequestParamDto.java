@@ -4,7 +4,7 @@ package com.wmc.automateapidocs.pojo.apidocs;
  * 请求参数DTO
  * 
  * @author 王明昌
- * @date 2017年9月9日
+ * @since 2017年9月9日
  */
 public class RequestParamDto {
 	private String name; // 参数名称

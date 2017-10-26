@@ -2,7 +2,7 @@ package com.wmc.automateapidocs.pojo.vo;
 /**
  * 基础返回类
  * @author 王明昌
- * @date 2017年9月9日
+ * @since 2017年9月9日
  */
 public class BaseResponseVo {
 	private String status; // 状态（1：成功；0：失败）

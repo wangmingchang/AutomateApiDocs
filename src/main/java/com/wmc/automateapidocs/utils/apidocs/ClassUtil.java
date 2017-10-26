@@ -1,6 +1,5 @@
 package com.wmc.automateapidocs.utils.apidocs;
 
-import java.beans.IntrospectionException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -46,10 +45,25 @@ import com.wmc.automateapidocs.pojo.apidocs.RequestParamDto;
  * 类相关的工具类
  * 
  * @author 王明昌
- * @date 2017年9月9日
+ * @since 2017年9月9日
  */
 public class ClassUtil {
 	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
+	/** 属性名和类型集合 ***/
+	private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
+
+	public static ClassUtil classUtil = new ClassUtil();
+	private static int gradeNum = 1; // 级别
+
+	private ClassUtil() {
+		super();
+		fieldInfos.clear();
+		fieldInfos = new ArrayList<ClassFiedInfoDto>();
+	}
+
+	public static ClassUtil getInstance() {
+		return classUtil;
+	}
 
 	public static void main(String[] args) throws Exception {
 		List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
@@ -60,6 +74,10 @@ public class ClassUtil {
 
 	/**
 	 * 取得某个接口下所有实现这个接口的类
+	 * 
+	 * @param c
+	 *            class
+	 * @return 取得某个接口下所有实现这个接口的类list
 	 */
 	public static List<Class> getAllClassByInterface(Class c) {
 		List<Class> returnClassList = null;
@@ -86,8 +104,12 @@ public class ClassUtil {
 		return returnClassList;
 	}
 
-	/*
+	/**
 	 * 取得某一类所在包的所有类名 不含迭代
+	 * 
+	 * @param classLocation class全名
+	 * @param packageName 包名
+	 * @return 取得某一类所在包的所有类名的数组
 	 */
 	public static String[] getPackageAllClassName(String classLocation, String packageName) {
 		// 将packageName分解
@@ -108,8 +130,8 @@ public class ClassUtil {
 	/**
 	 * 从包package中获取所有的Class
 	 * 
-	 * @param pack
-	 * @return
+	 * @param packageName 包名
+	 * @return class的list
 	 */
 	public static List<Class<?>> getClasses(String packageName) {
 
@@ -192,10 +214,10 @@ public class ClassUtil {
 	/**
 	 * 以文件的形式来获取包下的所有Class
 	 * 
-	 * @param packageName
-	 * @param packagePath
-	 * @param recursive
-	 * @param classes
+	 * @param packageName 包名
+	 * @param packagePath 包的路径
+	 * @param recursive 是否循环
+	 * @param classes class
 	 */
 	public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive,
 			List<Class<?>> classes) {
@@ -378,29 +400,13 @@ public class ClassUtil {
 		return myClassName;
 	}
 
-	/** 属性名和类型集合 ***/
-	private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
-
-	public static ClassUtil classUtil = new ClassUtil();
-
-	private ClassUtil() {
-		super();
-		fieldInfos.clear();
-		fieldInfos = new ArrayList<ClassFiedInfoDto>();
-	}
-
-	public static ClassUtil getInstance() {
-		return classUtil;
-	}
-
-	private static int gradeNum = 1; // 级别
-
 	/**
 	 * 获取类的所有字段属性名称（包括父类）
-	 * 
-	 * @param cur_class
-	 * @return key:name;value:type
-	 * @throws IntrospectionException
+	 * @param cur_class class
+	 * @param isDelete 是否删除list的缓存
+	 * @param gradeNum 排序号
+	 * @return  类的所有字段属性名称（包括父类）
+	 * @throws Exception 自定异常
 	 */
 	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class, boolean isDelete, int gradeNum)
 			throws Exception {
@@ -487,10 +493,11 @@ public class ClassUtil {
 
 	/**
 	 * 获取类的所有字段属性名称（包括父类）-当前的线程
-	 * 
-	 * @param cur_class
-	 * @return key:name;value:type
-	 * @throws IntrospectionException
+	 * @param cur_class class
+	 * @param isDelete 是否删除list的缓存
+	 * @param gradeNum 排序号
+	 * @return 类的所有字段属性名称（包括父类）-当前的线程的list
+	 * @throws Exception 自定义异常
 	 */
 	public static List<ClassFiedInfoDto> getCurrnetClassFieldAndMethod(Class<?> cur_class, boolean isDelete,
 			int gradeNum) throws Exception {
@@ -574,12 +581,11 @@ public class ClassUtil {
 	}
 
 	/**
-	 * 子类节点返回所有字段属性名称（包括父类）
-	 * 
-	 * @param cur_class
-	 * @param parentNode
-	 *            父节点名称
-	 * @throws Exception
+	 * 	子类节点返回所有字段属性名称（包括父类）
+	 * @param cur_class class
+	 * @param parentNode 父节点名称
+	 * @param gradeNum 排序号
+	 * @throws Exception 自定义异常
 	 */
 	public static void getClassFieldAndMethodForChildNode(Class<?> cur_class, String parentNode, int gradeNum)
 			throws Exception {
@@ -657,7 +663,8 @@ public class ClassUtil {
 	 * 返回字段的类型
 	 * 
 	 * @param type
-	 * @return
+	 *            class
+	 * @return 返回字段的类型
 	 */
 	private static String getClassFieldType(Class<?> type) {
 		String rs = "";
@@ -694,7 +701,8 @@ public class ClassUtil {
 	 * 获取java文件的单行注释
 	 * 
 	 * @param className
-	 * @return
+	 *            class
+	 * @return java文件的单行注释
 	 */
 	public static List<String> getOneWayRemark(Class<?> className) {
 		String filePath = getClassPath(className);
@@ -749,7 +757,8 @@ public class ClassUtil {
 	 * 获取Class的java文件绝对路径
 	 * 
 	 * @param className
-	 * @return
+	 *            class
+	 * @return Class的java文件绝对路径
 	 */
 	public static String getClassPath(Class<?> className) {
 		String path = null;
@@ -776,7 +785,8 @@ public class ClassUtil {
 	 * 获取Controoler类的多行注释的内容
 	 * 
 	 * @param className
-	 * @return
+	 *            class
+	 * @return Controoler类的多行注释的内容
 	 */
 	public static ClassMoreRemarkDto getClassMoreRemark(Class<?> className) {
 		ArrayList<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); // 方法注释list
@@ -841,7 +851,7 @@ public class ClassUtil {
 									continue;
 								}
 							}
-							if ("@date".equals(split[i])) {
+							if ("@since".equals(split[i])) {
 								if (i + 1 < legth) {
 									classExplainDto.setCreateDate(split[i + 1]);
 									continue;
@@ -907,7 +917,8 @@ public class ClassUtil {
 	 * 去除空格(包括换行)
 	 * 
 	 * @param str
-	 * @return
+	 *            字符串
+	 * @return 没有空格的字符串
 	 */
 	public static String replaceBlankAll(String str) {
 		String dest = "";
@@ -923,7 +934,8 @@ public class ClassUtil {
 	 * 去除换行
 	 * 
 	 * @param str
-	 * @return
+	 *            字符串
+	 * @return 没有换行的字符串
 	 */
 	public static String replaceBlank(String str) {
 		String dest = "";
@@ -964,8 +976,10 @@ public class ClassUtil {
 	 * java反射bean的get方法
 	 * 
 	 * @param objectClass
+	 *            class
 	 * @param fieldName
-	 * @return
+	 *            字段名
+	 * @return 返回bean的get方法
 	 */
 	@SuppressWarnings("unchecked")
 	public static Method getGetMethod(Class objectClass, String fieldName) {
@@ -984,8 +998,10 @@ public class ClassUtil {
 	 * java反射bean的set方法
 	 * 
 	 * @param objectClass
+	 *            class
 	 * @param fieldName
-	 * @return
+	 *            字段名
+	 * @return 返回bean的set方法
 	 */
 	@SuppressWarnings("unchecked")
 	public static Method getSetMethod(Class objectClass, String fieldName) {
@@ -1009,8 +1025,10 @@ public class ClassUtil {
 	 * 判断String数组是否存在某个值
 	 * 
 	 * @param arr
+	 *            数组
 	 * @param targetValue
-	 * @return
+	 *            值
+	 * @return 判断String数组是否存在某个值
 	 */
 	public static boolean containsStr(String[] arr, String targetValue) {
 		for (String s : arr) {
@@ -1024,7 +1042,8 @@ public class ClassUtil {
 	 * 判断class是否可真实的对象
 	 * 
 	 * @param cls
-	 * @return
+	 *            class
+	 * @return 判断class是否可真实的对象
 	 */
 	public static boolean isRealClass(Class<?> cls) {
 		boolean flag = false;
@@ -1033,5 +1052,5 @@ public class ClassUtil {
 		}
 		return flag;
 	}
-	
+
 }

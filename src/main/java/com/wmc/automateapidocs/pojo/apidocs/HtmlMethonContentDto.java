@@ -6,7 +6,7 @@ import java.util.List;
  * 生成html页面的api数据DTO
  * 
  * @author 王明昌
- * @date 2017年10月17日
+ * @since 2017年10月17日
  */
 public class HtmlMethonContentDto {
 	private ClassExplainDto classExplainDto; // 类的注释说明DTO

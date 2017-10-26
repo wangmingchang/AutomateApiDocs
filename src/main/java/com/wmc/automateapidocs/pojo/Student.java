@@ -4,7 +4,7 @@ package com.wmc.automateapidocs.pojo;
  * 学生类
  * 
  * @author 王明昌
- * @date 2017年9月9日
+ * @since 2017年9月9日
  */
 public class Student extends Teachar {
 	/** 年龄1 */

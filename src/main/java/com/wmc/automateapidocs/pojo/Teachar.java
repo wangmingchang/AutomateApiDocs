@@ -2,7 +2,7 @@ package com.wmc.automateapidocs.pojo;
 /**
  * 老师类
  * @author 王明昌
- * @date 2017年9月9日
+ * @since 2017年9月9日
  */
 public class Teachar {
 	private String teacharName;	//姓名

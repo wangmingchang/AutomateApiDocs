@@ -6,13 +6,13 @@ import java.net.URL;
  * 路径工具类
  * 
  * @author 王明昌
- * @date 2017年10月18日
+ * @since 2017年10月18日
  */
 public class PathUtil {
 	/**
 	 * 获取当前项目Class路径
 	 * 
-	 * @return
+	 * @return 前项目Class路径
 	 */
 	public static String getCurrnetClassPath() {
 		URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
@@ -22,8 +22,8 @@ public class PathUtil {
 
 	/**
 	 * 返回当前项目的资源路径
-	 * 
-	 * @return
+	 * @param dirPath 根路径 
+	 * @return 当前项目的资源路径
 	 */
 	public static String getResourcePath(String dirPath) {
         URL fileURL =PathUtil.class.getResource(dirPath);   
@@ -32,8 +32,8 @@ public class PathUtil {
 
 	/**
 	 * 获取项目所在路径
-	 * 
-	 * @return
+	 * @param clz class
+	 * @return 项目所在路径
 	 */
 	public static String getRealPath(Class<?> clz) {
 		String realPath = clz.getClassLoader().getResource("").getFile();

@@ -25,7 +25,7 @@ import freemarker.template.Template;
  * HTML生成模板工具
  * 
  * @author 王明昌
- * @date 2017年10月18日
+ * @since 2017年10月18日
  */
 public class HtmlTemlateUtil {
 	private static String htmlpackageName = "/apiDocs/api-html/";// 生成html保存的包名
@@ -60,7 +60,6 @@ public class HtmlTemlateUtil {
 	 *            输出路径
 	 * @param classExplains
 	 *            类的头部信息
-	 * @throws Exception
 	 */
 	public static void setIndexTemplate(String savePath, List<ClassExplainDto> classExplains) {
 		String saveFileName = "index.html";
@@ -74,30 +73,30 @@ public class HtmlTemlateUtil {
 	 * 添加样式
 	 * 
 	 * @param savePath
-	 * @throws IOException 
+	 *            保存路径
 	 */
-	public static void addCss(String savePath){
+	public static void addCss(String savePath) {
 		FileOutputStream fileOutputStream = null;
 		InputStream inputStream = null;
 		try {
-			inputStream =  HtmlTemlateUtil.class.getResource("/templates/apiDocs/css/style.css").openStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
+			inputStream = HtmlTemlateUtil.class.getResource("/templates/apiDocs/css/style.css").openStream();
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			String fileSavePath = savePath + htmlpackageName + "style.css";
 			fileOutputStream = new FileOutputStream(Paths.get(fileSavePath).toFile());
-			String line = "";  
-			while((line = bufferedReader.readLine()) != null){  
-                fileOutputStream.write(line.getBytes());
-            } 
-			
+			String line = "";
+			while ((line = bufferedReader.readLine()) != null) {
+				fileOutputStream.write(line.getBytes());
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				fileOutputStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 
@@ -125,7 +124,7 @@ public class HtmlTemlateUtil {
 			// 创建一个freemarker.template.Configuration实例，它是存储 FreeMarker 应用级设置的核心部分
 			Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
 			// 设置模板目录
-			//configuration.setDirectoryForTemplateLoading(dir);
+			// configuration.setDirectoryForTemplateLoading(dir);
 			configuration.setClassForTemplateLoading(HtmlTemlateUtil.class, dirPath);
 			configuration.setDefaultEncoding("UTF-8");
 			// 从设置的目录中获得模板

@@ -4,7 +4,7 @@ package com.wmc.automateapidocs.pojo.vo;
  * 小狗类
  * 
  * @author 王明昌
- * @date 2017年10月10日
+ * @since 2017年10月10日
  */
 public class DogVo {
 
