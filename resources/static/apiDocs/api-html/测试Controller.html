@@ -14,10 +14,10 @@
 			<li><a href="#index方法">index方法</a></li>
 		</ul>
 		<ul class="toc">
-			<li><a href="#hell方法">hell方法</a></li>
+			<li><a href="#获老师信息">获老师信息</a></li>
 		</ul>
 		<ul class="toc">
-			<li><a href="#获老师信息">获老师信息</a></li>
+			<li><a href="#hell方法">hell方法</a></li>
 		</ul>
 		<hr>
 		<div>
@@ -121,6 +121,93 @@
 										<div>}</div>
 									</div>
 									 ]  
+					</div>
+					<hr>
+		<div>
+			<h2 id="获老师信息">获老师信息</h2>
+			<div class="prettyprint lang-json">
+				<div>
+					<label>method：</label><span>post</span>
+				</div>
+				<div>
+					<label>url:</label><span>/test/getTeacharInfo</span>
+				</div>
+			</div>
+			<p>
+				<strong>参数列表</strong>
+			</p>
+			<table>
+				<tr>
+					<th>参数名</th>
+					<th>类型</th>
+					<th>描述</th>
+					<th>是否必传</th>
+				</tr>
+				<tr>
+					<td>map</td>
+					<td>string</td>
+					<td>请求参数</td>
+					<td>YES</td>
+				</tr>
+			</table>
+			<p>返回结果:</p>
+			<div class="prettyprint lang-json">
+				<div>
+					{<br />
+							<div style="margin-left: 20px;">
+								<div>
+									"<span>DemoVo</span>": {
+								</div>
+									<div style="margin-left: 20px;">
+										"<span>id</span>": "
+										<span>string</span> // <span>主键</span>"
+									</div>
+									<div style="margin-left: 20px;">
+										"<span>name</span>": "
+										<span>string</span> // <span>姓名</span>"
+									</div>
+									<div style="margin-left: 20px;">
+										"<span>socre</span>": "
+										<span>Double</span> // <span>分数</span>"
+									</div>
+									<div style="margin-left: 20px;">
+										"<span>carVo</span>": "
+											<span>{</<span>
+										<span>class</span> // <span>车</span>"
+												<div style="margin-left: 20px;">
+													<div style="padding-left: 20px;">
+														"<span>carName</span>": " <span>string</span>
+														// <span>车名</span>"
+													</div>
+												</div>
+												<div style="margin-left: 20px;">
+													<div style="padding-left: 20px;">
+														"<span>weig</span>": " <span>Double</span>
+														// <span>重量</span>"
+													</div>
+												</div>
+												<div style="margin-left: 20px;">
+													<div style="padding-left: 20px;">
+														"<span>color</span>": " <span>string</span>
+														// <span>颜色</span>"
+													</div>
+												</div>
+												<div style="margin-left: 20px;">
+													<div style="padding-left: 20px;">
+														"<span>displacement</span>": " <span>string</span>
+														// <span>排量</span>"
+													</div>
+												</div>
+												<div style="margin-left: 20px;">
+													<div style="padding-left: 20px;">
+														"<span>price</span>": " <span>Double</span>
+														// <span>售价</span>"
+													</div>
+														<div style="margin-left: -20px;">}</<div>
+												</div>
+									</div>
+								<div style="margin-left: -20px;">}</div>
+							</div>
 					</div>
 					<hr>
 		<div>
@@ -254,93 +341,6 @@
 										<div>}</div>
 									</div>
 									 ]  
-					</div>
-					<hr>
-		<div>
-			<h2 id="获老师信息">获老师信息</h2>
-			<div class="prettyprint lang-json">
-				<div>
-					<label>method：</label><span>post</span>
-				</div>
-				<div>
-					<label>url:</label><span>/test/getTeacharInfo</span>
-				</div>
-			</div>
-			<p>
-				<strong>参数列表</strong>
-			</p>
-			<table>
-				<tr>
-					<th>参数名</th>
-					<th>类型</th>
-					<th>描述</th>
-					<th>是否必传</th>
-				</tr>
-				<tr>
-					<td>path</td>
-					<td>string</td>
-					<td>@return</td>
-					<td>YES</td>
-				</tr>
-			</table>
-			<p>返回结果:</p>
-			<div class="prettyprint lang-json">
-				<div>
-					{<br />
-							<div style="margin-left: 20px;">
-								<div>
-									"<span>DemoVo</span>": {
-								</div>
-									<div style="margin-left: 20px;">
-										"<span>id</span>": "
-										<span>string</span> // <span>主键</span>"
-									</div>
-									<div style="margin-left: 20px;">
-										"<span>name</span>": "
-										<span>string</span> // <span>姓名</span>"
-									</div>
-									<div style="margin-left: 20px;">
-										"<span>socre</span>": "
-										<span>Double</span> // <span>分数</span>"
-									</div>
-									<div style="margin-left: 20px;">
-										"<span>carVo</span>": "
-											<span>{</<span>
-										<span>class</span> // <span>车</span>"
-												<div style="margin-left: 20px;">
-													<div style="padding-left: 20px;">
-														"<span>carName</span>": " <span>string</span>
-														// <span>车名</span>"
-													</div>
-												</div>
-												<div style="margin-left: 20px;">
-													<div style="padding-left: 20px;">
-														"<span>weig</span>": " <span>Double</span>
-														// <span>重量</span>"
-													</div>
-												</div>
-												<div style="margin-left: 20px;">
-													<div style="padding-left: 20px;">
-														"<span>color</span>": " <span>string</span>
-														// <span>颜色</span>"
-													</div>
-												</div>
-												<div style="margin-left: 20px;">
-													<div style="padding-left: 20px;">
-														"<span>displacement</span>": " <span>string</span>
-														// <span>排量</span>"
-													</div>
-												</div>
-												<div style="margin-left: 20px;">
-													<div style="padding-left: 20px;">
-														"<span>price</span>": " <span>Double</span>
-														// <span>售价</span>"
-													</div>
-														<div style="margin-left: -20px;">}</<div>
-												</div>
-									</div>
-								<div style="margin-left: -20px;">}</div>
-							</div>
 					</div>
 					<hr>
 

@@ -3,7 +3,8 @@ package com.wmc.automateapidocs;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.wmc.automateapidocs.utils.apidocs.ApiDocsUtil;
+import com.github.wangmingchang.automateapidocs.utils.apidocs.ApiDocsUtil;
+
 
 public class AnnotationParsing {
 
