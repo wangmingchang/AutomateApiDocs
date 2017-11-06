@@ -1,4 +1,4 @@
-##maven地址
+## maven地址
 <!-- https://mvnrepository.com/artifact/com.github.wangmingchang/automateapidocs -->
 <dependency>
     <groupId>com.github.wangmingchang</groupId>
