@@ -1,16 +1,13 @@
 package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
 
-import java.io.Serializable;
-
 /**
  * 测试返回类
  * 
  * @author 王明昌
  * @since 2017年9月9日
  */
-public class DemoVo implements Serializable {
+public class DemoVo {
 
-	private static final long serialVersionUID = -550552481238025259L;
 	private String id; // 主键
 	private String name; // 姓名
 	private Double socre; // 分数

@@ -25,9 +25,9 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.PageDto;
  * @author 王明昌
  * @since 2017年9月3日
  */
+@ApiDocsClass
 @RestController
 @RequestMapping("/api/index/v1")
-@ApiDocsClass()
 public class HtmlController {
 
 	private PageDto PageDto;
@@ -37,9 +37,9 @@ public class HtmlController {
 	 * 
 	 * @return 请的路径
 	 */
-	@RequestMapping("/")
 	@ApiDocsMethod(baseResponseBean = BaseResponseVo.class, methodExplain = "index方法", responseBean = DemoVo.class, responseBeans = {
 			Fish.class, CatVo.class })
+	@RequestMapping("/")
 	public String index() {
 		return "index";
 	}
@@ -51,8 +51,8 @@ public class HtmlController {
 	 *            请求参数
 	 * @return 请的路径
 	 */
-	@RequestMapping("/helloHtml")
 	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean = BaseResponseVo.class, responseBean = DemoVo.class, type = "post", methodExplain = "hell方法")
+	@RequestMapping("/helloHtml")
 	public String helloHtml(@RequestBody Map<String, Object> map) {
 		List<PageDto> pageDtos;
 
@@ -60,21 +60,6 @@ public class HtmlController {
 		return "/helloHtml";
 	}
 
-	/**
-	 * 获老师信息
-	 * 
-	 * @param id
-	 *            主键
-	 * @param name
-	 *            姓名
-	 * @return 请的路径
-	 */
-	@RequestMapping("/getTeacharInfo")
-	@ApiDocsMethod(responseBean = DemoVo.class, methodExplain = "获老师信息")
-	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
-
-		return "/helloHtml";
-	}
 
 	/**
 	 * 返回数据
@@ -105,5 +90,21 @@ public class HtmlController {
 	private String getUrl(String path) {
 		return path;
 	}
+	/**
+	 * 获老师信息
+	 * 
+	 * @param id
+	 *            主键
+	 * @param name
+	 *            姓名
+	 * @return 请的路径
+	 */
+	@ApiDocsMethod(responseBean = DemoVo.class, methodExplain = "获老师信息")
+	@RequestMapping("/getTeacharInfo")
+	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
+
+		return "/helloHtml";
+	}
+
 
 }

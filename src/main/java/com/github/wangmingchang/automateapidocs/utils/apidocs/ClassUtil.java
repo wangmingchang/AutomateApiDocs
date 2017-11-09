@@ -647,7 +647,6 @@ public class ClassUtil {
 			} else {
 				classFiedInfoDto.setGrade(gradeNum);
 			}
-
 			classFiedInfoDto.setType(type);
 			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
 			fieldInfos.add(classFiedInfoDto);
@@ -819,7 +818,8 @@ public class ClassUtil {
 				 */
 				Pattern leftpattern = Pattern.compile("/\\*");
 				Matcher leftmatcher = leftpattern.matcher(src);
-				Pattern rightpattern = Pattern.compile("\\*/");
+				//Pattern rightpattern = Pattern.compile("\\*/");
+				Pattern rightpattern = Pattern.compile("@ApiDocsClass");
 				Matcher rightmatcher = rightpattern.matcher(src);
 				sb = new StringBuilder();
 				/**
@@ -827,7 +827,17 @@ public class ClassUtil {
 				 **/
 				int begin = 0;
 				while (leftmatcher.find(begin)) {
-					rightmatcher.find(leftmatcher.start());
+					boolean find = rightmatcher.find(leftmatcher.start());
+					if (!find) {
+						rightpattern = Pattern.compile("@ApiDocsMethod");
+						rightmatcher = rightpattern.matcher(src);
+						find = rightmatcher.find(leftmatcher.start());
+					}
+					if(!find) {
+						//没有匹配到，结束循环
+						break;
+					}
+					
 					String remarkStr = src.substring(leftmatcher.start(), rightmatcher.end());
 					remarkStr = remarkStr.substring(2, remarkStr.length() - 2);
 					remarkStr = StringUtils.replace(remarkStr, "*", "");

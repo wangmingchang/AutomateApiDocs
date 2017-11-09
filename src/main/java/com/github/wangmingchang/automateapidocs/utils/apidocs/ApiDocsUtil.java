@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.management.RuntimeErrorException;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -126,17 +124,16 @@ public class ApiDocsUtil {
 						path.append(string);
 					}
 				}
-				if (methodExplainDtos.size() != className.getDeclaredMethods().length) {
-					throw new RuntimeErrorException(null, className + ":类的方法和方法上的多行注释不一致");
-				}
-
+				
+				int methodExplainDtosIndex = 0; //methodExplainDtosIndex的默认索引
 				for (int i = 0; i < className.getDeclaredMethods().length; i++) {
 					sequence = 0;
 					Method method = className.getDeclaredMethods()[i];
 
 					String methodPath = ""; // 方法请求路径
 					if (method.isAnnotationPresent(ApiDocsMethod.class)) {
-						MethodExplainDto methodExplainDto = methodExplainDtos.get(i);
+						MethodExplainDto methodExplainDto = methodExplainDtos.get(methodExplainDtosIndex);
+						methodExplainDtosIndex++;
 						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); // 请求的参数
 						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
 

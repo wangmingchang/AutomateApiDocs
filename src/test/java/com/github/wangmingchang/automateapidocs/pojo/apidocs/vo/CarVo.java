@@ -10,13 +10,12 @@ import java.io.Serializable;
  */
 public class CarVo implements Serializable {
 
-	private static final long serialVersionUID = 8788743094649743561L;
+	private static final long serialVersionUID = 1L;
 	private String carName; // 车名
 	private Double weig; // 重量
 	private String color; // 颜色
 	private String displacement; // 排量
 	private Double price; // 售价
-
 
 	public CarVo() {
 		super();
