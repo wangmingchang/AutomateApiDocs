@@ -58,51 +58,22 @@ public class HtmlController {
 	}
 
 
-	/**
-	 * 返回数据
-	 * 
-	 * @return 返回数据
-	 */
-	@RequestMapping("/getData")
-	public BaseResponseVo getData() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<CarVo> list = new ArrayList<CarVo>();
-		list.add(new CarVo("小咪", 5.0, "橙色", "2.0T", 15.0));
+	...
 
-		map.put("pageDto", new PageDto(1, 10));
-		map.put("list", list);
-		BaseResponseVo baseResponseVo = new BaseResponseVo();
-		baseResponseVo.setMsg("成功");
-		baseResponseVo.setStatus("000");
-		baseResponseVo.setResult(map);
-		return baseResponseVo;
-	}
+}
 
-	/**
-	 * 获取路径
-	 * 
-	 * @param path
-	 * @return 请求的路径
-	 */
-	private String getUrl(String path) {
-		return path;
-	}
-	/**
-	 * 获老师信息
-	 * 
-	 * @param id
-	 *            主键
-	 * @param name
-	 *            姓名
-	 * @return 请的路径
-	 */
-	@ApiDocsMethod(responseBean = DemoVo.class, methodExplain = "获老师信息")
-	@RequestMapping("/getTeacharInfo")
-	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
+```
+**请求或者响应的封装类一定要记得每一个字段都要写备注哦！！！**
+``` java
+ublic class DemoVo {
 
-		return "/helloHtml";
-	}
+	private String id; // 主键
+	private String name; // 姓名
+	private Double socre; // 分数
+	private CarVo carVo; // 车
+	private List<String> urls; // 路径集合
 
+	...
 
 }
 
