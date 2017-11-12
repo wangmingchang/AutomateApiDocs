@@ -1,5 +1,7 @@
 package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
 
+import java.util.List;
+
 /**
  * 测试返回类
  * 
@@ -12,6 +14,15 @@ public class DemoVo {
 	private String name; // 姓名
 	private Double socre; // 分数
 	private CarVo carVo; // 车
+	private List<String> urls; // 路径集合
+
+	public List<String> getUrls() {
+		return urls;
+	}
+
+	public void setUrls(List<String> urls) {
+		this.urls = urls;
+	}
 
 	public CarVo getCarVo() {
 		return carVo;

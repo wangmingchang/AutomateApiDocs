@@ -76,6 +76,9 @@
 											<#if responseClassDto.type='class'
 												|| responseClassDto.type='list'>{</#if>
 											<span>${responseClassDto.type}</span> // <span>${responseClassDto.description}</span>"
+											<#if responseClassDto.type = 'list' && !responseClassDto.responseDataDtos??>
+											<div>}</div>
+											</#if>
 										</div>
 										<#if responseClassDto.responseDataDtos?? && responseClassDto.responseDataDtos?size gt 0>
 											<#list responseClassDto.responseDataDtos as responseDataDto>
@@ -124,6 +127,11 @@
 											<span>{</<span>
 										</#if>
 										<span>${responseData1Dto.type}</span> // <span>${responseData1Dto.description}</span>"
+										<#if responseData1Dto.type== 'list' || responseData1Dto.type=='class'>
+											<#if !responseData1Dto.responseDataDtos??>
+												<div>}</div>
+											</#if>
+										</#if>
 										<#if responseData1Dto.responseDataDtos?? && responseData1Dto.responseDataDtos?size gt 0>
 											<#list responseData1Dto.responseDataDtos as responseData2Dto>
 												<div style="margin-left: 20px;">
@@ -136,7 +144,8 @@
 																<div style="padding-left: 20px;">
 																	"<span>${responseData3Dto.name}</span>": "
 																	<#if responseData3Dto.type== 'list' || responseData3Dto.type=='class'>
-																	<span>{</<span></#if>
+																	<span>{</<span>
+																	</#if>
 																	<span>${responseData3Dto.type}</span> // <span>${responseData3Dto.description}</span>"
 																</div>
 																<#if !responseData3Dto_has_next>
