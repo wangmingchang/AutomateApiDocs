@@ -13,7 +13,7 @@
 1.新增一个名字为apiDocs.properties的文件，或者拷贝git上相同名字文件</br>
 2.在要生成的Controller类上打上相应的注解</br>
 (1)@ApiDocsClass:表示这一个Controller类是要生成api文档的；</br>
-(2)ApiDocsMethod:表示这个方法是要生成api文档的；</br>
+(2)@ApiDocsMethod:表示这个方法是要生成api文档的；</br>
 如下
 ``` java
 /**
