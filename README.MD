@@ -10,7 +10,7 @@
 
 ```
 # 快速使用
-1.新增一个名字为apiDocs.properties的文件，或者拷贝git上相同名字文件
+1.新增一个名字为apiDocs.properties的文件，或者拷贝git上相同名字文件</br>
 2.在要生成的Controller类上打上相应的注解，如下
 ``` java
 /**
