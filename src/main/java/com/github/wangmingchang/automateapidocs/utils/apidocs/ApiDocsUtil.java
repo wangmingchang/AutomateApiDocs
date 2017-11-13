@@ -12,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
@@ -149,9 +150,21 @@ public class ApiDocsUtil {
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
 						Class<?>[] responseBeans = apiDocs.responseBeans(); // 多个响应数据Bean
 						String type = apiDocs.type(); // 请求方式
+						//获取requestMapping中的请求方式
+						RequestMethod[] requestMethods = requestMapping.method();
+						for (RequestMethod requestMethod : requestMethods) {
+							if(requestMethod.equals(RequestMethod.GET)) {
+								type = "get";
+							}else if(requestMethod.equals(RequestMethod.POST)) {
+								type = "post";
+							}else {
+								continue;
+							}
+						}
+						
 						String url = apiDocs.url(); // 请求方法路径
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
-						if(methodDescription == null || methodDescription == "") {
+						if( StringUtils.isBlank(methodDescription)) {
 							methodDescription = methodExplainDto.getExplain();
 						}
 						url = StringUtils.isBlank(url) ? methodPath : path + url;

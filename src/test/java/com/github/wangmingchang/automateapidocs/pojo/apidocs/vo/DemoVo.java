@@ -14,14 +14,14 @@ public class DemoVo {
 	private String name; // 姓名
 	private Double socre; // 分数
 	private CarVo carVo; // 车
-	private List<String> urls; // 路径集合
+	private List<DemoVo> demoVos; // 路径集合
 
-	public List<String> getUrls() {
-		return urls;
+	public List<DemoVo> getDemoVos() {
+		return demoVos;
 	}
 
-	public void setUrls(List<String> urls) {
-		this.urls = urls;
+	public void setDemoVos(List<DemoVo> demoVos) {
+		this.demoVos = demoVos;
 	}
 
 	public CarVo getCarVo() {

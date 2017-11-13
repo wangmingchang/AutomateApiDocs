@@ -462,7 +462,9 @@ public class ClassUtil {
 						// 设置子节点
 						classFiedInfoDto.setChildNode(field.getName());
 						// 获取list中对象
-						getClassFieldAndMethodForChildNode(genericClazz, field.getName(), gradeNum + 1);
+						if(!class_name.equals(genericClazz.getName())) {
+							getClassFieldAndMethodForChildNode(genericClazz, field.getName(), gradeNum + 1);
+						}
 					}
 				}
 				classFiedInfoDto.setGrade(gradeNum + 1);
