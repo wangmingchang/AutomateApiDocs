@@ -151,6 +151,9 @@ public class ApiDocsUtil {
 						String type = apiDocs.type(); // 请求方式
 						String url = apiDocs.url(); // 请求方法路径
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
+						if(methodDescription == null || methodDescription == "") {
+							methodDescription = methodExplainDto.getExplain();
+						}
 						url = StringUtils.isBlank(url) ? methodPath : path + url;
 						List<ResponseDataDto> baseResponseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息(基础类)
 						List<ResponseDataDto> responseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息

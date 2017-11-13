@@ -48,7 +48,8 @@ public class HtmlController {
 	 *            请求参数
 	 * @return 请的路径
 	 */
-	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean = BaseResponseVo.class, responseBean = DemoVo.class, type = "post", methodExplain = "hell方法")
+	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean = BaseResponseVo.class, 
+	responseBean = DemoVo.class, type = "post", methodExplain = "hell方法")
 	@RequestMapping("/helloHtml")
 	public String helloHtml(@RequestBody Map<String, Object> map) {
 		List<PageDto> pageDtos;
@@ -65,7 +66,7 @@ public class HtmlController {
 ```
 **请求或者响应的封装类一定要记得每一个字段都要写备注哦！！！**
 ``` java
-ublic class DemoVo {
+public class DemoVo {
 
 	private String id; // 主键
 	private String name; // 姓名
