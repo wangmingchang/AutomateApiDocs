@@ -121,14 +121,6 @@ public class HtmlTemlateUtil {
 				ClassUtil.createFolder(savePath);
 			}
 			File file = new File(savePath + saveFileName);
-			// 创建一个freemarker.template.Configuration实例，它是存储 FreeMarker 应用级设置的核心部分
-//			Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
-//			// 设置模板目录
-//			// configuration.setDirectoryForTemplateLoading(dir);
-//			configuration.setClassForTemplateLoading(HtmlTemlateUtil.class, dirPath);
-//			configuration.setDefaultEncoding("UTF-8");
-//			// 从设置的目录中获得模板
-//			Template template = configuration.getTemplate(templateName);
 			Template template = FreemarkerConfig.getTemplateFactory(dirPath, templateName);
 			// 将数据与模板渲染的结果写入文件中
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");

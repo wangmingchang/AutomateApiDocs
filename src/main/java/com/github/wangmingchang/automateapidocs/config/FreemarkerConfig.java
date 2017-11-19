@@ -16,31 +16,17 @@ import freemarker.template.Version;
  * @since 2017年11月19日
  */
 public class FreemarkerConfig {
+	
     public static final Version VERSION_2_3_0 = new Version(2, 3, 0);
-    
-    /** FreeMarker version 2.3.19 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_19 = new Version(2, 3, 19);
-    
-    /** FreeMarker version 2.3.20 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_20 = new Version(2, 3, 20);
-    
-    /** FreeMarker version 2.3.21 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_21 = new Version(2, 3, 21);
-
-    /** FreeMarker version 2.3.22 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_22 = new Version(2, 3, 22);
-
-    /** FreeMarker version 2.3.23 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_23 = new Version(2, 3, 23);
-
-    /** FreeMarker version 2.3.24 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_24 = new Version(2, 3, 24);
-
-    /** FreeMarker version 2.3.25 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_25 = new Version(2, 3, 25);
-
-    /** FreeMarker version 2.3.26 (an {@link #Configuration(Version) incompatible improvements break-point}) */
     public static final Version VERSION_2_3_26 = new Version(2, 3, 26);
+    
 	/**
 	 * 创建Template对象
 	 * @param dirPath 模版相对路径

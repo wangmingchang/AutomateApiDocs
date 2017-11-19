@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,24 +30,12 @@ public class WordTemlateUtil {
 	 */
 	public static void setWordTemplate(String savePath, List<WordContentDto> wordContentDtos) {
 		String dirPath = "/templates/word";
-		URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
-		String path = classpath.getPath();
 		savePath += wordPackageName;
 		if (StringUtils.isNotBlank(savePath)) {
 			ClassUtil.createFolder(savePath);
 		}
 		File file = new File(savePath + "/api.doc");
-		// 创建一个freemarker.template.Configuration实例，它是存储 FreeMarker 应用级设置的核心部分
-//		Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
-//		configuration.setClassForTemplateLoading(WordTemlateUtil.class, "/templates");
 		try {
-			File dir = new File(path + "/templates/word");
-			// 设置模板目录
-			// configuration.setDirectoryForTemplateLoading(dir);
-//			configuration.setClassForTemplateLoading(WordTemlateUtil.class, dirPath);
-//			configuration.setDefaultEncoding("UTF-8");
-//			// 从设置的目录中获得模板
-//			Template template = configuration.getTemplate("api.ftl");
 			String templateName = "api.ftl";
 			Template template = FreemarkerConfig.getTemplateFactory(dirPath, templateName );
 			// 将数据与模板渲染的结果写入文件中
