@@ -48,6 +48,7 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
  * @since 2017年9月9日
  */
 public class ClassUtil {
+
 	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
 	/** 属性名和类型集合 ***/
 	private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
@@ -107,8 +108,10 @@ public class ClassUtil {
 	/**
 	 * 取得某一类所在包的所有类名 不含迭代
 	 * 
-	 * @param classLocation class全名
-	 * @param packageName 包名
+	 * @param classLocation
+	 *            class全名
+	 * @param packageName
+	 *            包名
 	 * @return 取得某一类所在包的所有类名的数组
 	 */
 	public static String[] getPackageAllClassName(String classLocation, String packageName) {
@@ -130,7 +133,8 @@ public class ClassUtil {
 	/**
 	 * 从包package中获取所有的Class
 	 * 
-	 * @param packageName 包名
+	 * @param packageName
+	 *            包名
 	 * @return class的list
 	 */
 	public static List<Class<?>> getClasses(String packageName) {
@@ -214,10 +218,14 @@ public class ClassUtil {
 	/**
 	 * 以文件的形式来获取包下的所有Class
 	 * 
-	 * @param packageName 包名
-	 * @param packagePath 包的路径
-	 * @param recursive 是否循环
-	 * @param classes class
+	 * @param packageName
+	 *            包名
+	 * @param packagePath
+	 *            包的路径
+	 * @param recursive
+	 *            是否循环
+	 * @param classes
+	 *            class
 	 */
 	public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive,
 			List<Class<?>> classes) {
@@ -402,11 +410,16 @@ public class ClassUtil {
 
 	/**
 	 * 获取类的所有字段属性名称（包括父类）
-	 * @param cur_class class
-	 * @param isDelete 是否删除list的缓存
-	 * @param gradeNum 排序号
-	 * @return  类的所有字段属性名称（包括父类）
-	 * @throws Exception 自定异常
+	 * 
+	 * @param cur_class
+	 *            class
+	 * @param isDelete
+	 *            是否删除list的缓存
+	 * @param gradeNum
+	 *            排序号
+	 * @return 类的所有字段属性名称（包括父类）
+	 * @throws Exception
+	 *             自定异常
 	 */
 	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class, boolean isDelete, int gradeNum)
 			throws Exception {
@@ -427,9 +440,16 @@ public class ClassUtil {
 				fieldNum++;
 			}
 		}
-		if (oneWayRemarks.size() != fieldNum) {
-			throw new RuntimeErrorException(null, class_name + "：类有get方法的字段没有注释");
-		}
+		//TODO
+		System.out.println("fields长度："+fields.size());
+		System.out.println("fields--->" + fields);
+		System.out.println("oneWayRemarks长度："+oneWayRemarks.size());
+		System.out.println("oneWayRemarks--->" + oneWayRemarks);
+		
+		/*
+		 * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
+		 * class_name + "：类有get方法的字段没有注释"); }
+		 */
 		for (int i = 0; i < fields.size(); i++) {
 			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
 			Field field = fields.get(i);
@@ -462,7 +482,7 @@ public class ClassUtil {
 						// 设置子节点
 						classFiedInfoDto.setChildNode(field.getName());
 						// 获取list中对象
-						if(!class_name.equals(genericClazz.getName())) {
+						if (!class_name.equals(genericClazz.getName())) {
 							getClassFieldAndMethodForChildNode(genericClazz, field.getName(), gradeNum + 1);
 						}
 					}
@@ -495,11 +515,16 @@ public class ClassUtil {
 
 	/**
 	 * 获取类的所有字段属性名称（包括父类）-当前的线程
-	 * @param cur_class class
-	 * @param isDelete 是否删除list的缓存
-	 * @param gradeNum 排序号
+	 * 
+	 * @param cur_class
+	 *            class
+	 * @param isDelete
+	 *            是否删除list的缓存
+	 * @param gradeNum
+	 *            排序号
 	 * @return 类的所有字段属性名称（包括父类）-当前的线程的list
-	 * @throws Exception 自定义异常
+	 * @throws Exception
+	 *             自定义异常
 	 */
 	public static List<ClassFiedInfoDto> getCurrnetClassFieldAndMethod(Class<?> cur_class, boolean isDelete,
 			int gradeNum) throws Exception {
@@ -583,11 +608,16 @@ public class ClassUtil {
 	}
 
 	/**
-	 * 	子类节点返回所有字段属性名称（包括父类）
-	 * @param cur_class class
-	 * @param parentNode 父节点名称
-	 * @param gradeNum 排序号
-	 * @throws Exception 自定义异常
+	 * 子类节点返回所有字段属性名称（包括父类）
+	 * 
+	 * @param cur_class
+	 *            class
+	 * @param parentNode
+	 *            父节点名称
+	 * @param gradeNum
+	 *            排序号
+	 * @throws Exception
+	 *             自定义异常
 	 */
 	public static void getClassFieldAndMethodForChildNode(Class<?> cur_class, String parentNode, int gradeNum)
 			throws Exception {
@@ -820,7 +850,7 @@ public class ClassUtil {
 				 */
 				Pattern leftpattern = Pattern.compile("/\\*");
 				Matcher leftmatcher = leftpattern.matcher(src);
-				//Pattern rightpattern = Pattern.compile("\\*/");
+				// Pattern rightpattern = Pattern.compile("\\*/");
 				Pattern rightpattern = Pattern.compile("@ApiDocsClass");
 				Matcher rightmatcher = rightpattern.matcher(src);
 				sb = new StringBuilder();
@@ -835,11 +865,11 @@ public class ClassUtil {
 						rightmatcher = rightpattern.matcher(src);
 						find = rightmatcher.find(leftmatcher.start());
 					}
-					if(!find) {
-						//没有匹配到，结束循环
+					if (!find) {
+						// 没有匹配到，结束循环
 						break;
 					}
-					
+
 					String remarkStr = src.substring(leftmatcher.start(), rightmatcher.end());
 					remarkStr = remarkStr.substring(2, remarkStr.length() - 2);
 					remarkStr = StringUtils.replace(remarkStr, "*", "");

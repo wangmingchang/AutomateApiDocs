@@ -56,7 +56,14 @@ public class ApiDocsUtil {
 		String savePath = properties.getProperty("savePath");
 		String isWordStr = properties.getProperty("isWord");
 		String isHTMLStr = properties.getProperty("isHTML");
-
+		
+		if(StringUtils.isBlank(packageNameStr)) {
+			throw new RuntimeException("在apiDocs.properties配置中没有找到扫瞄包（packageName）的配置");
+		}
+		if(StringUtils.isBlank(savePath)) {
+			throw new RuntimeException("在apiDocs.properties配置中没有找生成api保存的路径（savePath）的配置");
+		}
+		
 		isWord = isWordStr == "" || isWordStr == null ? true : Boolean.valueOf(isWordStr);
 		isHTML = isHTMLStr == "" || isHTMLStr == null ? true : Boolean.valueOf(isHTMLStr);
 		if (savePath == null || savePath == "") {

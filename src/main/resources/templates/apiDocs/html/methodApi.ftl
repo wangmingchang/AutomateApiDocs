@@ -171,11 +171,9 @@
 					<#else> 
 					</#if>
 					</div>
-					<hr>
 		</#list>
-
-		<div style="margin-left: -20px;">}</div>
-		
+		<div>}</div>
+		<hr>
 	</div>
 	
 </body>

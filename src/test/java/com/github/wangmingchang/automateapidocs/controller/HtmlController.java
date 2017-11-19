@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.BaseResponseVo;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.CarVo;
@@ -25,7 +24,7 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.PageDto;
  * @author 王明昌
  * @since 2017年9月3日
  */
-@ApiDocsClass
+//@ApiDocsClass
 @RestController
 @RequestMapping("/api/index/v1")
 public class HtmlController {

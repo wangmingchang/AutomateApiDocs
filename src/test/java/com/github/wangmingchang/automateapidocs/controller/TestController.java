@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.BaseResponseVo;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.CarVo;
@@ -23,7 +22,7 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.PageDto;
  */
 @Controller
 @RequestMapping("/test")
-@ApiDocsClass
+//@ApiDocsClass
 public class TestController {
 	private PageDto PageDto;
 
