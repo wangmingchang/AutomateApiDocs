@@ -737,6 +737,7 @@ public class ClassUtil {
 	 */
 	public static List<String> getOneWayRemark(Class<?> className) {
 		String filePath = getClassPath(className);
+		String simpleName = className.getSimpleName();
 		List<String> remarks = new ArrayList<String>();
 		try {
 			FileReader freader = new FileReader(filePath);
@@ -747,15 +748,27 @@ public class ClassUtil {
 				/**
 				 * 读取文件内容，并将读取的每一行后都不加\n 其目的是为了在解析双反斜杠（//）注释时做注释中止符
 				 */
+				boolean startHandFlag = false;
 				while ((temp = breader.readLine()) != null) {
-					sb.append(temp);
-					sb.append('\n');
+					System.out.println("temp---->" + temp);
+					if(temp.contains(simpleName)){
+						startHandFlag = true;
+					}
+					if(startHandFlag){
+
+						sb.append(temp);
+						if(temp.contains("*") && !temp.contains("*/") ){
+							continue;
+						}
+						sb.append('\n');
+					}
 				}
 				String src = sb.toString();
 				int begin = 0;
 
 				/**
 				 * 2、对//注释进行匹配（渐进匹配法） 匹配方法是 // 总是与 \n 成对出现
+				 *
 				 */
 				begin = 0;
 				Pattern leftpattern1 = Pattern.compile("//");
@@ -770,6 +783,8 @@ public class ClassUtil {
 					sb.append(src.substring(leftmatcher1.start(), rightmatcher1.end()));
 					begin = rightmatcher1.end();
 				}
+
+
 			} catch (IOException e) {
 				System.out.println("类：" + className + "文件读取失败");
 			} finally {

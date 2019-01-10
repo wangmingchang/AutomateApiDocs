@@ -11,6 +11,8 @@ import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -132,7 +134,7 @@ public class ApiDocsUtil {
 						path.append(string);
 					}
 				}
-				
+
 				int methodExplainDtosIndex = 0; //methodExplainDtosIndex的默认索引
 				for (int i = 0; i < className.getDeclaredMethods().length; i++) {
 					sequence = 0;
@@ -145,30 +147,41 @@ public class ApiDocsUtil {
 						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); // 请求的参数
 						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
 
-						RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-						String[] value = requestMapping.value(); // 获取方法上的路径
+						ApiDocsMethod apiDocs = method.getAnnotation(ApiDocsMethod.class);
+						String[] value = {}; // 获取方法上的路径
+						String type = apiDocs.type(); // 请求方式
+						if (method.isAnnotationPresent(RequestMapping.class)) {
+							RequestMapping requestMapping = className.getAnnotation(RequestMapping.class);
+							value = requestMapping.value();
+							//获取requestMapping中的请求方式
+							RequestMethod[] requestMethods = requestMapping.method();
+							for (RequestMethod requestMethod : requestMethods) {
+								if(requestMethod.equals(RequestMethod.GET)) {
+									type = "get";
+								}else if(requestMethod.equals(RequestMethod.POST)) {
+									type = "post";
+								}else {
+									continue;
+								}
+							}
+						}else if(method.isAnnotationPresent(PostMapping.class)){
+							PostMapping postMapping = className.getAnnotation(PostMapping.class);
+							value = postMapping.value();
+							type = "post";
+						}else{
+							GetMapping getMapping = className.getAnnotation(GetMapping.class);
+							value = getMapping.value();
+							type = "get";
+						}
 						for (String string : value) {
 							methodPath = path + string;
 						}
 
-						ApiDocsMethod apiDocs = method.getAnnotation(ApiDocsMethod.class);
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
 						Class<?>[] responseBeans = apiDocs.responseBeans(); // 多个响应数据Bean
-						String type = apiDocs.type(); // 请求方式
-						//获取requestMapping中的请求方式
-						RequestMethod[] requestMethods = requestMapping.method();
-						for (RequestMethod requestMethod : requestMethods) {
-							if(requestMethod.equals(RequestMethod.GET)) {
-								type = "get";
-							}else if(requestMethod.equals(RequestMethod.POST)) {
-								type = "post";
-							}else {
-								continue;
-							}
-						}
-						
+
 						String url = apiDocs.url(); // 请求方法路径
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
 						if( StringUtils.isBlank(methodDescription)) {
