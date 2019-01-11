@@ -1,11 +1,13 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
+import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
+import org.apache.commons.lang.StringUtils;
+
+import javax.management.RuntimeErrorException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -15,31 +17,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.management.RuntimeErrorException;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassFiedInfoDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassMoreRemarkDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
 
 /**
  * 类相关的工具类
@@ -427,7 +411,7 @@ public class ClassUtil {
 			fieldInfos.clear(); // 清空List
 		}
 		String class_name = cur_class.getName();
-		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
+		Map<String, String> fieldsRemarkMap = getFieldsRemark(cur_class);// 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
 		int fieldNum = 0;// 字段数
 		List<Field> fields = new ArrayList<Field>();
@@ -443,8 +427,8 @@ public class ClassUtil {
 		//TODO
 		System.out.println("fields长度："+fields.size());
 		System.out.println("fields--->" + fields);
-		System.out.println("oneWayRemarks长度："+oneWayRemarks.size());
-		System.out.println("oneWayRemarks--->" + oneWayRemarks);
+		System.out.println("oneWayRemarks长度："+fieldsRemarkMap.size());
+		System.out.println("fieldsRemarkMap--->" + fieldsRemarkMap.toString());
 		
 		/*
 		 * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
@@ -453,6 +437,7 @@ public class ClassUtil {
 		for (int i = 0; i < fields.size(); i++) {
 			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
 			Field field = fields.get(i);
+			String fieldName = field.getName();
 			field.setAccessible(true);
 			if (field.isAnnotationPresent(ApiDocsParam.class)) {
 				ApiDocsParam apiDocsParam = field.getAnnotation(ApiDocsParam.class);
@@ -461,7 +446,7 @@ public class ClassUtil {
 					classFiedInfoDto.setIfPass(false);
 				}
 			}
-			classFiedInfoDto.setName(field.getName());
+			classFiedInfoDto.setName(fieldName);
 
 			String type = getClassFieldType(field.getType());
 			if (type.equals("list")) {
@@ -501,7 +486,7 @@ public class ClassUtil {
 			}
 
 			classFiedInfoDto.setType(type);
-			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
+			classFiedInfoDto.setDescription(fieldsRemarkMap.get(fieldName));
 
 			fieldInfos.add(classFiedInfoDto);
 		}
@@ -532,7 +517,7 @@ public class ClassUtil {
 			fieldInfoList.clear(); // 清空List
 		}
 		String class_name = cur_class.getName();
-		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
+		Map<String, String> fieldsRemarkMap = getFieldsRemark(cur_class);// 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
 		int fieldNum = 0;// 字段数
 		List<Field> fields = new ArrayList<Field>();
@@ -545,12 +530,13 @@ public class ClassUtil {
 				fieldNum++;
 			}
 		}
-		if (oneWayRemarks.size() != fieldNum) {
+		if (fieldsRemarkMap.size() != fieldNum) {
 			throw new RuntimeErrorException(null, class_name + "：类有get方法的字段没有注释");
 		}
 		for (int i = 0; i < fields.size(); i++) {
 			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
 			Field field = fields.get(i);
+			String fieldName = field.getName();
 			field.setAccessible(true);
 			if (field.isAnnotationPresent(ApiDocsParam.class)) {
 				ApiDocsParam apiDocsParam = field.getAnnotation(ApiDocsParam.class);
@@ -559,7 +545,7 @@ public class ClassUtil {
 					classFiedInfoDto.setIfPass(false);
 				}
 			}
-			classFiedInfoDto.setName(field.getName());
+			classFiedInfoDto.setName(fieldName);
 			String type = getClassFieldType(field.getType());
 
 			if (type.equals("list")) {
@@ -596,7 +582,7 @@ public class ClassUtil {
 				classFiedInfoDto.setGrade(gradeNum);
 			}
 			classFiedInfoDto.setType(type);
-			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
+			classFiedInfoDto.setDescription(fieldsRemarkMap.get(fieldName));
 
 			fieldInfoList.add(classFiedInfoDto);
 		}
@@ -622,7 +608,7 @@ public class ClassUtil {
 	public static void getClassFieldAndMethodForChildNode(Class<?> cur_class, String parentNode, int gradeNum)
 			throws Exception {
 		String class_name = cur_class.getName();
-		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
+		Map<String, String> fieldsRemarkMap = getFieldsRemark(cur_class);// 注释
 		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
 		List<Field> fieldList = Arrays.asList(obj_fields);
 		fieldList = new ArrayList<Field>(fieldList);
@@ -633,7 +619,7 @@ public class ClassUtil {
 				iterator.remove();
 			}
 		}
-		if (oneWayRemarks.size() != fieldList.size()) {
+		if (fieldsRemarkMap.size() != fieldList.size()) {
 			throw new RuntimeErrorException(null, class_name + "：类有字段没有注释");
 		}
 		for (int i = 0; i < fieldList.size(); i++) {
@@ -642,8 +628,9 @@ public class ClassUtil {
 				classFiedInfoDto.setParentNode(parentNode);
 			}
 			Field field = fieldList.get(i);
+			String fieldName = field.getName();
 			field.setAccessible(true);
-			classFiedInfoDto.setName(field.getName());
+			classFiedInfoDto.setName(fieldName);
 			String type = getClassFieldType(field.getType());
 
 			if (type.equals("list")) {
@@ -680,7 +667,7 @@ public class ClassUtil {
 				classFiedInfoDto.setGrade(gradeNum);
 			}
 			classFiedInfoDto.setType(type);
-			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
+			classFiedInfoDto.setDescription(fieldsRemarkMap.get(fieldName));
 			fieldInfos.add(classFiedInfoDto);
 		}
 		// 有父类
@@ -729,21 +716,28 @@ public class ClassUtil {
 	}
 
 	/**
-	 * 获取java文件的单行注释
+	 * 获取java文件的字段注释
 	 * 
 	 * @param className
 	 *            class
-	 * @return java文件的单行注释
+	 * @return map（key：字段名称，value:备注）
 	 */
-	public static List<String> getOneWayRemark(Class<?> className) {
+	public static Map<String, String> getFieldsRemark(Class<?> className) {
 		String filePath = getClassPath(className);
 		String simpleName = className.getSimpleName();
-		List<String> remarks = new ArrayList<String>();
+		Map<String, String> remarkMap = new ConcurrentHashMap<String, String>();
+
 		try {
 			FileReader freader = new FileReader(filePath);
 			BufferedReader breader = new BufferedReader(freader);
 			StringBuilder sb = new StringBuilder();
+			List<String> fieldNames = new ArrayList<String>();
 			try {
+				Field[] declaredFields = className.getDeclaredFields();
+				for (int i = 0; i < declaredFields.length; i ++){
+					String name = declaredFields[i].getName();
+					fieldNames.add(name);
+				}
 				String temp = "";
 				/**
 				 * 读取文件内容，并将读取的每一行后都不加\n 其目的是为了在解析双反斜杠（//）注释时做注释中止符
@@ -751,13 +745,16 @@ public class ClassUtil {
 				boolean startHandFlag = false;
 				while ((temp = breader.readLine()) != null) {
 					System.out.println("temp---->" + temp);
+					if(temp.length() <= 0 || temp == ""){
+						continue;
+					}
 					if(temp.contains(simpleName)){
 						startHandFlag = true;
 					}
-					if(startHandFlag){
+					if(startHandFlag && (!temp.contains("public") && !temp.contains("}") && !temp.contains("class") && !temp.contains("return") && !temp.contains("this") && !temp.contains("Override"))){
 
 						sb.append(temp);
-						if(temp.contains("*") && !temp.contains("*/") ){
+						if(temp.contains("*") && !temp.contains("*/")){
 							continue;
 						}
 						sb.append('\n');
@@ -767,24 +764,43 @@ public class ClassUtil {
 				int begin = 0;
 
 				/**
-				 * 2、对//注释进行匹配（渐进匹配法） 匹配方法是 // 总是与 \n 成对出现
-				 *
+				 * 2、将以换行为分割，一一比对
 				 */
-				begin = 0;
-				Pattern leftpattern1 = Pattern.compile("//");
-				Matcher leftmatcher1 = leftpattern1.matcher(src);
-				Pattern rightpattern1 = Pattern.compile("\n");
-				Matcher rightmatcher1 = rightpattern1.matcher(src);
-				sb = new StringBuilder();
-				while (leftmatcher1.find(begin)) {
-					rightmatcher1.find(leftmatcher1.start());
-					String remarkStr = src.substring(leftmatcher1.start(), rightmatcher1.end());
-					remarks.add(replaceBlankAll(remarkStr.substring(2)));
-					sb.append(src.substring(leftmatcher1.start(), rightmatcher1.end()));
-					begin = rightmatcher1.end();
+				String[] srcArr = src.split("\n");
+				for(int i = 0; i < srcArr.length; i++){
+					String oneLineStr = srcArr[i];
+					String newStr = "";
+					String existFieldNameStr = ""; //存在字段名称的string
+					if(oneLineStr.contains("/*") && oneLineStr.contains("*/")){
+						//多行注释内容,/***/
+						//去*的string
+						String delStarStr = oneLineStr.replaceAll("\\*", "");
+						newStr = replaceBlankAll(delStarStr.substring(delStarStr.indexOf("/") + 1, delStarStr.lastIndexOf("/")));
+					}else if(oneLineStr.contains("//")){
+						String[] oneLaterArr = oneLineStr.split("//");
+						newStr = replaceBlankAll(oneLaterArr[1]);
+					}
+					if(StringUtils.isBlank(newStr)){
+						continue;
+					}
+					if(oneLineStr.contains("private")){
+						//单行注释内容，在字段后面注释
+						existFieldNameStr = oneLineStr;
+					}else {
+						//单行注释内容，在字段上方注释
+						existFieldNameStr = srcArr[i+1];
+					}
+					System.out.println("oneLineStr:" + oneLineStr);
+					System.out.println("newStr:" + newStr);
+					System.out.println("existFieldNameStr:" + existFieldNameStr);
+					for (String fieldeName : fieldNames){
+						if(existFieldNameStr.contains(fieldeName)){
+							remarkMap.put(fieldeName, newStr);
+							break;
+						}
+					}
+
 				}
-
-
 			} catch (IOException e) {
 				System.out.println("类：" + className + "文件读取失败");
 			} finally {
@@ -796,7 +812,7 @@ public class ClassUtil {
 		} catch (IOException e) {
 			System.out.println("类：" + className + "文件读取失败");
 		}
-		return remarks;
+		return remarkMap;
 	}
 
 	/**
