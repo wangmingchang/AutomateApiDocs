@@ -467,7 +467,7 @@
 								<w:proofErr w:type="spellStart" />
 									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-										<w:t>${responseClassDto.className}</w:t>
+										<w:t>${responseClassDto.className}以下是${methodInfoDto.name!""}字段信息</w:t>
 									</w:r>
 								<w:proofErr w:type="spellEnd" />
 							</w:p>

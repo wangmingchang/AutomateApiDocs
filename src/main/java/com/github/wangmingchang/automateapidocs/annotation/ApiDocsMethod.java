@@ -24,17 +24,27 @@ public @interface ApiDocsMethod {
      * @return 返回基础对象的class名称
      */
 	Class<?> baseResponseBean() default Null.class;
-	
+
+	/**
+	 * 返回对象带有泛型的，真正对象
+	 * @author wangmingchang
+	 * @date 2019/1/18 11:22
+	 * @return  返回对象的class名称
+	 **/
+	Class<?> baseResponseBeanGenericity() default Null.class;
+
     /**
      * 响应对象
      * @return 返回对象的class名称
      */
 	Class<?> responseBean() default Null.class;
+
 	/**
 	 * 多个返回对象，以数组方式传入
 	 * @return 返回多个对象的class名称数组
 	 */
 	Class<?>[] responseBeans() default {};
+
     /**
      * 请求url
      * @return 返回请求的url

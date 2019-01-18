@@ -1,33 +1,18 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
+import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassFiedInfoDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassMoreRemarkDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.HtmlMethonContentDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodInfoDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ResponseClassDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ResponseDataDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.WordContentDto;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 自动生成API工具
@@ -180,6 +165,7 @@ public class ApiDocsUtil {
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
+						Class<?> baseResponseBeanGenericity = apiDocs.baseResponseBeanGenericity(); //响应数据Bean的泛型真实类型
 						Class<?>[] responseBeans = apiDocs.responseBeans(); // 多个响应数据Bean
 
 						String url = apiDocs.url(); // 请求方法路径
@@ -213,6 +199,13 @@ public class ApiDocsUtil {
 							saveFiledInfo(responseBean, responseFieldInfos, responseDataDtos);
 						}
 
+						if (ClassUtil.isRealClass(baseResponseBeanGenericity)) {
+							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(baseResponseBeanGenericity,
+									true, 1);
+							saveFiledInfo(baseResponseBeanGenericity, responseFieldInfos, responseDataDtos);
+						}
+
+
 						if (responseBeans != null && responseBeans.length > 0) {
 							for (int j = 0; j < responseBeans.length; j++) {
 								Class<?> responseBeanClass = responseBeans[j];
@@ -227,7 +220,7 @@ public class ApiDocsUtil {
 						if (ClassUtil.isRealClass(baseResponseBean)) {
 							// 有基础类返回
 							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil
-									.getClassFieldAndMethod(baseResponseBean, true, 1);
+									.getClassFieldAndMethod(baseResponseBean, baseResponseBeanGenericity, true, 1);
 							if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
 								for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
 									ResponseDataDto responseDataDto = new ResponseDataDto();
@@ -345,7 +338,7 @@ public class ApiDocsUtil {
 				responseDataDto.setGrade(classFiedInfoDto.getGrade());
 				responseDataDto.setClassName(obj.getSimpleName());
 				responseDataDto.setName(classFiedInfoDto.getName());
-
+				responseDataDto.setParentNode(classFiedInfoDto.getParentNode());
 				sequence++;
 				responseDataDto.setSequence(sequence);
 				responseDataDto.setType(classFiedInfoDto.getType());
