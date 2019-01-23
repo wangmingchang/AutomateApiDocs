@@ -1,25 +1,17 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import com.github.wangmingchang.automateapidocs.config.FreemarkerConfig;
+import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassExplainDto;
+import com.github.wangmingchang.automateapidocs.pojo.apidocs.HtmlMethonContentDto;
+import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodInfoDto;
+import freemarker.template.Template;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.github.wangmingchang.automateapidocs.config.FreemarkerConfig;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodInfoDto;
-
-import freemarker.template.Template;
 
 /**
  * HTML生成模板工具
@@ -43,7 +35,7 @@ public class HtmlTemlateUtil {
 	 *            方法信息
 	 */
 	public static void setMethodApiTemplate(String savePath, ClassExplainDto classExplainDto,
-			List<String> methodDescriptions, List<MethodInfoDto> methodInfoDtos) {
+											List<Map<String, String>> methodDescriptions, List<MethodInfoDto> methodInfoDtos) {
 		String saveFileName = classExplainDto.getExplain() + ".html";
 		String templateName = "methodApi.ftl";
 		Map<String, Object> dataMap = new HashMap<String, Object>();
@@ -101,6 +93,22 @@ public class HtmlTemlateUtil {
 	}
 
 	/**
+	 * 生成api模板
+	 * @author wangmingchang
+	 * @date 2019/1/23 16:25
+	 * @param savePath
+	 * @param htmlMethonContentDtos
+	 * @return
+	 **/
+	public static void setApiTemplate(String savePath, List<HtmlMethonContentDto> htmlMethonContentDtos) {
+		String saveFileName = "api.html";
+		String templateName = "api.ftl";
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("htmlMethonContentDtos",htmlMethonContentDtos);
+		generateTemlate(savePath, saveFileName, templateName, dataMap);
+	}
+
+	/**
 	 * 生成模板
 	 * 
 	 * @param savePath
@@ -131,6 +139,5 @@ public class HtmlTemlateUtil {
 			e.printStackTrace();
 		}
 	}
-
 
 }

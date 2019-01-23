@@ -12,7 +12,7 @@
 		</h1>
 		<#list methodDescriptions as methodDescription>
 		<ul class="toc">
-			<li><a href="#${methodDescription}">${methodDescription}</a></li>
+			<li><a href="#${methodDescription['methodDescriptionValue']!''}">${methodDescription['methodDescriptionValue']!''}</a></li>
 		</ul>
 		</#list>
 		<hr>
@@ -60,7 +60,7 @@
 								<#list baseResponseDataDto.responseDataDtos as responseClassDto>
 									<#if responseClassDto_index=0>
 									<div style="margin-left: 20px;">
-										[<br>
+										<#--[<br>-->
 									</#if>
 									<div style="margin-left: 20px;">
 										<#if responseClassDto_index gt 0 && (baseResponseDataDto.responseDataDtos[responseClassDto_index - 1].className !=responseClassDto.className)>
@@ -68,7 +68,7 @@
 										</#if>
 										<#if responseClassDto_index=0 || (baseResponseDataDto.responseDataDtos[responseClassDto_index - 1].className !=responseClassDto.className)>
 										<div>
-											"<label>${responseClassDto.className}</label>": <span>{</span>
+											<span>{</span>
 										</div>
 										</#if>
 										<div style="margin-left: 20px;">
@@ -110,7 +110,7 @@
 										<div>}</div>
 										</#if>
 									</div>
-									<#if !responseClassDto_has_next> ] </#if> 
+									<#--<#if !responseClassDto_has_next> ] </#if> -->
 								</#list> 
 							</#if>
 						</#list>

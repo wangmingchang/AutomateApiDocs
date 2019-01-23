@@ -1,11 +1,13 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
+import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
+import org.apache.commons.lang.StringUtils;
+
+import javax.management.RuntimeErrorException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -16,6 +18,7 @@ import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -24,7 +27,6 @@ import java.util.regex.Pattern;
 
 import javax.management.RuntimeErrorException;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import org.apache.commons.lang.StringUtils;
 
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
@@ -35,10 +37,6 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassFiedInfoDto;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassMoreRemarkDto;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodExplainDto;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static org.apache.commons.lang.StringUtils.split;
 
 /**
  * 类相关的工具类
@@ -53,55 +51,59 @@ public class ClassUtil {
 	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
 	/** 属性名和类型集合 ***/
 	private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
+    private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
+    /**
+     * 属性名和类型集合
+     ***/
+    private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
 
-	public static ClassUtil classUtil = new ClassUtil();
-	private static int gradeNum = 1; // 级别
+    public static ClassUtil classUtil = new ClassUtil();
+    private static int gradeNum = 1; // 级别
 
-	private ClassUtil() {
-		super();
-		fieldInfos.clear();
-		fieldInfos = new ArrayList<ClassFiedInfoDto>();
-	}
+    private ClassUtil() {
+        super();
+        fieldInfos.clear();
+        fieldInfos = new ArrayList<ClassFiedInfoDto>();
+    }
 
-	public static ClassUtil getInstance() {
-		return classUtil;
-	}
+    public static ClassUtil getInstance() {
+        return classUtil;
+    }
 
-	public static void main(String[] args) throws Exception {
-		List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
-		for (Class clas : classes) {
-			System.out.println(clas.getName());
-		}
-	}
+    public static void main(String[] args) throws Exception {
+        List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
+        for (Class clas : classes) {
+            System.out.println(clas.getName());
+        }
+    }
 
-	/**
-	 * 取得某个接口下所有实现这个接口的类
-	 * 
-	 * @param c
-	 *            class
-	 * @return 取得某个接口下所有实现这个接口的类list
-	 */
-	public static List<Class> getAllClassByInterface(Class c) {
-		List<Class> returnClassList = null;
+    /**
+     * 取得某个接口下所有实现这个接口的类
+     *
+     * @param c class
+     * @return 取得某个接口下所有实现这个接口的类list
+     */
+    public static List<Class> getAllClassByInterface(Class c) {
+        List<Class> returnClassList = null;
 
-		if (c.isInterface()) {
-			// 获取当前的包名
-			String packageName = c.getPackage().getName();
-			// 获取当前包下以及子包下所以的类
-			List<Class<?>> allClass = getClasses(packageName);
-			if (allClass != null) {
-				returnClassList = new ArrayList<Class>();
-				for (Class classes : allClass) {
-					// 判断是否是同一个接口
-					if (c.isAssignableFrom(classes)) {
-						// 本身不加入进去
-						if (!c.equals(classes)) {
-							returnClassList.add(classes);
-						}
-					}
-				}
-			}
-		}
+        if (c.isInterface()) {
+            // 获取当前的包名
+            String packageName = c.getPackage().getName();
+            // 获取当前包下以及子包下所以的类
+            List<Class<?>> allClass = getClasses(packageName);
+            if (allClass != null) {
+                returnClassList = new ArrayList<Class>();
+                for (Class classes : allClass) {
+                    // 判断是否是同一个接口
+                    if (c.isAssignableFrom(classes)) {
+                        // 本身不加入进去
+                        if (!c.equals(classes)) {
+                            returnClassList.add(classes);
+                        }
+                    }
+                }
+            }
+        }
 
 		return returnClassList;
 	}
@@ -1094,5 +1096,36 @@ public class ClassUtil {
         return null;
     }
 
+	/**
+	 * 判断String数组是否存在某个值
+	 * 
+	 * @param arr
+	 *            数组
+	 * @param targetValue
+	 *            值
+	 * @return 判断String数组是否存在某个值
+	 */
+	public static boolean containsStr(String[] arr, String targetValue) {
+		for (String s : arr) {
+			if (s.equals(targetValue))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 判断class是否可真实的对象
+	 * 
+	 * @param cls
+	 *            class
+	 * @return 判断class是否可真实的对象
+	 */
+	public static boolean isRealClass(Class<?> cls) {
+		boolean flag = false;
+		if (cls != Null.class && cls != ApiDocsMethod.class && !cls.toString().contains("$Null")) {
+			flag = true;
+		}
+		return flag;
+	}
 
 }

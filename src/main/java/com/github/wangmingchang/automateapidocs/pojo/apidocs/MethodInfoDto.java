@@ -16,6 +16,15 @@ public class MethodInfoDto {
 	private List<RequestParamDto> requestParamDtos; // 请求的参数
 	List<ResponseClassDto> responseClassDtos; // 返回类的信息
 	List<ResponseDataDto> baseResponseDataDtos; // 基础返回类信息
+	private String methodKey; //方法的唯一标识，UUID
+
+	public String getMethodKey() {
+		return methodKey;
+	}
+
+	public void setMethodKey(String methodKey) {
+		this.methodKey = methodKey;
+	}
 
 	public String getMethodDescription() {
 		return methodDescription;
@@ -67,9 +76,14 @@ public class MethodInfoDto {
 
 	@Override
 	public String toString() {
-		return "MethodInfoDto [methodDescription=" + methodDescription + ", type=" + type + ", url=" + url
-				+ ", requestParamDtos=" + requestParamDtos + ", responseClassDtos=" + responseClassDtos
-				+ ", baseResponseDataDtos=" + baseResponseDataDtos + "]";
+		return "MethodInfoDto{" +
+				"methodDescription='" + methodDescription + '\'' +
+				", type='" + type + '\'' +
+				", url='" + url + '\'' +
+				", requestParamDtos=" + requestParamDtos +
+				", responseClassDtos=" + responseClassDtos +
+				", baseResponseDataDtos=" + baseResponseDataDtos +
+				", methodKey='" + methodKey + '\'' +
+				'}';
 	}
-
 }
