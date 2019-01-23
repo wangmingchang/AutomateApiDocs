@@ -15,13 +15,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -30,6 +24,7 @@ import java.util.regex.Pattern;
 
 import javax.management.RuntimeErrorException;
 
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import org.apache.commons.lang.StringUtils;
 
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
@@ -40,6 +35,10 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassFiedInfoDto;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassMoreRemarkDto;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodExplainDto;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.apache.commons.lang.StringUtils.split;
 
 /**
  * 类相关的工具类
@@ -48,6 +47,8 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
  * @since 2017年9月9日
  */
 public class ClassUtil {
+
+	private static Logger logger = LoggerFactory.getLogger(ClassUtil.class);
 
 	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
 	/** 属性名和类型集合 ***/
@@ -766,7 +767,7 @@ public class ClassUtil {
 				while (leftmatcher1.find(begin)) {
 					rightmatcher1.find(leftmatcher1.start());
 					String remarkStr = src.substring(leftmatcher1.start(), rightmatcher1.end());
-					remarks.add(replaceBlankAll(remarkStr.substring(2)));
+					remarks.add(StringUtil.replaceBlankAll(remarkStr.substring(2)));
 					sb.append(src.substring(leftmatcher1.start(), rightmatcher1.end()));
 					begin = rightmatcher1.end();
 				}
@@ -823,21 +824,110 @@ public class ClassUtil {
 		ArrayList<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); // 方法注释list
 		methodExplainDtos.clear();
 		String filePath = getClassPath(className);
+		String simpleName = className.getSimpleName();
 		ClassMoreRemarkDto classMoreRemarkDto = new ClassMoreRemarkDto();
+		//类头部多行注释
+        StringBuilder classSb = new StringBuilder();
+		Map<String, StringBuilder> classMap = new HashMap<String, StringBuilder>();
+		//类的方法多行注释Map
+		Map<String, StringBuilder> methodMap = new HashMap<String, StringBuilder>();
 		try {
 			FileReader freader = new FileReader(filePath);
 			BufferedReader breader = new BufferedReader(freader);
 			StringBuilder sb = new StringBuilder();
+			StringBuilder moreSb = new StringBuilder();
+			StringBuilder tempSb = new StringBuilder();
 			try {
 				String temp = "";
+				boolean flag = false;
+				boolean startFlag = false;
+				boolean isNotOneFlag = true;
+				//当前方法注释是第几个
+				int currentNum = 1;
+				//多行注释的开头标记
+				String moreStartFlag = "/**";
+				String moreEndFlag = "*/";
+				String starFlag = "*";
+
 				/**
 				 * 读取文件内容，并将读取的每一行后都不加\n 其目的是为了在解析双反斜杠（//）注释时做注释中止符
 				 */
 				while ((temp = breader.readLine()) != null) {
+					logger.info("temp:" + temp);
+					if(temp.contains(moreStartFlag)){
+						startFlag = true;
+						isNotOneFlag = false;
+						moreSb.delete(0, moreSb.length());
+					}else {
+						isNotOneFlag = true;
+					}
+					if(temp.contains(moreEndFlag)){
+						startFlag = false;
+					}
+					if(startFlag){
+						if (temp.contains(starFlag)){
+							flag = true;
+						}else {
+							flag = false;
+						}
+					}else {
+						flag = false;
+					}
+					if(flag && isNotOneFlag){
+					    if (temp.contains(ConstantsUtil.PARAM_STR)){
+                            temp = StringUtil.replaceBlank(temp);
+                        }else {
+                            temp = StringUtil.replaceBlankAll(temp);
+                        }
+						moreSb.append(temp);
+						//moreSb.append('\n');
+					}else {
+						if(temp.contains(ConstantsUtil.API_DOCS_CLASS_STR)){
+                            tempSb = moreSb;
+                            classMap.put(simpleName, tempSb);
+							logger.info("moreSb:" +tempSb);
+							//moreSb.delete(0, moreSb.length());
+                            moreSb = new StringBuilder();
+                            logger.info("tempSb:" +tempSb);
+                        }else if(temp.contains(ConstantsUtil.API_DOCS_METHOD)){
+                            tempSb = moreSb;
+							logger.info("moreSb:" +moreSb);
+							methodMap.put(ConstantsUtil.METHOD_MAP_KEY +"-"+ currentNum, tempSb);
+                            //moreSb.delete(0, moreSb.length());
+                            currentNum++;
+                            moreSb = new StringBuilder();
+                            logger.info("tempSb:" +tempSb);
+                        }
+					}
 					sb.append(temp);
 					sb.append('\n');
 				}
-				String src = sb.toString();
+                StringBuilder stringBuilder = classMap.get(simpleName);
+                StringBuilder stringBuilder1 = methodMap.get(ConstantsUtil.METHOD_MAP_KEY + "-" + 1);
+                String classStr = classMap.get(simpleName).toString();
+                String[] classSbArr = classStr.split("\\*");
+                String explain = ""; //说明
+                boolean isExplainFlag = true;
+                String author = ""; //作者
+                String createDate = ""; //创建时间
+                for (String str :classSbArr ) {
+                    if(StringUtil.indexOf(str, ConstantsUtil.AUTHOR_ARR)){
+                        author = StringUtil.replaceCustomBlank(str, ConstantsUtil.AUTHOR_ARR, "");
+                        isExplainFlag = false;
+                    }else if(StringUtil.indexOf(str, ConstantsUtil.DATE_ARR)){
+                        createDate = StringUtil.replaceCustomBlank(str, ConstantsUtil.DATE_ARR, "");
+                        isExplainFlag = false;
+                    }else {
+                        if(isExplainFlag){
+                            explain += str;
+                        }
+                    }
+                }
+                ClassExplainDto classExplainDto = new ClassExplainDto();
+                classExplainDto.setExplain(explain);
+                classExplainDto.setAuthor(author);
+                classExplainDto.setCreateDate(createDate);
+                String src = sb.toString();
 				/**
 				 * 1、做/* 注释的正则匹配
 				 *
@@ -873,11 +963,11 @@ public class ClassUtil {
 					String remarkStr = src.substring(leftmatcher.start(), rightmatcher.end());
 					remarkStr = remarkStr.substring(2, remarkStr.length() - 2);
 					remarkStr = StringUtils.replace(remarkStr, "*", "");
-					remarkStr = replaceBlank(remarkStr);
+					remarkStr = StringUtil.replaceBlank(remarkStr);
 					if (remarkStr.contains("author")) {
 						// 如果有author,就说明是类的头部说明
-						ClassExplainDto classExplainDto = new ClassExplainDto();
-						String[] split = StringUtils.split(remarkStr);
+						//ClassExplainDto classExplainDto = new ClassExplainDto();
+						String[] split = split(remarkStr);
 						int legth = split.length;
 						for (int i = 0; i < split.length; i++) {
 							if (split[i].indexOf("@") == -1) {
@@ -906,7 +996,7 @@ public class ClassUtil {
 						MethodExplainDto methodExplainDto = new MethodExplainDto();
 						ArrayList<RequestParamDto> paramDtos = new ArrayList<RequestParamDto>();
 
-						String[] split = StringUtils.split(remarkStr);
+						String[] split = split(remarkStr);
 						int legth = split.length;
 						for (int i = 0; i < split.length; i++) {
 							if (split[i].indexOf("@") == -1) {
@@ -955,144 +1045,54 @@ public class ClassUtil {
 		return classMoreRemarkDto;
 	}
 
-	/**
-	 * 去除空格(包括换行)
-	 * 
-	 * @param str
-	 *            字符串
-	 * @return 没有空格的字符串
-	 */
-	public static String replaceBlankAll(String str) {
-		String dest = "";
-		if (str != null) {
-			Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-			Matcher m = p.matcher(str);
-			dest = m.replaceAll("");
-		}
-		return dest;
-	}
+    /**
+     * java反射bean的get方法
+     *
+     * @param objectClass
+     *            class
+     * @param fieldName
+     *            字段名
+     * @return 返回bean的get方法
+     */
+    @SuppressWarnings("unchecked")
+    public static Method getGetMethod(Class objectClass, String fieldName) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("get");
+        sb.append(fieldName.substring(0, 1).toUpperCase());
+        sb.append(fieldName.substring(1));
+        try {
+            return objectClass.getMethod(sb.toString());
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
-	/**
-	 * 去除换行
-	 * 
-	 * @param str
-	 *            字符串
-	 * @return 没有换行的字符串
-	 */
-	public static String replaceBlank(String str) {
-		String dest = "";
-		if (str != null) {
-			// Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-			Pattern p = Pattern.compile("\\\n");
-			Matcher m = p.matcher(str);
-			dest = m.replaceAll("");
-		}
-		return dest;
-	}
+    /**
+     * java反射bean的set方法
+     *
+     * @param objectClass
+     *            class
+     * @param fieldName
+     *            字段名
+     * @return 返回bean的set方法
+     */
+    @SuppressWarnings("unchecked")
+    public static Method getSetMethod(Class objectClass, String fieldName) {
+        try {
+            Class[] parameterTypes = new Class[1];
+            Field field = objectClass.getDeclaredField(fieldName);
+            parameterTypes[0] = field.getType();
+            StringBuffer sb = new StringBuffer();
+            sb.append("set");
+            sb.append(fieldName.substring(0, 1).toUpperCase());
+            sb.append(fieldName.substring(1));
+            Method method = objectClass.getMethod(sb.toString(), parameterTypes);
+            return method;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	/**
-	 * 新建目录
-	 * 
-	 * @param folderPath
-	 *            目录
-	 * @return 返回目录创建后的路径
-	 */
-	public static String createFolder(String folderPath) {
-		String txt = folderPath;
-		try {
-			java.io.File myFilePath = new java.io.File(txt);
-			txt = folderPath;
-			if (!myFilePath.exists()) {
-				System.out.println("====================目录不存在,重新创建====================");
-				myFilePath.mkdirs();
-			} else {
-				// System.out.println("====================目录存在====================");
-			}
-		} catch (Exception e) {
-			System.out.println("创建目录操作出错");
-		}
-		return txt;
-	}
-
-	/**
-	 * java反射bean的get方法
-	 * 
-	 * @param objectClass
-	 *            class
-	 * @param fieldName
-	 *            字段名
-	 * @return 返回bean的get方法
-	 */
-	@SuppressWarnings("unchecked")
-	public static Method getGetMethod(Class objectClass, String fieldName) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("get");
-		sb.append(fieldName.substring(0, 1).toUpperCase());
-		sb.append(fieldName.substring(1));
-		try {
-			return objectClass.getMethod(sb.toString());
-		} catch (Exception e) {
-		}
-		return null;
-	}
-
-	/**
-	 * java反射bean的set方法
-	 * 
-	 * @param objectClass
-	 *            class
-	 * @param fieldName
-	 *            字段名
-	 * @return 返回bean的set方法
-	 */
-	@SuppressWarnings("unchecked")
-	public static Method getSetMethod(Class objectClass, String fieldName) {
-		try {
-			Class[] parameterTypes = new Class[1];
-			Field field = objectClass.getDeclaredField(fieldName);
-			parameterTypes[0] = field.getType();
-			StringBuffer sb = new StringBuffer();
-			sb.append("set");
-			sb.append(fieldName.substring(0, 1).toUpperCase());
-			sb.append(fieldName.substring(1));
-			Method method = objectClass.getMethod(sb.toString(), parameterTypes);
-			return method;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * 判断String数组是否存在某个值
-	 * 
-	 * @param arr
-	 *            数组
-	 * @param targetValue
-	 *            值
-	 * @return 判断String数组是否存在某个值
-	 */
-	public static boolean containsStr(String[] arr, String targetValue) {
-		for (String s : arr) {
-			if (s.equals(targetValue))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * 判断class是否可真实的对象
-	 * 
-	 * @param cls
-	 *            class
-	 * @return 判断class是否可真实的对象
-	 */
-	public static boolean isRealClass(Class<?> cls) {
-		boolean flag = false;
-		if (cls != Null.class && cls != ApiDocsMethod.class && !cls.toString().contains("$Null")) {
-			flag = true;
-		}
-		return flag;
-	}
 
 }

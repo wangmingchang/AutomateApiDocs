@@ -11,6 +11,8 @@ import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -34,6 +36,8 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.WordContentDto;
  *
  */
 public class ApiDocsUtil {
+
+	private static Logger logger = LoggerFactory.getLogger(ApiDocsUtil.class);
 
 	private static boolean isWord; // 是否生成word格式api;
 	private static boolean isHTML; // 是否生成HTML格式api;
@@ -110,7 +114,7 @@ public class ApiDocsUtil {
 
 				Class<?> className = Class.forName(classNameStr);
 				if (!className.isAnnotationPresent(ApiDocsClass.class)) {
-					System.out.println(className + "没有在类上注解ApiDocsClass");
+					logger.info(className + "没有在类上注解ApiDocsClass");
 					// 不是生成api文档类
 					continue;
 				}
@@ -177,7 +181,7 @@ public class ApiDocsUtil {
 						url = StringUtils.isBlank(url) ? methodPath : path + url;
 						List<ResponseDataDto> baseResponseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息(基础类)
 						List<ResponseDataDto> responseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息
-						if (ClassUtil.isRealClass(requestBean)) {
+						if (StringUtil.isRealClass(requestBean)) {
 							List<ClassFiedInfoDto> requestFieldInfos = ClassUtil.getClassFieldAndMethod(requestBean,
 									true, 1);
 							if (requestFieldInfos != null && requestFieldInfos.size() > 0) {
@@ -194,7 +198,7 @@ public class ApiDocsUtil {
 								}
 							}
 						}
-						if (ClassUtil.isRealClass(responseBean)) {
+						if (StringUtil.isRealClass(responseBean)) {
 							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil.getClassFieldAndMethod(responseBean,
 									true, 1);
 							saveFiledInfo(responseBean, responseFieldInfos, responseDataDtos);
@@ -203,7 +207,7 @@ public class ApiDocsUtil {
 						if (responseBeans != null && responseBeans.length > 0) {
 							for (int j = 0; j < responseBeans.length; j++) {
 								Class<?> responseBeanClass = responseBeans[j];
-								if(ClassUtil.isRealClass(responseBeanClass)) {
+								if(StringUtil.isRealClass(responseBeanClass)) {
 									List<ClassFiedInfoDto> responseFieldInfos = ClassUtil
 											.getClassFieldAndMethod(responseBeanClass, true, 1);
 									saveFiledInfo(responseBeanClass, responseFieldInfos, responseDataDtos);
@@ -211,7 +215,7 @@ public class ApiDocsUtil {
 							}
 						}
 
-						if (ClassUtil.isRealClass(baseResponseBean)) {
+						if (StringUtil.isRealClass(baseResponseBean)) {
 							// 有基础类返回
 							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil
 									.getClassFieldAndMethod(baseResponseBean, true, 1);
@@ -252,7 +256,7 @@ public class ApiDocsUtil {
 								groupKeyList.add(groupKey);
 							}
 							String[] fieldTypeArr = { "list", "class" };
-							if (ClassUtil.containsStr(fieldTypeArr, fieldType)) {
+							if (StringUtil.containsStr(fieldTypeArr, fieldType)) {
 								// 如果字段是以上数组，级别就减1
 								grade--;
 							}

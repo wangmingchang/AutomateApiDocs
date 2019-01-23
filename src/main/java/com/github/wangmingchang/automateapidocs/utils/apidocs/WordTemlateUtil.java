@@ -32,7 +32,7 @@ public class WordTemlateUtil {
 		String dirPath = "/templates/word";
 		savePath += wordPackageName;
 		if (StringUtils.isNotBlank(savePath)) {
-			ClassUtil.createFolder(savePath);
+			PathUtil.createFolder(savePath);
 		}
 		File file = new File(savePath + "/api.doc");
 		try {

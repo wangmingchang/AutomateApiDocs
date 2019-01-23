@@ -25,7 +25,7 @@ import freemarker.template.Template;
  * HTML生成模板工具
  * 
  * @author 王明昌
- * @since 2017年10月18日
+ * @date 2017年10月18日
  */
 public class HtmlTemlateUtil {
 	private static String htmlpackageName = "/apiDocs/api-html/";// 生成html保存的包名
@@ -118,7 +118,7 @@ public class HtmlTemlateUtil {
 			String dirPath = "/templates/apiDocs/html";
 			savePath += htmlpackageName;
 			if (StringUtils.isNotBlank(savePath)) {
-				ClassUtil.createFolder(savePath);
+				PathUtil.createFolder(savePath);
 			}
 			File file = new File(savePath + saveFileName);
 			Template template = FreemarkerConfig.getTemplateFactory(dirPath, templateName);
