@@ -1,6 +1,7 @@
 package com.github.wangmingchang.automateapidocs.pojo.apidocs;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 生成html页面的api数据DTO
@@ -10,14 +11,14 @@ import java.util.List;
  */
 public class HtmlMethonContentDto {
 	private ClassExplainDto classExplainDto; // 类的注释说明DTO
-	private List<String> methodDescriptions; // 方法业务说明
+	private List<Map<String, String>> methodDescriptions; // 方法业务说明
 	private List<MethodInfoDto> methodInfoDtos; // 方法信息
 
 	public HtmlMethonContentDto() {
 		super();
 	}
 
-	public HtmlMethonContentDto(ClassExplainDto classExplainDto, List<String> methodDescriptions,
+	public HtmlMethonContentDto(ClassExplainDto classExplainDto, List<Map<String, String>> methodDescriptions,
 			List<MethodInfoDto> methodInfoDtos) {
 		super();
 		this.classExplainDto = classExplainDto;
@@ -33,11 +34,11 @@ public class HtmlMethonContentDto {
 		this.classExplainDto = classExplainDto;
 	}
 
-	public List<String> getMethodDescriptions() {
+	public List<Map<String, String>> getMethodDescriptions() {
 		return methodDescriptions;
 	}
 
-	public void setMethodDescriptions(List<String> methodDescriptions) {
+	public void setMethodDescriptions(List<Map<String, String>> methodDescriptions) {
 		this.methodDescriptions = methodDescriptions;
 	}
 

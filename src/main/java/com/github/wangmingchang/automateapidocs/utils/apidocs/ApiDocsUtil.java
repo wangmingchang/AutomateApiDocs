@@ -3,6 +3,7 @@ package com.github.wangmingchang.automateapidocs.utils.apidocs;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +70,8 @@ public class ApiDocsUtil {
 				}
 				// 添加样式
 				HtmlTemlateUtil.addCss(savePath);
+				HtmlTemlateUtil.setApiTemplate(savePath,htmlMethonContentDtos);
+				CreateFileUtil.createJsonFile(new Gson().toJson(htmlMethonContentDtos), "D:\\idea-repository\\wangmingchang\\AutomateApiDocs\\src\\main\\resources\\apiDocs\\api-html", "apiData");
 			}
 			if (isWord) {
 				WordTemlateUtil.setWordTemplate(savePath, wordContentDtos);
@@ -92,7 +95,7 @@ public class ApiDocsUtil {
 			for (String classNameStr : classNames) {
 				ClassExplainDto classExplainDto = new ClassExplainDto(); // 类的头部相关信息
 				List<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); // 类中的方法多行注释的信息
-				List<String> methodDescriptions = new ArrayList<String>(); // 方法业务说明
+				List<Map<String,String>> methodDescriptions = new ArrayList<>(); // 方法业务说明
 				List<MethodInfoDto> methodInfoDtos = new ArrayList<MethodInfoDto>(); // 方法信息
 
 				Class<?> className = Class.forName(classNameStr);
@@ -142,9 +145,9 @@ public class ApiDocsUtil {
 							RequestMethod[] requestMethods = requestMapping.method();
 							for (RequestMethod requestMethod : requestMethods) {
 								if(requestMethod.equals(RequestMethod.GET)) {
-									type = "get";
+									type = "GET";
 								}else if(requestMethod.equals(RequestMethod.POST)) {
-									type = "post";
+									type = "POST";
 								}else {
 									continue;
 								}
@@ -152,11 +155,11 @@ public class ApiDocsUtil {
 						}else if(method.isAnnotationPresent(PostMapping.class)){
 							PostMapping postMapping = className.getAnnotation(PostMapping.class);
 							value = postMapping.value();
-							type = "post";
+							type = "POST";
 						}else{
 							GetMapping getMapping = className.getAnnotation(GetMapping.class);
 							value = getMapping.value();
-							type = "get";
+							type = "GET";
 						}
 						for (String string : value) {
 							methodPath = path + string;
@@ -169,10 +172,14 @@ public class ApiDocsUtil {
 						Class<?>[] responseBeans = apiDocs.responseBeans(); // 多个响应数据Bean
 
 						String url = apiDocs.url(); // 请求方法路径
+						Map<String, String> methodDescriptionMap = new LinkedHashMap<>();
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
 						if( StringUtils.isBlank(methodDescription)) {
 							methodDescription = methodExplainDto.getExplain();
 						}
+						String methodKey = UUID.randomUUID().toString();
+						methodDescriptionMap.put("methodDescriptionValue", methodDescription);
+						methodDescriptionMap.put("methodKey", methodKey);
 						url = StringUtils.isBlank(url) ? methodPath : path + url;
 						List<ResponseDataDto> baseResponseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息(基础类)
 						List<ResponseDataDto> responseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息
@@ -277,7 +284,7 @@ public class ApiDocsUtil {
 							responseClassDtos.add(responseClassDto);
 						}
 
-						methodDescriptions.add(methodDescription);
+						methodDescriptions.add(methodDescriptionMap);
 						MethodInfoDto methodInfoDto = new MethodInfoDto();
 						methodInfoDto.setMethodDescription(methodDescription);
 						methodInfoDto.setType(type);
@@ -285,6 +292,7 @@ public class ApiDocsUtil {
 						methodInfoDto.setRequestParamDtos(requestParamDtos);
 						methodInfoDto.setResponseClassDtos(responseClassDtos);
 						methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
+						methodInfoDto.setMethodKey(methodKey);
 						methodInfoDtos.add(methodInfoDto);
 						System.out.println("*****************************************");
 						System.out.println("类的说明 ：" + classExplainDto.getExplain());
@@ -294,6 +302,7 @@ public class ApiDocsUtil {
 						System.out.println("请求字段信息：" + requestParamDtos);
 						System.out.println("响应字段信息：" + responseClassDtos);
 						System.out.println("响应字段basRespons信息：" + baseResponseDataDtos);
+						System.out.println("methodKey：" + methodKey);
 
 					}
 				}

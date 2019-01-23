@@ -115,32 +115,20 @@
     <div class="main-left" style="">
         <div class="list-group">
             <ul class="list-group-ul">
-                <li>
-                    <a href="javascript:void(0);" class="list-group-item active">
-                        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                        <span> Cras justo odio</span>
-                    </a>
+                <#list htmlMethonContentDtos as  htmlMethonContentDto>
+                    <li>
+                        <a href="javascript:void(0);" class="list-group-item active">
+                            <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                            <span> ${htmlMethonContentDto.classExplainDto.explain}</span>
+                        </a>
                     <ul>
-                        <li id="a" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  >子接口1</a></li>
-                        <li id="b" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  >子接口2</a></li>
-                        <li id="c" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"> Cras justo odio</a></li>
-                        <li id="d" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  >子接口1</a></li>
-                        <li id="e" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  >子接口2</a></li>
-                        <li id="f" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"> Cras justo odio</a></li>
-                        <li id="g" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  ><nobr>帮助一名乘坐渡轮的孕妇拎包下船帮助一名乘坐渡轮的孕妇拎包下船</nobr></a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:void(0);" class="list-group-item">
-                        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                        <span>Dapibus ac facilisis in</span>
-                    </a>
-                    <ul>
-                        <li id="i" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  >子接口1</a></li>
-                        <li id="j" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"  >子接口2</a></li>
-                        <li id="h" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);"> Cras justo odio</a></li>
-                    </ul>
-                </li>
+                        <#list htmlMethonContentDto.methodDescriptions as methodDescription>
+                            <li id="${methodDescription['methodKey']!''}" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">${methodDescription["methodDescriptionValue"]!''}</a></li>
+                        </#list>
+                        </ul>
+                    </li>
+
+                </#list>
             </ul>
         </div>
         <!--空白内容-->
@@ -156,13 +144,13 @@
         <div class="main-panel">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h2 id="methodDescription">index方法</h2>
-                     <div class="data-head">
-                         <div><label>请求方式：</label><span id="request-type"></span></div>
-                         <div><label>请求路径：</label><span id="request-url"></span></div>
-                     </div>
+                    <h2>index方法</h2>
+                    <div class="data-head">
+                        <div><label>请求方式：</label><span>POST</span></div>
+                        <div><label>请求路径：</label><span>/web/register/registerEvent</span></div>
+                    </div>
                     <h3>请求参数</h3>
-                    <table id="table-requestParamDtos" class="table table-bordered">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th width="20%">参数名称</th>
@@ -172,6 +160,10 @@
                         </tr>
                         </thead>
                         <tbody>
+
+                        <tr>
+                            <td colspan="4" style="text-align:center">无请求参数！</td>
+                        </tr>
                         </tbody>
                     </table>
                     <div class="panel panel-default">
@@ -191,19 +183,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="active"><td >1</td><td>Mark</td><td>Otto</td><td>@mdo</td></tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr class="active">
-                            <td>3</td>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
                         <tr>
                             <td colspan="4" style="text-align:center">无响应结果！</td>
                         </tr>
@@ -212,12 +191,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">响应结果样例</div>
                         <div class="panel-body">
-                            {
-                            "code":"0000",
-                            "responseTime":"20180606103005",
-                            "msg":"成功",
-                            "data":"6445712"
-                            }
+                            无！
                         </div>
                     </div>
                 </div>
@@ -230,7 +204,6 @@
 </body>
 
 <script type="text/javascript">
-    var methodInfoDtos = []; //方法的数组
     $(function () {
         $(".main-left").height($(document).height()-50);
         //设置左边菜单
@@ -249,19 +222,6 @@
                 $($this).removeClass('active');
             }
         });
-
-        $.getJSON("apiDocs/api-html/apiData.json", function (data) {
-            $.each(data, function (i, htmlMethonContentDto) {
-               console.log(htmlMethonContentDto);
-               var methodInfoDtoArr = htmlMethonContentDto.methodInfoDtos;
-                console.log(methodInfoDtoArr);
-                for (var i = 0; i< methodInfoDtoArr.length; i++){
-                    methodInfoDtos.push(methodInfoDtoArr[i]);
-                }
-                console.log(methodInfoDtos);
-            })
-        })
-
         init();
     });
 
@@ -328,40 +288,11 @@
         if(existLi != null){
             $(existLi).addClass('active');
         }else {
-            var html_str = '<li data-leftliid="'+ liId +'" role="presentation" class="active" ><a href="javascript:void(0);"><nobr>'+textContent+'</nobr></a><span  class="glyphicon glyphicon-remove" aria-hidden="true"></span></li>';
-            $(".nav-tabs").append(html_str);
+            var htmlStr = '<li data-leftliid="'+ liId +'" role="presentation" class="active" ><a href="javascript:void(0);"><nobr>'+textContent+'</nobr></a><span  class="glyphicon glyphicon-remove" aria-hidden="true"></span></li>';
+            $(".nav-tabs").append(htmlStr);
             init();
             $(".main-panel").show();
         }
-
-        //设置数据
-        for(var i = 0; i < methodInfoDtos.length; i ++){
-            var methodInfoDto = methodInfoDtos[i];
-            var methodKey = methodInfoDto.methodKey;
-            var requestParamDtos = methodInfoDto.requestParamDtos;
-            $("#methodDescription").text(methodInfoDto.methodDescription);
-            $("#request-type").text(methodInfoDto.type);
-            $("#request-url").text(methodInfoDto.url);
-            if(requestParamDtos.length > 0){
-                for(var j = 0; j < requestParamDtos.length; j++){
-                    var className = 'active';
-                    if(j % 2 == 0){
-                        className = 'active';
-                    }else {
-                        className = '';
-                    }
-                    var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+requestParamDtos[j].required+'</td><td>'+requestParamDtos[j].description+'</td></tr>';
-                    $("#table-requestParamDtos tbody").append(html_str);
-                }
-
-            }else {
-                $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
-            }
-            break;
-            if(methodKey == liId){
-            }
-        }
-
     }
 
 </script>

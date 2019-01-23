@@ -12,7 +12,7 @@
 		</h1>
 		<#list methodDescriptions as methodDescription>
 		<ul class="toc">
-			<li><a href="#${methodDescription}">${methodDescription}</a></li>
+			<li><a href="#${methodDescription['methodDescriptionValue']!''}">${methodDescription['methodDescriptionValue']!''}</a></li>
 		</ul>
 		</#list>
 		<hr>
