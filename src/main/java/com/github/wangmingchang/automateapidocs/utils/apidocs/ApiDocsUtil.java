@@ -5,6 +5,8 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,23 +16,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassFiedInfoDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassMoreRemarkDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.HtmlMethonContentDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodInfoDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ResponseClassDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ResponseDataDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.WordContentDto;
 
 /**
  * 自动生成API工具

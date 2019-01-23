@@ -5,6 +5,8 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.RuntimeErrorException;
 import java.io.*;
@@ -18,25 +20,11 @@ import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.management.RuntimeErrorException;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassFiedInfoDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.ClassMoreRemarkDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.MethodExplainDto;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.RequestParamDto;
 
 /**
  * 类相关的工具类
@@ -51,12 +39,6 @@ public class ClassUtil {
 	private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
 	/** 属性名和类型集合 ***/
 	private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
-    private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
-    /**
-     * 属性名和类型集合
-     ***/
-    private static List<ClassFiedInfoDto> fieldInfos = new ArrayList<ClassFiedInfoDto>();
-
     public static ClassUtil classUtil = new ClassUtil();
     private static int gradeNum = 1; // 级别
 
@@ -416,6 +398,111 @@ public class ClassUtil {
 	 * 
 	 * @param cur_class
 	 *            class
+	 * @param baseResponseBeanGenericity
+	 * @param isDelete
+	 *            是否删除list的缓存
+	 * @param gradeNum
+	 *            排序号
+	 * @return 类的所有字段属性名称（包括父类）
+	 * @throws Exception
+	 *             自定异常
+	 */
+	public static List<ClassFiedInfoDto> getClassFieldAndMethod(Class<?> cur_class, Class<?> baseResponseBeanGenericity, boolean isDelete, int gradeNum)
+			throws Exception {
+		if (isDelete) {
+			fieldInfos.clear(); // 清空List
+		}
+		String class_name = cur_class.getName();
+		List<String> oneWayRemarks = getOneWayRemark(cur_class); // 注释
+		Field[] obj_fields = cur_class.getDeclaredFields(); // 字段
+		int fieldNum = 0;// 字段数
+		List<Field> fields = new ArrayList<Field>();
+		for (int i = 0; i < obj_fields.length; i++) {
+			// 获取get方法的字段
+			Field field = obj_fields[i];
+			field.setAccessible(true);
+			if (getGetMethod(cur_class, field.getName()) != null) {
+				fields.add(field);
+				fieldNum++;
+			}
+		}
+		//TODO
+		System.out.println("fields长度："+fields.size());
+		System.out.println("fields--->" + fields);
+		System.out.println("oneWayRemarks长度："+oneWayRemarks.size());
+		System.out.println("oneWayRemarks--->" + oneWayRemarks);
+		
+		/*
+		 * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
+		 * class_name + "：类有get方法的字段没有注释"); }
+		 */
+		for (int i = 0; i < fields.size(); i++) {
+			ClassFiedInfoDto classFiedInfoDto = new ClassFiedInfoDto();
+			Field field = fields.get(i);
+			field.setAccessible(true);
+			if (field.isAnnotationPresent(ApiDocsParam.class)) {
+				ApiDocsParam apiDocsParam = field.getAnnotation(ApiDocsParam.class);
+				if (!apiDocsParam.value()) {
+					// 不是必传字段
+					classFiedInfoDto.setIfPass(false);
+				}
+			}
+			classFiedInfoDto.setName(field.getName());
+
+			String type = getClassFieldType(field.getType());
+			if (type.equals("list")) {
+				Type listType = field.getGenericType();
+				if (listType instanceof ParameterizedType) {
+					ParameterizedType pt = (ParameterizedType) listType;
+
+					// 获取list中的真实类型
+					Class genericClazz = (Class) pt.getActualTypeArguments()[0];
+					if (!genericClazz.getName().startsWith("java.lang")
+							&& !genericClazz.getName().startsWith("java.util.Date")
+							&& !genericClazz.getName().startsWith("javax")
+							&& !genericClazz.getName().startsWith("com.sun")
+							&& !genericClazz.getName().startsWith("sun")
+							&& !genericClazz.getName().startsWith("boolean")
+							&& !genericClazz.getName().startsWith("double")
+							&& !genericClazz.getName().startsWith("int")) {
+						// 设置子节点
+						classFiedInfoDto.setChildNode(field.getName());
+						// 获取list中对象
+						if (!class_name.equals(genericClazz.getName())) {
+							getClassFieldAndMethodForChildNode(genericClazz, field.getName(), gradeNum + 1);
+						}
+					}
+				}
+				classFiedInfoDto.setGrade(gradeNum + 1);
+			} else if (type.indexOf("class") != -1) {
+				// 可能字段是一个对象
+				Class<?> forName = Class.forName(type.substring(6, type.length()));
+				// 设置子节点
+				classFiedInfoDto.setChildNode(field.getName());
+				getClassFieldAndMethodForChildNode(forName, field.getName(), gradeNum + 1);
+				type = "class";
+				classFiedInfoDto.setGrade(gradeNum + 1);
+			} else {
+				classFiedInfoDto.setGrade(gradeNum);
+			}
+
+			classFiedInfoDto.setType(type);
+			classFiedInfoDto.setDescription(oneWayRemarks.get(i));
+
+			fieldInfos.add(classFiedInfoDto);
+		}
+
+		if (cur_class.getSuperclass() != null && cur_class.getSuperclass() != Object.class) {
+			getClassFieldAndMethod(cur_class.getSuperclass(), false, gradeNum + 1);
+			// .out.println("父类：" + cur_class.getSuperclass());
+		}
+		return fieldInfos;
+	}
+	/**
+	 * 获取类的所有字段属性名称（包括父类）
+	 *
+	 * @param cur_class
+	 *            class
 	 * @param isDelete
 	 *            是否删除list的缓存
 	 * @param gradeNum
@@ -448,7 +535,7 @@ public class ClassUtil {
 		System.out.println("fields--->" + fields);
 		System.out.println("oneWayRemarks长度："+oneWayRemarks.size());
 		System.out.println("oneWayRemarks--->" + oneWayRemarks);
-		
+
 		/*
 		 * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
 		 * class_name + "：类有get方法的字段没有注释"); }
@@ -969,7 +1056,7 @@ public class ClassUtil {
 					if (remarkStr.contains("author")) {
 						// 如果有author,就说明是类的头部说明
 						//ClassExplainDto classExplainDto = new ClassExplainDto();
-						String[] split = split(remarkStr);
+						String[] split = StringUtil.split(remarkStr);
 						int legth = split.length;
 						for (int i = 0; i < split.length; i++) {
 							if (split[i].indexOf("@") == -1) {
@@ -998,7 +1085,7 @@ public class ClassUtil {
 						MethodExplainDto methodExplainDto = new MethodExplainDto();
 						ArrayList<RequestParamDto> paramDtos = new ArrayList<RequestParamDto>();
 
-						String[] split = split(remarkStr);
+						String[] split = StringUtil.split(remarkStr);
 						int legth = split.length;
 						for (int i = 0; i < split.length; i++) {
 							if (split[i].indexOf("@") == -1) {
