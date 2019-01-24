@@ -55,7 +55,7 @@ public @interface ApiDocsMethod {
      * 请求方式
      * @return 返回请求方式
      */
-	String type() default "post";
+	String type() default "POST";
 	/**
 	 * 方法说明
 	 * @return 返回方法说明

@@ -9,8 +9,8 @@
         <module name="AutomateApiDocs" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="AutomateApiDocs" target="7" />
+    <bytecodeTargetLevel target="8">
+      <module name="AutomateApiDocs" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

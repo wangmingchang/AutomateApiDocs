@@ -7,9 +7,13 @@ package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
  * @since 2017年10月11日
  */
 public class Fish {
-	private String type; // 种类
+	/**
+	 * 种类
+	 */
+	private String type;
 	private String name; // 名字
-	private PageDto pageDto; // 分页信息
+	/**分页信息*/
+	private PageDto pageDto;
 
 	public PageDto getPageDto() {
 		return pageDto;

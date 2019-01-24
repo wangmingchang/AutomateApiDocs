@@ -98,7 +98,6 @@ public class ApiDocsUtil {
 			List<String> classNames = ClassUtil.getClassName(packageName);
 			for (String classNameStr : classNames) {
 				ClassExplainDto classExplainDto = new ClassExplainDto(); // 类的头部相关信息
-				List<MethodExplainDto> methodExplainDtos = new ArrayList<MethodExplainDto>(); // 类中的方法多行注释的信息
 				List<Map<String,String>> methodDescriptions = new ArrayList<>(); // 方法业务说明
 				List<MethodInfoDto> methodInfoDtos = new ArrayList<MethodInfoDto>(); // 方法信息
 
@@ -111,8 +110,8 @@ public class ApiDocsUtil {
 
 				ClassMoreRemarkDto classMoreRemark = ClassUtil.getClassMoreRemark(className);
 				classExplainDto = classMoreRemark.getClassExplainDto(); // 类的头部相关信息
-				methodExplainDtos = classMoreRemark.getMethodExplainDtos(); // 类中的方法多行注释的信息
-				if (classExplainDto == null || methodExplainDtos.size() == 0) {
+				Map<String, MethodExplainDto> methodExplainDtoMap = classMoreRemark.getMethodExplainDtoMap();//类的方法多行注释Map(key:methodMapKey-0；value:和备注信息)
+				if (methodExplainDtoMap == null || methodExplainDtoMap.size() == 0) {
 					continue;
 				}
 
@@ -134,7 +133,7 @@ public class ApiDocsUtil {
 
 					String methodPath = ""; // 方法请求路径
 					if (method.isAnnotationPresent(ApiDocsMethod.class)) {
-						MethodExplainDto methodExplainDto = methodExplainDtos.get(methodExplainDtosIndex);
+						MethodExplainDto methodExplainDto = methodExplainDtoMap.get(ConstantsUtil.METHOD_MAP_KEY + methodExplainDtosIndex);
 						methodExplainDtosIndex++;
 						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); // 请求的参数
 						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
@@ -143,7 +142,7 @@ public class ApiDocsUtil {
 						String[] value = {}; // 获取方法上的路径
 						String type = apiDocs.type(); // 请求方式
 						if (method.isAnnotationPresent(RequestMapping.class)) {
-							RequestMapping requestMapping = className.getAnnotation(RequestMapping.class);
+							RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
 							value = requestMapping.value();
 							//获取requestMapping中的请求方式
 							RequestMethod[] requestMethods = requestMapping.method();
@@ -231,7 +230,7 @@ public class ApiDocsUtil {
 						if (StringUtil.isRealClass(baseResponseBean)) {
 							// 有基础类返回
 							List<ClassFiedInfoDto> responseFieldInfos = ClassUtil
-									.getClassFieldAndMethod(baseResponseBean, baseResponseBeanGenericity, true, 1);
+									.getClassFieldAndMethod(baseResponseBean, true, 1);
 							if (responseFieldInfos != null && responseFieldInfos.size() > 0) {
 								for (ClassFiedInfoDto classFiedInfoDto : responseFieldInfos) {
 									ResponseDataDto responseDataDto = new ResponseDataDto();

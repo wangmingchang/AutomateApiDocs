@@ -1,6 +1,6 @@
 package com.github.wangmingchang.automateapidocs.pojo.apidocs;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 多行注释返回类
@@ -11,15 +11,15 @@ import java.util.List;
 
 public class ClassMoreRemarkDto {
 
-	private List<MethodExplainDto> methodExplainDtos; //方法的注释说明DTO
+	private Map<String,MethodExplainDto> methodExplainDtoMap; //类的方法多行注释Map(key:methodMapKey-0；value:和备注信息)
 	private ClassExplainDto classExplainDto; //类的注释说明DTO
 
-	public List<MethodExplainDto> getMethodExplainDtos() {
-		return methodExplainDtos;
+	public Map<String, MethodExplainDto> getMethodExplainDtoMap() {
+		return methodExplainDtoMap;
 	}
 
-	public void setMethodExplainDtos(List<MethodExplainDto> methodExplainDtos) {
-		this.methodExplainDtos = methodExplainDtos;
+	public void setMethodExplainDtoMap(Map<String, MethodExplainDto> methodExplainDtoMap) {
+		this.methodExplainDtoMap = methodExplainDtoMap;
 	}
 
 	public ClassExplainDto getClassExplainDto() {
@@ -32,8 +32,9 @@ public class ClassMoreRemarkDto {
 
 	@Override
 	public String toString() {
-		return "ClassMoreRemarkDto [methodExplainDtos=" + methodExplainDtos + ", classExplainDto=" + classExplainDto
-				+ "]";
+		return "ClassMoreRemarkDto{" +
+				"methodExplainDtoMap=" + methodExplainDtoMap +
+				", classExplainDto=" + classExplainDto +
+				'}';
 	}
-
 }

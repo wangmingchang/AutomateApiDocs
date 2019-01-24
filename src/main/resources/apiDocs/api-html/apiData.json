@@ -3,27 +3,27 @@
     "classExplainDto": {
       "explain": "HTML-controller",
       "author": "王明昌",
-      "createDate": "2017年9月3日"
+      "createDate": ""
     },
     "methodDescriptions": [
       {
         "methodDescriptionValue": "index方法",
-        "methodKey": "abe539c2-edf2-412f-be28-c8ac7d71b9de"
+        "methodKey": "11d4cb3e-156a-48df-8676-46fc318a92dc"
+      },
+      {
+        "methodDescriptionValue": "hell方法请求参数",
+        "methodKey": "a1c866a3-a94f-4d4d-8dfc-efbc325a7412"
       },
       {
         "methodDescriptionValue": "hell方法",
-        "methodKey": "9fabdb44-5844-4ac8-a9ab-716060315735"
-      },
-      {
-        "methodDescriptionValue": "获老师信息",
-        "methodKey": "6b1e65fa-e54d-4887-92e9-cd2e0d86084d"
+        "methodKey": "a4635d35-fb0b-4238-b7af-b470a6364b6d"
       }
     ],
     "methodInfoDtos": [
       {
         "methodDescription": "index方法",
-        "type": "post",
-        "url": "/api/index/v1/api/index/v1",
+        "type": "POST",
+        "url": "/api/index/v1/index",
         "requestParamDtos": [
           {
             "name": "type",
@@ -113,7 +113,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -122,7 +121,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -131,7 +129,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -140,7 +137,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -149,13 +145,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -191,7 +186,7 @@
           {
             "name": "code",
             "type": "string",
-            "description": "返回状态码TRUE/FALSE此字段是通信标识，非交易标识，交易是否成功需要查看bizCode来判断",
+            "description": "返回状态码TRUEFALSE此字段是通信标识，非交易标识，交易是否成功需要查看bizCode来判断",
             "grade": 0,
             "sequence": 0
           },
@@ -210,9 +205,23 @@
             "sequence": 0
           },
           {
-            "name": "data",
+            "name": "status",
+            "type": "string",
+            "description": "状态（1：成功；0：失败）",
+            "grade": 0,
+            "sequence": 0
+          },
+          {
+            "name": "msg",
+            "type": "string",
+            "description": "状态说明",
+            "grade": 0,
+            "sequence": 0
+          },
+          {
+            "name": "result",
             "type": "object",
-            "description": "返回业务参数",
+            "description": "返回数据",
             "responseDataDtos": [
               {
                 "name": "id",
@@ -249,7 +258,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -258,7 +266,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -267,7 +274,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -276,7 +282,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -285,13 +290,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -321,14 +325,70 @@
             ],
             "grade": 0,
             "sequence": 0
+          },
+          {
+            "name": "data",
+            "type": "class",
+            "description": "返回业务参数",
+            "grade": 0,
+            "sequence": 0
           }
         ],
-        "methodKey": "abe539c2-edf2-412f-be28-c8ac7d71b9de"
+        "methodKey": "11d4cb3e-156a-48df-8676-46fc318a92dc"
+      },
+      {
+        "methodDescription": "hell方法请求参数",
+        "type": "POST",
+        "url": "/api/index/v1/getTeacharInfo",
+        "requestParamDtos": [
+          {
+            "name": "map",
+            "type": "string",
+            "required": true,
+            "description": "请求参数"
+          }
+        ],
+        "responseClassDtos": [
+          {
+            "className": "BaseResponseVo",
+            "responseDataDtos": [
+              {
+                "name": "status",
+                "type": "string",
+                "description": "状态（1：成功；0：失败）",
+                "className": "BaseResponseVo",
+                "grade": 1,
+                "sequence": 1
+              },
+              {
+                "name": "msg",
+                "type": "string",
+                "description": "状态说明",
+                "className": "BaseResponseVo",
+                "grade": 1,
+                "sequence": 2
+              },
+              {
+                "name": "result",
+                "type": "object",
+                "description": "返回数据",
+                "className": "BaseResponseVo",
+                "grade": 1,
+                "sequence": 3
+              }
+            ],
+            "grade": 1,
+            "fieldType": "object"
+          }
+        ],
+        "baseResponseDataDtos": [
+        ],
+        "methodKey": "a1c866a3-a94f-4d4d-8dfc-efbc325a7412"
       },
       {
         "methodDescription": "hell方法",
-        "type": "post",
-        "url": "/api/index/v1/api/index/v1",
+        "type": "POST",
+        "url": "/api/index/v1/helloHtml",
         "requestParamDtos": [
           {
             "name": "pageNo",
@@ -400,7 +460,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -409,7 +468,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -418,7 +476,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -427,7 +484,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -436,13 +492,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -529,7 +584,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -538,7 +592,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -547,7 +600,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -556,7 +608,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -565,13 +616,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -603,60 +653,7 @@
             "sequence": 0
           }
         ],
-        "methodKey": "9fabdb44-5844-4ac8-a9ab-716060315735"
-      },
-      {
-        "methodDescription": "获老师信息",
-        "type": "post",
-        "url": "/api/index/v1/api/index/v1",
-        "requestParamDtos": [
-          {
-            "name": "path",
-            "type": "string",
-            "required": true,
-            "description": "@return"
-          },
-          {
-            "name": "id",
-            "type": "string",
-            "required": true,
-            "description": "主键"
-          },
-          {
-            "name": "name",
-            "type": "string",
-            "required": true,
-            "description": "姓名"
-          }
-        ],
-        "responseClassDtos": [
-        ],
-        "baseResponseDataDtos": [
-          {
-            "name": "status",
-            "type": "string",
-            "description": "状态（1：成功；0：失败）",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "description": "状态说明",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "description": "返回数据",
-            "responseDataDtos": [
-            ],
-            "grade": 0,
-            "sequence": 0
-          }
-        ],
-        "methodKey": "6b1e65fa-e54d-4887-92e9-cd2e0d86084d"
+        "methodKey": "a4635d35-fb0b-4238-b7af-b470a6364b6d"
       }
     ]
   },
@@ -664,27 +661,27 @@
     "classExplainDto": {
       "explain": "测试Controller",
       "author": "王明昌",
-      "createDate": "2017年10月11日"
+      "createDate": ""
     },
     "methodDescriptions": [
       {
         "methodDescriptionValue": "index方法",
-        "methodKey": "692bc86d-2a39-456b-8053-f7a494d7a486"
-      },
-      {
-        "methodDescriptionValue": "hell方法",
-        "methodKey": "d3ec782d-7c93-4afc-a6c5-b8fc50e60db1"
+        "methodKey": "68f6419f-c4ed-4dd0-ac91-77d539823fea"
       },
       {
         "methodDescriptionValue": "获老师信息",
-        "methodKey": "4076dfb8-33a8-46f3-accf-54f436740e39"
+        "methodKey": "8742206e-e842-4cd4-9134-a4211aea780b"
+      },
+      {
+        "methodDescriptionValue": "hell方法",
+        "methodKey": "efbfb3a3-dd2c-4395-9881-afc98c7a1d04"
       }
     ],
     "methodInfoDtos": [
       {
         "methodDescription": "index方法",
-        "type": "post",
-        "url": "/test/test",
+        "type": "POST",
+        "url": "/test/",
         "requestParamDtos": [
           {
             "name": "type",
@@ -774,7 +771,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -783,7 +779,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -792,7 +787,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -801,7 +795,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -810,13 +803,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -903,7 +895,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -912,7 +903,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -921,7 +911,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -930,7 +919,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -939,13 +927,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -977,12 +964,136 @@
             "sequence": 0
           }
         ],
-        "methodKey": "692bc86d-2a39-456b-8053-f7a494d7a486"
+        "methodKey": "68f6419f-c4ed-4dd0-ac91-77d539823fea"
+      },
+      {
+        "methodDescription": "获老师信息",
+        "type": "POST",
+        "url": "/test/getTeacharInfo",
+        "requestParamDtos": [
+          {
+            "name": "map",
+            "type": "string",
+            "required": true,
+            "description": "请求参数"
+          }
+        ],
+        "responseClassDtos": [
+          {
+            "className": "DemoVo",
+            "responseDataDtos": [
+              {
+                "name": "id",
+                "type": "string",
+                "description": "主键2",
+                "className": "DemoVo",
+                "grade": 1,
+                "sequence": 1
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "description": "姓名",
+                "className": "DemoVo",
+                "grade": 1,
+                "sequence": 2
+              },
+              {
+                "name": "socre",
+                "type": "Double",
+                "description": "分数",
+                "className": "DemoVo",
+                "grade": 1,
+                "sequence": 3
+              },
+              {
+                "name": "carVo",
+                "type": "class",
+                "description": "车",
+                "childNode": "carVo",
+                "className": "DemoVo",
+                "responseDataDtos": [
+                  {
+                    "name": "carName",
+                    "type": "string",
+                    "description": "车名",
+                    "className": "DemoVo",
+                    "grade": 2,
+                    "sequence": 4
+                  },
+                  {
+                    "name": "weig",
+                    "type": "Double",
+                    "description": "重量",
+                    "className": "DemoVo",
+                    "grade": 2,
+                    "sequence": 5
+                  },
+                  {
+                    "name": "color",
+                    "type": "string",
+                    "description": "颜色",
+                    "className": "DemoVo",
+                    "grade": 2,
+                    "sequence": 6
+                  },
+                  {
+                    "name": "displacement",
+                    "type": "string",
+                    "description": "排量",
+                    "className": "DemoVo",
+                    "grade": 2,
+                    "sequence": 7
+                  },
+                  {
+                    "name": "price",
+                    "type": "Double",
+                    "description": "售价",
+                    "className": "DemoVo",
+                    "grade": 2,
+                    "sequence": 8
+                  }
+                ],
+                "grade": 2,
+                "sequence": 9
+              },
+              {
+                "name": "status",
+                "type": "string",
+                "description": "状态（1：成功；0：失败）",
+                "className": "DemoVo",
+                "grade": 2,
+                "sequence": 10
+              },
+              {
+                "name": "msg",
+                "type": "string",
+                "description": "状态说明",
+                "className": "DemoVo",
+                "grade": 2,
+                "sequence": 11
+              },
+              {
+                "name": "result",
+                "type": "object",
+                "description": "返回数据",
+                "className": "DemoVo",
+                "grade": 2,
+                "sequence": 12
+              }
+            ],
+            "grade": 2,
+            "fieldType": "object"
+          }
+        ],
+        "baseResponseDataDtos": [
+        ],
+        "methodKey": "8742206e-e842-4cd4-9134-a4211aea780b"
       },
       {
         "methodDescription": "hell方法",
         "type": "post",
-        "url": "/test/test",
+        "url": "/test/helloHtml",
         "requestParamDtos": [
           {
             "name": "pageNo",
@@ -1054,7 +1165,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -1063,7 +1173,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -1072,7 +1181,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -1081,7 +1189,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -1090,13 +1197,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -1183,7 +1289,6 @@
                     "name": "carName",
                     "type": "string",
                     "description": "车名",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 4
@@ -1192,7 +1297,6 @@
                     "name": "weig",
                     "type": "Double",
                     "description": "重量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 5
@@ -1201,7 +1305,6 @@
                     "name": "color",
                     "type": "string",
                     "description": "颜色",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 6
@@ -1210,7 +1313,6 @@
                     "name": "displacement",
                     "type": "string",
                     "description": "排量",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 7
@@ -1219,13 +1321,12 @@
                     "name": "price",
                     "type": "Double",
                     "description": "售价",
-                    "parentNode": "carVo",
                     "className": "DemoVo",
                     "grade": 2,
                     "sequence": 8
                   }
                 ],
-                "grade": 1,
+                "grade": 2,
                 "sequence": 9
               },
               {
@@ -1257,142 +1358,7 @@
             "sequence": 0
           }
         ],
-        "methodKey": "d3ec782d-7c93-4afc-a6c5-b8fc50e60db1"
-      },
-      {
-        "methodDescription": "获老师信息",
-        "type": "post",
-        "url": "/test/test",
-        "requestParamDtos": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true,
-            "description": "主键"
-          },
-          {
-            "name": "name",
-            "type": "string",
-            "required": true,
-            "description": "姓名"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "DemoVo",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "parentNode": "carVo",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "parentNode": "carVo",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "parentNode": "carVo",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "parentNode": "carVo",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "parentNode": "carVo",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 1,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 2,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-        ],
-        "methodKey": "4076dfb8-33a8-46f3-accf-54f436740e39"
+        "methodKey": "efbfb3a3-dd2c-4395-9881-afc98c7a1d04"
       }
     ]
   }

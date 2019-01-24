@@ -4,8 +4,6 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import org.apache.commons.lang.StringUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,6 +109,29 @@ public class StringUtil extends StringUtils {
         }
         return dest;
     }
+    /**
+     * 去除斜线（\/）
+     *
+     * @param str
+     *            字符串
+     * @return 没有换行的字符串
+     */
+    public static String replaceSlashBlank(String str) {
+        String dest = "";
+        if (str != null) {
+            String[] strArr = str.split("\\\\");
+            String newStr = "";
+            for (String s : strArr){
+                newStr += s;
+            }
+            String[] newStrArr = newStr.split("/");
+            for (String ns : newStrArr){
+                dest += ns;
+            }
+            dest = replaceBlankAll(dest);
+        }
+        return dest;
+    }
 
 
     /**
@@ -162,4 +183,10 @@ public class StringUtil extends StringUtils {
         return flag;
     }
 
+
+    public static void main(String[] arg){
+        String str = "/**\t * 种类\t */";
+        String s = StringUtil.replaceSlashBlank(str);
+        System.out.println("s----------》" + s);
+    }
 }

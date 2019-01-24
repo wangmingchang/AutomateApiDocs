@@ -144,13 +144,13 @@
         <div class="main-panel">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h2>index方法</h2>
+                    <h2 id="methodDescription"></h2>
                     <div class="data-head">
-                        <div><label>请求方式：</label><span>POST</span></div>
-                        <div><label>请求路径：</label><span>/web/register/registerEvent</span></div>
+                        <div><label>请求方式：</label><span id="request-type"></span></div>
+                        <div><label>请求路径：</label><span id="request-url"></span></div>
                     </div>
                     <h3>请求参数</h3>
-                    <table class="table table-bordered">
+                    <table id="table-requestParamDtos" class="table table-bordered">
                         <thead>
                         <tr>
                             <th width="20%">参数名称</th>
@@ -160,10 +160,6 @@
                         </tr>
                         </thead>
                         <tbody>
-
-                        <tr>
-                            <td colspan="4" style="text-align:center">无请求参数！</td>
-                        </tr>
                         </tbody>
                     </table>
                     <div class="panel panel-default">
@@ -204,6 +200,7 @@
 </body>
 
 <script type="text/javascript">
+    var methodInfoDtos = []; //方法的数组
     $(function () {
         $(".main-left").height($(document).height()-50);
         //设置左边菜单
@@ -222,6 +219,17 @@
                 $($this).removeClass('active');
             }
         });
+        $.getJSON("apiData.json", function (data) {
+            $.each(data, function (i, htmlMethonContentDto) {
+                console.log(htmlMethonContentDto);
+                var methodInfoDtoArr = htmlMethonContentDto.methodInfoDtos;
+                console.log(methodInfoDtoArr);
+                for (var i = 0; i< methodInfoDtoArr.length; i++){
+                    methodInfoDtos.push(methodInfoDtoArr[i]);
+                }
+                console.log(methodInfoDtos);
+            })
+        })
         init();
     });
 
@@ -269,8 +277,10 @@
         });
 
     }
+    var javaTypes = ["class", "list"];
     //子菜单点击事件
     function listGroupItemChildClick(obj) {
+        removeData();
         var liId = obj.id;
         $(".list-group-item-child").each(function () {
             $(this).removeClass("active");
@@ -293,6 +303,54 @@
             init();
             $(".main-panel").show();
         }
+        //设置数据
+        var noExecuteNum = 0;
+        for(var i = 0; i < methodInfoDtos.length; i ++){
+            var methodInfoDto = methodInfoDtos[i];
+            var methodKey = methodInfoDto.methodKey;
+            var requestParamDtos = methodInfoDto.requestParamDtos;
+            if(methodKey == liId){
+                $("#methodDescription").text(methodInfoDto.methodDescription);
+                $("#request-type").text(methodInfoDto.type);
+                $("#request-url").text(methodInfoDto.url);
+                if(requestParamDtos.length > 0){
+                    for(var j = 0; j < requestParamDtos.length; j++){
+                        var className = 'active';
+                        var executeFlag = true;
+                        for(var h = 0; h < javaTypes.length; h++){
+                            if(javaTypes[h] == requestParamDtos[j].type){
+                                executeFlag = false;
+                            }
+                        }
+                        if(!executeFlag){
+                            noExecuteNum++;
+                            continue;
+                        }
+                        if((j + noExecuteNum) % 2 == 0){
+                            className = 'active';
+                        }else {
+                            className = '';
+                        }
+                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+requestParamDtos[j].required+'</td><td>'+requestParamDtos[j].description+'</td></tr>';
+                        $("#table-requestParamDtos tbody").append(html_str);
+                    }
+
+                }else {
+                    $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * 清空数据
+     */
+    function removeData() {
+        $("#methodDescription").text('');
+        $("#request-type").text('');
+        $("#request-url").text('');
+        $("#table-requestParamDtos tbody").remove();
     }
 
 </script>

@@ -22,9 +22,29 @@ public class ConstantsUtil {
     public static final String PARAM_STR= "@param";
     /**return的开头*/
     public static final String RETURN_STR = "@return";
+    /**序列化字段名称*/
+    public static final String SERIAL_VERSION_VID = "serialVersionUID";
 
     /**类或者方法说明的开头数组*/
     public static final String[] EXPLAIN_ARR = {"@explain", "@Explain", "@description" ,"@Description"};
+    /**类或者方法说明的开头数组*/
+    public static final String[] NO_CHECK_ARR = {"@since"};
+    /**字段作用域-private*/
+    public static final String FIELD_SCOPE_PRIVATE = "private";
+    /**字段作用域-public*/
+    public static final String FIELD_SCOPE_PUBLIC = "public";
+    /**字段作用域-class*/
+    public static final String FIELD_SCOPE_CLASS = "class";
+
+
+    /**多行注释开头标记*/
+    public static String MORE_START_FLAG = "/**";
+    /**多行注释结束标记*/
+    public static String MORE_END_FLAG = "*/";
+    /**多行注释星（*）标记*/
+    public static String STAR_FLAG = "*";
+    /**单行注释（//）标记*/
+    public static String ONE_WAY_FLAG = "//";
 
 
 }

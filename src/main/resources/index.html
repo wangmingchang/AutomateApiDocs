@@ -156,7 +156,7 @@
         <div class="main-panel">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h2 id="methodDescription">index方法</h2>
+                    <h2 id="methodDescription"></h2>
                      <div class="data-head">
                          <div><label>请求方式：</label><span id="request-type"></span></div>
                          <div><label>请求路径：</label><span id="request-url"></span></div>
@@ -335,6 +335,8 @@
         }
 
         //设置数据
+        var javaTypes = ["class", "list"];
+        var noExecuteNum = 0;
         for(var i = 0; i < methodInfoDtos.length; i ++){
             var methodInfoDto = methodInfoDtos[i];
             var methodKey = methodInfoDto.methodKey;
@@ -345,7 +347,17 @@
             if(requestParamDtos.length > 0){
                 for(var j = 0; j < requestParamDtos.length; j++){
                     var className = 'active';
-                    if(j % 2 == 0){
+                    var executeFlag = true;
+                    for(var h = 0; h < javaTypes.length; h++){
+                        if(javaTypes[h] == requestParamDtos[j].type){
+                            executeFlag = false;
+                        }
+                    }
+                    if(!executeFlag){
+                        noExecuteNum++;
+                        continue;
+                    }
+                    if((j + noExecuteNum) % 2 == 0){
                         className = 'active';
                     }else {
                         className = '';
