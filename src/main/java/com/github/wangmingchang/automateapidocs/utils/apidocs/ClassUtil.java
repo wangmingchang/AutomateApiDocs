@@ -55,7 +55,7 @@ public class ClassUtil {
     public static void main(String[] args) throws Exception {
         List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
         for (Class clas : classes) {
-            System.out.println(clas.getName());
+            logger.info(clas.getName());
         }
     }
 
@@ -405,9 +405,9 @@ public class ClassUtil {
         }
         //TODO
         logger.info("fields长度：" + fields.size());
-        logger.info("fields--->" + fields);
+        logger.info("fields：" + fields);
         logger.info("pojoRemarkMap长度：" + pojoRemarkMap.size());
-        logger.info("pojoRemarkMap--->" + new Gson().toJson(pojoRemarkMap));
+        logger.info("pojoRemarkMap：" + new Gson().toJson(pojoRemarkMap));
 
         /*
          * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
@@ -708,6 +708,9 @@ public class ClassUtil {
                 //结束标记
                 boolean endFlag = false;
                 while ((temp = breader.readLine()) != null) {
+                    if(StringUtil.isBlank(temp)){
+                        continue;
+                    }
                     if(startFlag){
                         if(temp.contains(ConstantsUtil.FIELD_SCOPE_PUBLIC)){
                             endFlag = true;
@@ -813,7 +816,7 @@ public class ClassUtil {
                 }
             }
         } catch (Exception e) {
-            System.out.println("类：" + className + "文件不存在");
+            logger.info("类：" + className + "文件不存在");
         }
         return path;
     }
@@ -829,31 +832,46 @@ public class ClassUtil {
         ClassMoreRemarkDto classMoreRemarkDto = new ClassMoreRemarkDto();
         //类头部多行注释
         StringBuilder classRemarkSb = new StringBuilder();
-        Map<String, MethodExplainDto> methodExplainDtoMap = new HashMap<>(); //类的方法多行注释Map(key:methodMapKey-0；value:和备注信息)
-        //类的方法多行注释Map(key:methodMapKey-str0；value:和备注信息)
+        //类的方法多行注释Map(key:方法路径；value:备注信息)
+        Map<String, MethodExplainDto> methodExplainDtoMap = new HashMap<>();
+        //类的方法多行注释Map(key:方法路径；value:备注信息)
         Map<String, StringBuilder> sbMap = new HashMap<String, StringBuilder>();
         try {
             FileReader freader = new FileReader(filePath);
             BufferedReader breader = new BufferedReader(freader);
-            String centreStr = "-str";
             StringBuilder moreSb = new StringBuilder();
             StringBuilder tempSb = new StringBuilder();
+            //方法的根路径
+            String methodRootPath = "";
+            //方法的完整路径
+            String url = "";
+            //是否第一个requestMapping,且还没有解析到class,interface下,如果是，则为根路径
+            boolean isOneRequestMappingFlag = true;
             try {
                 String temp = "";
                 boolean flag = false;
                 boolean startFlag = false;
+                //不是/**开头标记
                 boolean isNotOneFlag = true;
                 //当前方法注释是第几个
                 int currentNum = 0;
+                boolean isExistApiDocsMethod = false;
+                String sbMapKey = "";
                 //读取文件内容
                 while ((temp = breader.readLine()) != null) {
-                    logger.info("temp:" + temp);
+                    //logger.info("temp:" + temp);
+                    if(StringUtil.isBlank(temp)){
+                        continue;
+                    }
                     if (temp.contains(ConstantsUtil.MORE_START_FLAG)) {
                         startFlag = true;
                         isNotOneFlag = false;
                         moreSb.delete(0, moreSb.length());
                     } else {
                         isNotOneFlag = true;
+                        if(temp.contains(ConstantsUtil.FIELD_SCOPE_CLASS) || temp.contains(ConstantsUtil.FIELD_SCOPE_INTERFACE)){
+                            isOneRequestMappingFlag = false;
+                        }
                     }
                     if (temp.contains(ConstantsUtil.MORE_END_FLAG)) {
                         startFlag = false;
@@ -876,24 +894,39 @@ public class ClassUtil {
                         moreSb.append(temp);
                         //moreSb.append('\n');
                     } else {
-                        if (temp.contains(ConstantsUtil.API_DOCS_CLASS_STR)) {
-                            tempSb = moreSb;
-                            classRemarkSb = tempSb;
-                            logger.info("moreSb:" + tempSb);
-                            //moreSb.delete(0, moreSb.length());
-                            moreSb = new StringBuilder();
-                            logger.info("tempSb:" + tempSb);
-                        } else if (temp.contains(ConstantsUtil.API_DOCS_METHOD)) {
-                            tempSb = moreSb;
-                            logger.info("moreSb:" + moreSb);
-                            String key = ConstantsUtil.METHOD_MAP_KEY + centreStr + currentNum;
-                            sbMap.put(key, tempSb);
-                            //moreSb.delete(0, moreSb.length());
-                            currentNum++;
-                            moreSb = new StringBuilder();
-                            logger.info("tempSb:" + tempSb);
-                        }else {
+                        //注：@ApiDocsMethod一定要在@RequestMapping前面
+                        if(!temp.contains(ConstantsUtil.MORE_START_FLAG) || !temp.contains(ConstantsUtil.ONE_WAY_FLAG)){
+                            if (temp.contains(ConstantsUtil.API_DOCS_CLASS_STR)) {
+                                tempSb = moreSb;
+                                classRemarkSb = tempSb;
+                                logger.info("moreSb:" + tempSb);
+                                moreSb = new StringBuilder();
+                                logger.info("tempSb:" + tempSb);
+                                isExistApiDocsMethod = false;
+                            } else if (temp.contains(ConstantsUtil.API_DOCS_METHOD)) {
+                                currentNum++;
+                                tempSb = moreSb;
+                                logger.info("moreSb:" + moreSb);
+                                sbMapKey = ConstantsUtil.METHOD_MAP_KEY + currentNum;
+                                sbMap.put(sbMapKey, tempSb);
+                                moreSb = new StringBuilder();
+                                logger.info("tempSb:" + tempSb);
+                                isExistApiDocsMethod = true;
+                            }else if(StringUtil.indexOf(temp, ConstantsUtil.SPRING_REQUEST_MAPPER)){
+                                if(isOneRequestMappingFlag){
+                                    methodRootPath = getMethodPath(temp);
+                                }else {
+                                    if(isExistApiDocsMethod){
+                                        url = methodRootPath + getMethodPath(temp);
+                                        logger.info("url:" + url);
+                                        StringBuilder sbMapValue = sbMap.get(sbMapKey);
+                                        sbMap.put(url, sbMapValue);
+                                        sbMap.remove(sbMapKey);
+                                    }
 
+                                }
+                                isExistApiDocsMethod = false;
+                            }
                         }
                     }
                 }
@@ -922,66 +955,65 @@ public class ClassUtil {
                 classMoreRemarkDto.setClassExplainDto(classExplainDto);
 
                 //保存方法信息
-                for(int i = 0; i < sbMap.size(); i++){
+                Set<Map.Entry<String, StringBuilder>> entries = sbMap.entrySet();
+                for (Map.Entry<String, StringBuilder> entry : entries){
                     List<RequestParamDto> requestParamDtos = new ArrayList<>();
-                    requestParamDtos.clear();
-                    String key = ConstantsUtil.METHOD_MAP_KEY + centreStr + i;
-                    StringBuilder sb = sbMap.get(key);
+                    String mUrl = entry.getKey();
+                    StringBuilder sb = entry.getValue();
                     String[] sbArr = sb.toString().split("\\*");
-                    String methodName = ConstantsUtil.METHOD_MAP_KEY + i; //方法名称
                     String explain = ""; // 方法业务说明
-                    for (int j = 0 ; j < sbArr.length; j++){
+                    boolean isExplainFlag = true;
+                    for (int j = 0 ; j < sbArr.length; j++) {
                         String str = sbArr[j];
                         boolean isOneFlag = true;
                         String paramName = ""; //参数名称
                         String paramExplain = "";
-
-                        if(str.indexOf(ConstantsUtil.PARAM_STR) != -1){
+                        if (str.indexOf(ConstantsUtil.PARAM_STR) != -1) {
+                            isExplainFlag = false;
                             //str有两种情况，第一种是：" @param map";第二种是：" @param map 请求参数"
-                            String[] strArr = str.split("\\s+");
-                            for(String s : strArr){
-                                if(StringUtil.isNotBlank(s) && s.indexOf(ConstantsUtil.PARAM_STR) == -1){
-                                    if(isOneFlag){
+                            String[] strArr = str.split("\\s+"); //以空格为分割
+                            for (String s : strArr) {
+                                if (StringUtil.isNotBlank(s) && s.indexOf(ConstantsUtil.PARAM_STR) == -1) {
+                                    if (isOneFlag) {
                                         paramName = StringUtil.replaceBlankAll(s);
-                                    }else {
+                                    } else {
                                         paramExplain += StringUtil.replaceBlankAll(s);
                                     }
-                                    isOneFlag =false;
+                                    isOneFlag = false;
                                 }
                             }
-                            if(StringUtil.isBlank(paramExplain)){
+                            if (StringUtil.isBlank(paramExplain)) {
                                 //第二种情况
                                 int num = j + 1;
-                                if(num < sbArr.length){
+                                if (num < sbArr.length) {
                                     paramExplain = StringUtil.replaceBlankAll(sbArr[num]);
                                 }
                             }
 
-                        }else if(str.indexOf(ConstantsUtil.RETURN_STR) != -1){
+                        } else if (str.indexOf(ConstantsUtil.RETURN_STR) != -1) {
+                            isExplainFlag = false;
                             //返回参数,暂时不处理
-                        }else {
-                            if(!StringUtil.indexOf(str,ConstantsUtil.AUTHOR_ARR) && !StringUtil.indexOf(str, ConstantsUtil.DATE_ARR) && StringUtil.isNotBlank(str)){
+                        } else {
+                            if (isExplainFlag && StringUtil.isNotBlank(str)) {
                                 explain += StringUtil.replaceBlankAll(str);
                             }
                         }
-                        if(StringUtil.isNotBlank(paramName)){
+                        if (StringUtil.isNotBlank(paramName)) {
                             RequestParamDto requestParamDto = new RequestParamDto();
                             requestParamDto.setName(paramName);
                             requestParamDto.setDescription(paramExplain);
                             requestParamDtos.add(requestParamDto);
                         }
-
                     }
-                    if(StringUtil.isNotBlank(explain)){
+                    if (StringUtil.isNotBlank(explain)) {
                         MethodExplainDto methodExplainDto = new MethodExplainDto();
                         methodExplainDto.setExplain(explain);
-                        methodExplainDto.setMethodName(methodName);
+                        methodExplainDto.setMethodPath(mUrl);
                         methodExplainDto.setParamDtos(requestParamDtos);
-                        logger.info("methodName:" + methodName);
+                        logger.info("mUrl:" + mUrl);
                         logger.info("methodExplainDto:" + new Gson().toJson(methodExplainDto));
-                        methodExplainDtoMap.put(methodName, methodExplainDto);
+                        methodExplainDtoMap.put(mUrl, methodExplainDto);
                     }
-
                 }
                 classMoreRemarkDto.setMethodExplainDtoMap(methodExplainDtoMap);
 
@@ -998,6 +1030,23 @@ public class ClassUtil {
             logger.error("类：" + className + "文件读取失败", e);
         }
         return classMoreRemarkDto;
+    }
+
+    /**
+     * 获取类中的路径
+     * @author wangmingchang
+     * @date 2019/1/25 9:57
+     * @param temp
+     * @return
+     **/
+    private static String getMethodPath(String temp) {
+        String path = "";
+        String[] tempArr = temp.split("\"");
+        path = tempArr[1];
+        if(!path.startsWith("/")){
+            path = "/" + path;
+        }
+        return path;
     }
 
     /**

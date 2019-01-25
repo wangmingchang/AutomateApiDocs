@@ -93,9 +93,9 @@
         .data-head{color: #333;background-color: #f5f5f5;    padding: 10px 15px;border: 1px solid #ddd;border-radius: 4px;}
         .nav-tabs li{max-width: 150px;}
         .nav-tabs>li>a{overflow: hidden; color: #333;}
-        .nav-tabs li a, .nav-tabs li span:hover {
-            border-color: #eee #eee #ddd;
-        }
+        .nav-tabs li a, .nav-tabs li span:hover {border-color: #eee #eee #ddd;}
+        .panel-child{margin-bottom: 0px; font-size: 12px;}
+        .table-child{margin-bottom: 0px;}
 
     </style>
 </head>
@@ -169,19 +169,15 @@
                         </div>
                     </div>
                     <h3>响应结果</h3>
-                    <table class="table table-bordered">
+                    <table id="table-responseClassDtos" class="table table-bordered">
                         <thead>
                         <tr>
                             <th width="20%">参数名称</th>
                             <th width="15%">类型</th>
-                            <th width="10%">是否必传</th>
                             <th>描述</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td colspan="4" style="text-align:center">无响应结果！</td>
-                        </tr>
                         </tbody>
                     </table>
                     <div class="panel panel-default">
@@ -190,6 +186,7 @@
                             无！
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -239,6 +236,7 @@
         },function () {
             $(this).find(".glyphicon-remove").hide();
         });
+        //点击左侧菜单
         $(".nav-tabs li").on("click",function () {
             $(".nav-tabs li").each(function () {
                 $(this).removeClass('active');
@@ -254,38 +252,43 @@
                 }
             }
         });
-
+        //删除标签
         $(".glyphicon-remove").on("click", function () {
             var $parent = $(this).parent()[0];
             var $nextParent = $($parent).next();
             var $prevParent = $($parent).prev();
+            var liId = '';
             if($parent.className.indexOf('active') != -1){
                 if($nextParent.length > 0){
                     $($nextParent).addClass('active');
+                    $($nextParent).data('leftliid');
+                    setData(liId);
+                    chooseLi(liId);
                 }else {
                     if($prevParent.length > 0){
                         $($prevParent).addClass('active');
+                        liId = $($prevParent).data('leftliid');
+                        setData(liId);
+                        chooseLi(liId);
+                    }else {
+                        removeActiveLi();
                     }
                 }
             }
+            $($parent).remove();
             if($(".nav-tabs li").length == 0){
                 $(".main-panel").hide();
             }else {
                 $(".main-panel").show();
             }
-            $($parent).remove();
         });
 
     }
     var javaTypes = ["class", "list"];
     //子菜单点击事件
     function listGroupItemChildClick(obj) {
-        removeData();
         var liId = obj.id;
-        $(".list-group-item-child").each(function () {
-            $(this).removeClass("active");
-        });
-        $(obj).addClass('active');
+        chooseLi(liId);
         var existLi = null;
         var textContent = $(obj).find('a').text();
         $(".nav-tabs li").each(function () {
@@ -303,12 +306,38 @@
             init();
             $(".main-panel").show();
         }
-        //设置数据
+        setData(liId);
+    }
+    /**
+     * 选择左侧子菜单
+     * */
+    function chooseLi(id) {
+        $(".list-group-item-child").each(function () {
+            $(this).removeClass("active");
+        });
+
+        $("#"+ id).addClass('active');
+    }
+    function removeActiveLi() {
+        $(".list-group-item-child").each(function () {
+            $(this).removeClass("active");
+        });
+    }
+
+    /**
+     * 设置数据
+     * */
+    function setData(liId) {
+        removeData();
         var noExecuteNum = 0;
         for(var i = 0; i < methodInfoDtos.length; i ++){
             var methodInfoDto = methodInfoDtos[i];
             var methodKey = methodInfoDto.methodKey;
             var requestParamDtos = methodInfoDto.requestParamDtos;
+            var responseClassDtos = methodInfoDto.baseResponseDataDtos;
+            if(responseClassDtos == null || responseClassDtos.length < 0){
+                responseClassDtos = methodInfoDto.responseClassDtos;
+            }
             if(methodKey == liId){
                 $("#methodDescription").text(methodInfoDto.methodDescription);
                 $("#request-type").text(methodInfoDto.type);
@@ -338,9 +367,35 @@
                 }else {
                     $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
                 }
+                if(responseClassDtos.length > 0){
+                    for(var j = 0; j < responseClassDtos.length; j++){
+                        var className = 'active';
+                        var responseDataDtos = responseClassDtos[j].responseDataDtos;
+                        for(var h = 0; h < javaTypes.length; h++){
+                            if(javaTypes[h] == responseClassDtos[j].type){
+                                executeFlag = false;
+                            }
+                        }
+                        if(j % 2 == 0){
+                            className = 'active';
+                        }else {
+                            className = '';
+                        }
+                        var html_str = '<tr class="'+ className +'"><td >'+responseClassDtos[j].name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+responseClassDtos[j].description+'</td></tr>';
+                        $("#table-responseClassDtos tbody").append(html_str);
+                        if(null != responseDataDtos && responseDataDtos.length > 0){
+                            //有子类
+                            setResponseDataDtos(responseDataDtos, responseClassDtos[j].name, "table-responseClassDtos");
+                        }
+                    }
+
+                }else {
+                    $("#table-responseClassDtos tbody").append('<tr><td colspan="3" style="text-align:center">无响应结果！</td></tr>');
+                }
                 break;
             }
         }
+
     }
 
     /**
@@ -350,7 +405,57 @@
         $("#methodDescription").text('');
         $("#request-type").text('');
         $("#request-url").text('');
-        $("#table-requestParamDtos tbody").remove();
+        $("#table-requestParamDtos tbody td").remove();
+        $("#table-responseClassDtos tbody td").remove();
+    }
+
+    /**
+     * 设置子类响应结果
+     * @param responseDataDtos
+     */
+    function setResponseDataDtos(dataArr, fieldName, tableId) {
+        if(dataArr.length > 0){
+            var div_id = 'panel-' + fieldName;
+            var table_id = 'table-child-' + fieldName;
+            var html_str = '<tr><td colspan="3" style="text-align:center"><div id="'+ div_id +'" class="panel panel-info panel-child">\n' +
+                '                        <div class="panel-heading">'+ fieldName +' 对象的信息</div>\n' +
+                '                        <div class="panel-body">\n' +
+                '                            <table id="'+ table_id +'" class="table table-bordered table-child">\n' +
+                '                                <thead>\n' +
+                '                                <tr>\n' +
+                '                                    <th width="20%">参数名称</th>\n' +
+                '                                    <th width="15%">类型</th>\n' +
+                '                                    <th>描述</th>\n' +
+                '                                </tr>\n' +
+                '                                </thead>\n' +
+                '                                <tbody>\n' +
+                '                                </tbody>\n' +
+                '                            </table>\n' +
+                '                        </div>\n' +
+                '                    </div></td></tr>';
+            $("#"+ tableId +" tbody").append(html_str);
+        }
+        for(var i = 0; i < dataArr.length; i++){
+            var className = 'active';
+            var responseDataDtos = dataArr[i].responseDataDtos;
+            for(var h = 0; h < javaTypes.length; h++){
+                if(javaTypes[h] == dataArr[i].type){
+                    executeFlag = false;
+                }
+            }
+            if( i % 2 == 0){
+                className = 'active';
+            }else {
+                className = '';
+            }
+            var html_str = '<tr class="'+ className +'"><td >'+dataArr[i].name+'</td><td>'+dataArr[i].type+'</td><td>'+dataArr[i].description+'</td></tr>';
+            $("#"+table_id+" tbody").append(html_str);
+            if(null != responseDataDtos && responseDataDtos.length > 0){
+                //有子类
+                setResponseDataDtos(responseDataDtos, dataArr[i].name, table_id);
+            }
+        }
+
     }
 
 </script>

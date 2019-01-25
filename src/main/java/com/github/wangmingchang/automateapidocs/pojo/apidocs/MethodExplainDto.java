@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class MethodExplainDto {
 
-	private String methodName; //方法名称
+	private String methodPath; //方法路径
 	private String explain; // 方法业务说明
 	private List<RequestParamDto> paramDtos; // 参数
 
-	public String getMethodName() {
-		return methodName;
+	public String getMethodPath() {
+		return methodPath;
 	}
 
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
+	public void setMethodPath(String methodPath) {
+		this.methodPath = methodPath;
 	}
 
 	public String getExplain() {
@@ -41,7 +41,7 @@ public class MethodExplainDto {
 	@Override
 	public String toString() {
 		return "MethodExplainDto{" +
-				"methodName='" + methodName + '\'' +
+				"methodPath='" + methodPath + '\'' +
 				", explain='" + explain + '\'' +
 				", paramDtos=" + paramDtos +
 				'}';

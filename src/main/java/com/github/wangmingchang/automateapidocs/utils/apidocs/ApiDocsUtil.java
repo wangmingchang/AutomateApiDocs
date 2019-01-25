@@ -39,7 +39,7 @@ public class ApiDocsUtil {
 	 * 执行自动生成api方法
 	 */
 	public static void init() {
-		System.out.println("**************************执行自动生成api***************************");
+		logger.info("**************************执行自动生成api***************************");
 		URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
 		String rootPate = classpath.getPath();
 		// String rootPate = path + "/resources/";
@@ -81,7 +81,7 @@ public class ApiDocsUtil {
 				WordTemlateUtil.setWordTemplate(savePath, wordContentDtos);
 			}
 		}
-		System.out.println("**************************生成完成***************************");
+		logger.info("**************************生成完成***************************");
 	}
 
 	/**
@@ -121,23 +121,22 @@ public class ApiDocsUtil {
 					// 获取类请求路径
 					RequestMapping requestMapping = className.getAnnotation(RequestMapping.class);
 					String[] value = requestMapping.value();
-					for (String string : value) {
-						path.append(string);
+					for (String str : value) {
+						if(StringUtil.isNotBlank(str)){
+							if(!str.startsWith("/")){
+								str = "/" + str;
+							}
+							path.append(str);
+						}
 					}
 				}
 
-				int methodExplainDtosIndex = 0; //methodExplainDtosIndex的默认索引
 				for (int i = 0; i < className.getDeclaredMethods().length; i++) {
 					sequence = 0;
 					Method method = className.getDeclaredMethods()[i];
 
 					String methodPath = ""; // 方法请求路径
 					if (method.isAnnotationPresent(ApiDocsMethod.class)) {
-						MethodExplainDto methodExplainDto = methodExplainDtoMap.get(ConstantsUtil.METHOD_MAP_KEY + methodExplainDtosIndex);
-						methodExplainDtosIndex++;
-						List<RequestParamDto> requestParamDtos = methodExplainDto.getParamDtos(); // 请求的参数
-						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
-
 						ApiDocsMethod apiDocs = method.getAnnotation(ApiDocsMethod.class);
 						String[] value = {}; // 获取方法上的路径
 						String type = apiDocs.type(); // 请求方式
@@ -156,36 +155,48 @@ public class ApiDocsUtil {
 								}
 							}
 						}else if(method.isAnnotationPresent(PostMapping.class)){
-							PostMapping postMapping = className.getAnnotation(PostMapping.class);
+							PostMapping postMapping = method.getAnnotation(PostMapping.class);
 							value = postMapping.value();
 							type = "POST";
 						}else{
-							GetMapping getMapping = className.getAnnotation(GetMapping.class);
+							GetMapping getMapping = method.getAnnotation(GetMapping.class);
 							value = getMapping.value();
 							type = "GET";
 						}
-						for (String string : value) {
-							methodPath = path + string;
+						for (String str : value) {
+							if(StringUtil.isNotBlank(str)){
+								if(!str.startsWith("/")){
+									str = "/" + str;
+								}
+								methodPath = path + str;
+							}
 						}
+						List<RequestParamDto> requestParamDtos = new ArrayList<>(); // 请求的参数
+						List<ResponseClassDto> responseClassDtos = new ArrayList<ResponseClassDto>(); // 返回数据类信息
 
 						Class<?> requestBean = apiDocs.requestBean(); // 请求参数Bean
 						Class<?> baseResponseBean = apiDocs.baseResponseBean(); // 响应数据的基础返回Bean
 						Class<?> responseBean = apiDocs.responseBean(); // 响应数据Bean
 						Class<?> baseResponseBeanGenericity = apiDocs.baseResponseBeanGenericity(); //响应数据Bean的泛型真实类型
 						Class<?>[] responseBeans = apiDocs.responseBeans(); // 多个响应数据Bean
-
 						String url = apiDocs.url(); // 请求方法路径
-						Map<String, String> methodDescriptionMap = new LinkedHashMap<>();
 						String methodDescription = apiDocs.methodExplain(); // 方法说明
+
+						url = StringUtils.isBlank(url) ? methodPath : path + url;
+
+						MethodExplainDto methodExplainDto = methodExplainDtoMap.get(url);
+						requestParamDtos = methodExplainDto.getParamDtos();
 						if( StringUtils.isBlank(methodDescription)) {
 							methodDescription = methodExplainDto.getExplain();
 						}
+						Map<String, String> methodDescriptionMap = new LinkedHashMap<>();
 						String methodKey = UUID.randomUUID().toString();
 						methodDescriptionMap.put("methodDescriptionValue", methodDescription);
 						methodDescriptionMap.put("methodKey", methodKey);
-						url = StringUtils.isBlank(url) ? methodPath : path + url;
+
 						List<ResponseDataDto> baseResponseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息(基础类)
 						List<ResponseDataDto> responseDataDtos = new ArrayList<ResponseDataDto>(); // 响应字段信息
+
 						if (StringUtil.isRealClass(requestBean)) {
 							List<ClassFiedInfoDto> requestFieldInfos = ClassUtil.getClassFieldAndMethod(requestBean,
 									true, 1);
@@ -297,15 +308,15 @@ public class ApiDocsUtil {
 						methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
 						methodInfoDto.setMethodKey(methodKey);
 						methodInfoDtos.add(methodInfoDto);
-						System.out.println("*****************************************");
-						System.out.println("类的说明 ：" + classExplainDto.getExplain());
-						System.out.println("方法业务说明：" + methodDescription);
-						System.out.println("方法请求路径：" + url);
-						System.out.println("请求方法方式：" + type);
-						System.out.println("请求字段信息：" + requestParamDtos);
-						System.out.println("响应字段信息：" + responseClassDtos);
-						System.out.println("响应字段basRespons信息：" + baseResponseDataDtos);
-						System.out.println("methodKey：" + methodKey);
+						logger.info("*****************************************");
+						logger.info("类的说明 ：" + classExplainDto.getExplain());
+						logger.info("方法业务说明：" + methodDescription);
+						logger.info("方法请求路径：" + url);
+						logger.info("请求方法方式：" + type);
+						logger.info("请求字段信息：" + requestParamDtos);
+						logger.info("响应字段信息：" + responseClassDtos);
+						logger.info("响应字段basRespons信息：" + baseResponseDataDtos);
+						logger.info("methodKey：" + methodKey);
 
 					}
 				}

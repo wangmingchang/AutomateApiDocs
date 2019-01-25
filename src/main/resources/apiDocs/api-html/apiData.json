@@ -1,1365 +1,323 @@
 [
-  {
-    "classExplainDto": {
-      "explain": "HTML-controller",
-      "author": "王明昌",
-      "createDate": ""
-    },
-    "methodDescriptions": [
+   {
+      "classExplainDto":
       {
-        "methodDescriptionValue": "index方法",
-        "methodKey": "11d4cb3e-156a-48df-8676-46fc318a92dc"
-      },
-      {
-        "methodDescriptionValue": "hell方法请求参数",
-        "methodKey": "a1c866a3-a94f-4d4d-8dfc-efbc325a7412"
-      },
-      {
-        "methodDescriptionValue": "hell方法",
-        "methodKey": "a4635d35-fb0b-4238-b7af-b470a6364b6d"
-      }
-    ],
-    "methodInfoDtos": [
-      {
-        "methodDescription": "index方法",
-        "type": "POST",
-        "url": "/api/index/v1/index",
-        "requestParamDtos": [
-          {
-            "name": "type",
-            "type": "string",
-            "required": true,
-            "description": "种类"
-          },
-          {
-            "name": "name",
-            "type": "string",
-            "required": true,
-            "description": "名字"
-          },
-          {
-            "name": "pageNo",
-            "type": "long",
-            "required": true,
-            "description": "页码"
-          },
-          {
-            "name": "pageSize",
-            "type": "long",
-            "required": true,
-            "description": "页数"
-          },
-          {
-            "name": "status",
-            "type": "string",
-            "required": true,
-            "description": "状态（1：成功；0：失败）"
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "required": true,
-            "description": "状态说明"
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "required": true,
-            "description": "返回数据"
-          },
-          {
-            "name": "pageDto",
-            "type": "class",
-            "required": true,
-            "description": "分页信息"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "DemoVo",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 2,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-          {
-            "name": "code",
-            "type": "string",
-            "description": "返回状态码TRUEFALSE此字段是通信标识，非交易标识，交易是否成功需要查看bizCode来判断",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "description": "返回信息，如非空，为错误原因，参数格式校验错误",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "sysTime",
-            "type": "string",
-            "description": "响应时间时间格式：时间搓精确到毫秒",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "status",
-            "type": "string",
-            "description": "状态（1：成功；0：失败）",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "description": "状态说明",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "description": "返回数据",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "data",
-            "type": "class",
-            "description": "返回业务参数",
-            "grade": 0,
-            "sequence": 0
-          }
-        ],
-        "methodKey": "11d4cb3e-156a-48df-8676-46fc318a92dc"
-      },
-      {
-        "methodDescription": "hell方法请求参数",
-        "type": "POST",
-        "url": "/api/index/v1/getTeacharInfo",
-        "requestParamDtos": [
-          {
-            "name": "map",
-            "type": "string",
-            "required": true,
-            "description": "请求参数"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "BaseResponseVo",
-            "responseDataDtos": [
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "BaseResponseVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "BaseResponseVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "BaseResponseVo",
-                "grade": 1,
-                "sequence": 3
-              }
-            ],
-            "grade": 1,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-        ],
-        "methodKey": "a1c866a3-a94f-4d4d-8dfc-efbc325a7412"
-      },
-      {
-        "methodDescription": "hell方法",
-        "type": "POST",
-        "url": "/api/index/v1/helloHtml",
-        "requestParamDtos": [
-          {
-            "name": "pageNo",
-            "type": "long",
-            "required": false,
-            "description": "页码"
-          },
-          {
-            "name": "pageSize",
-            "type": "long",
-            "required": false,
-            "description": "页数"
-          },
-          {
-            "name": "status",
-            "type": "string",
-            "required": true,
-            "description": "状态（1：成功；0：失败）"
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "required": true,
-            "description": "状态说明"
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "required": true,
-            "description": "返回数据"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "DemoVo",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 2,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-          {
-            "name": "status",
-            "type": "string",
-            "description": "状态（1：成功；0：失败）",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "description": "状态说明",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "description": "返回数据",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 0,
-            "sequence": 0
-          }
-        ],
-        "methodKey": "a4635d35-fb0b-4238-b7af-b470a6364b6d"
-      }
-    ]
-  },
-  {
-    "classExplainDto": {
-      "explain": "测试Controller",
-      "author": "王明昌",
-      "createDate": ""
-    },
-    "methodDescriptions": [
-      {
-        "methodDescriptionValue": "index方法",
-        "methodKey": "68f6419f-c4ed-4dd0-ac91-77d539823fea"
-      },
-      {
-        "methodDescriptionValue": "获老师信息",
-        "methodKey": "8742206e-e842-4cd4-9134-a4211aea780b"
-      },
-      {
-        "methodDescriptionValue": "hell方法",
-        "methodKey": "efbfb3a3-dd2c-4395-9881-afc98c7a1d04"
-      }
-    ],
-    "methodInfoDtos": [
-      {
-        "methodDescription": "index方法",
-        "type": "POST",
-        "url": "/test/",
-        "requestParamDtos": [
-          {
-            "name": "type",
-            "type": "string",
-            "required": true,
-            "description": "种类"
-          },
-          {
-            "name": "name",
-            "type": "string",
-            "required": true,
-            "description": "名字"
-          },
-          {
-            "name": "pageNo",
-            "type": "long",
-            "required": true,
-            "description": "页码"
-          },
-          {
-            "name": "pageSize",
-            "type": "long",
-            "required": true,
-            "description": "页数"
-          },
-          {
-            "name": "status",
-            "type": "string",
-            "required": true,
-            "description": "状态（1：成功；0：失败）"
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "required": true,
-            "description": "状态说明"
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "required": true,
-            "description": "返回数据"
-          },
-          {
-            "name": "pageDto",
-            "type": "class",
-            "required": true,
-            "description": "分页信息"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "DemoVo",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 2,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-          {
-            "name": "status",
-            "type": "string",
-            "description": "状态（1：成功；0：失败）",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "description": "状态说明",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "description": "返回数据",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 0,
-            "sequence": 0
-          }
-        ],
-        "methodKey": "68f6419f-c4ed-4dd0-ac91-77d539823fea"
-      },
-      {
-        "methodDescription": "获老师信息",
-        "type": "POST",
-        "url": "/test/getTeacharInfo",
-        "requestParamDtos": [
-          {
-            "name": "map",
-            "type": "string",
-            "required": true,
-            "description": "请求参数"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "DemoVo",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 2,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-        ],
-        "methodKey": "8742206e-e842-4cd4-9134-a4211aea780b"
-      },
-      {
-        "methodDescription": "hell方法",
-        "type": "post",
-        "url": "/test/helloHtml",
-        "requestParamDtos": [
-          {
-            "name": "pageNo",
-            "type": "long",
-            "required": false,
-            "description": "页码"
-          },
-          {
-            "name": "pageSize",
-            "type": "long",
-            "required": false,
-            "description": "页数"
-          },
-          {
-            "name": "status",
-            "type": "string",
-            "required": true,
-            "description": "状态（1：成功；0：失败）"
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "required": true,
-            "description": "状态说明"
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "required": true,
-            "description": "返回数据"
-          }
-        ],
-        "responseClassDtos": [
-          {
-            "className": "DemoVo",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 2,
-            "fieldType": "object"
-          }
-        ],
-        "baseResponseDataDtos": [
-          {
-            "name": "status",
-            "type": "string",
-            "description": "状态（1：成功；0：失败）",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "msg",
-            "type": "string",
-            "description": "状态说明",
-            "grade": 0,
-            "sequence": 0
-          },
-          {
-            "name": "result",
-            "type": "object",
-            "description": "返回数据",
-            "responseDataDtos": [
-              {
-                "name": "id",
-                "type": "string",
-                "description": "主键2",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 1
-              },
-              {
-                "name": "name",
-                "type": "string",
-                "description": "姓名",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 2
-              },
-              {
-                "name": "socre",
-                "type": "Double",
-                "description": "分数",
-                "className": "DemoVo",
-                "grade": 1,
-                "sequence": 3
-              },
-              {
-                "name": "carVo",
-                "type": "class",
-                "description": "车",
-                "childNode": "carVo",
-                "className": "DemoVo",
-                "responseDataDtos": [
-                  {
-                    "name": "carName",
-                    "type": "string",
-                    "description": "车名",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 4
-                  },
-                  {
-                    "name": "weig",
-                    "type": "Double",
-                    "description": "重量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 5
-                  },
-                  {
-                    "name": "color",
-                    "type": "string",
-                    "description": "颜色",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 6
-                  },
-                  {
-                    "name": "displacement",
-                    "type": "string",
-                    "description": "排量",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 7
-                  },
-                  {
-                    "name": "price",
-                    "type": "Double",
-                    "description": "售价",
-                    "className": "DemoVo",
-                    "grade": 2,
-                    "sequence": 8
-                  }
-                ],
-                "grade": 2,
-                "sequence": 9
-              },
-              {
-                "name": "status",
-                "type": "string",
-                "description": "状态（1：成功；0：失败）",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 10
-              },
-              {
-                "name": "msg",
-                "type": "string",
-                "description": "状态说明",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 11
-              },
-              {
-                "name": "result",
-                "type": "object",
-                "description": "返回数据",
-                "className": "DemoVo",
-                "grade": 2,
-                "sequence": 12
-              }
-            ],
-            "grade": 0,
-            "sequence": 0
-          }
-        ],
-        "methodKey": "efbfb3a3-dd2c-4395-9881-afc98c7a1d04"
-      }
-    ]
-  }
+         "explain":"测试Controller","author":"王明昌","createDate":""
+      },"methodDescriptions":
+      [
+         {
+            "methodDescriptionValue":"index方法test","methodKey":"d91506c8-8637-47dd-b735-9cf14625e564"
+         },{
+            "methodDescriptionValue":"hell方法test","methodKey":"ac078268-db55-4962-8532-7d1cb8ba087b"
+         },{
+            "methodDescriptionValue":"获老师信息test","methodKey":"4717f25d-5c32-4156-9d36-02709606c6c8"
+         }
+
+      ],"methodInfoDtos":
+      [
+         {
+            "methodDescription":"index方法test","type":"POST","url":"/test/","requestParamDtos":
+            [
+               {
+                  "name":"type","type":"string","required":true,"description":"种类"
+               },{
+                  "name":"name","type":"string","required":true,"description":"名字"
+               },{
+                  "name":"pageNo","type":"long","required":true,"description":"页码"
+               },{
+                  "name":"pageSize","type":"long","required":true,"description":"页数"
+               },{
+                  "name":"status","type":"string","required":true,"description":"状态（1：成功；0：失败）"
+               },{
+                  "name":"msg","type":"string","required":true,"description":"状态说明"
+               },{
+                  "name":"result","type":"object","required":true,"description":"返回数据"
+               },{
+                  "name":"pageDto","type":"class","required":true,"description":"分页信息"
+               }
+
+            ],"responseClassDtos":
+            [
+               {
+                  "className":"DemoVo","responseDataDtos":
+                  [
+                     {
+                        "name":"id","type":"string","description":"主键2","className":"DemoVo","grade":1,"sequence":1
+                     },{
+                        "name":"name","type":"string","description":"姓名","className":"DemoVo","grade":1,"sequence":2
+                     },{
+                        "name":"socre","type":"Double","description":"分数","className":"DemoVo","grade":1,"sequence":3
+                     },{
+                        "name":"carVo","type":"class","description":"车","childNode":"carVo","className":"DemoVo","responseDataDtos":
+                        [
+                           {
+                              "name":"carName","type":"string","description":"车名","className":"DemoVo","grade":2,"sequence":4
+                           },{
+                              "name":"weig","type":"Double","description":"重量","className":"DemoVo","grade":2,"sequence":5
+                           },{
+                              "name":"color","type":"string","description":"颜色","className":"DemoVo","grade":2,"sequence":6
+                           },{
+                              "name":"displacement","type":"string","description":"排量","className":"DemoVo","grade":2,"sequence":7
+                           },{
+                              "name":"price","type":"Double","description":"售价","className":"DemoVo","grade":2,"sequence":8
+                           },{
+                              "name":"teachar","type":"class","description":"老师信息","childNode":"teachar","className":"DemoVo","responseDataDtos":
+                              [
+                                 {
+                                    "name":"teacharName","type":"string","description":"姓名","className":"DemoVo","grade":3,"sequence":9
+                                 },{
+                                    "name":"subject","type":"string","description":"学科","className":"DemoVo","grade":3,"sequence":10
+                                 }
+
+                              ],"grade":3,"sequence":11
+                           }
+
+                        ],"grade":2,"sequence":12
+                     },{
+                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"DemoVo","grade":2,"sequence":13
+                     },{
+                        "name":"msg","type":"string","description":"状态说明","className":"DemoVo","grade":2,"sequence":14
+                     },{
+                        "name":"result","type":"object","description":"返回数据","className":"DemoVo","grade":2,"sequence":15
+                     }
+
+                  ],"grade":2,"fieldType":"object"
+               }
+
+            ],"baseResponseDataDtos":
+            [
+               {
+                  "name":"status","type":"string","description":"状态（1：成功；0：失败）","grade":0,"sequence":0
+               },{
+                  "name":"msg","type":"string","description":"状态说明","grade":0,"sequence":0
+               },{
+                  "name":"result","type":"object","description":"返回数据","responseDataDtos":
+                  [
+                     {
+                        "name":"id","type":"string","description":"主键2","className":"DemoVo","grade":1,"sequence":1
+                     },{
+                        "name":"name","type":"string","description":"姓名","className":"DemoVo","grade":1,"sequence":2
+                     },{
+                        "name":"socre","type":"Double","description":"分数","className":"DemoVo","grade":1,"sequence":3
+                     },{
+                        "name":"carVo","type":"class","description":"车","childNode":"carVo","className":"DemoVo","responseDataDtos":
+                        [
+                           {
+                              "name":"carName","type":"string","description":"车名","className":"DemoVo","grade":2,"sequence":4
+                           },{
+                              "name":"weig","type":"Double","description":"重量","className":"DemoVo","grade":2,"sequence":5
+                           },{
+                              "name":"color","type":"string","description":"颜色","className":"DemoVo","grade":2,"sequence":6
+                           },{
+                              "name":"displacement","type":"string","description":"排量","className":"DemoVo","grade":2,"sequence":7
+                           },{
+                              "name":"price","type":"Double","description":"售价","className":"DemoVo","grade":2,"sequence":8
+                           },{
+                              "name":"teachar","type":"class","description":"老师信息","childNode":"teachar","className":"DemoVo","responseDataDtos":
+                              [
+                                 {
+                                    "name":"teacharName","type":"string","description":"姓名","className":"DemoVo","grade":3,"sequence":9
+                                 },{
+                                    "name":"subject","type":"string","description":"学科","className":"DemoVo","grade":3,"sequence":10
+                                 }
+
+                              ],"grade":3,"sequence":11
+                           }
+
+                        ],"grade":2,"sequence":12
+                     },{
+                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"DemoVo","grade":2,"sequence":13
+                     },{
+                        "name":"msg","type":"string","description":"状态说明","className":"DemoVo","grade":2,"sequence":14
+                     },{
+                        "name":"result","type":"object","description":"返回数据","className":"DemoVo","grade":2,"sequence":15
+                     }
+
+                  ],"grade":0,"sequence":0
+               }
+
+            ],"methodKey":"d91506c8-8637-47dd-b735-9cf14625e564"
+         },{
+            "methodDescription":"hell方法test","type":"POST","url":"/test/ht","requestParamDtos":
+            [
+               {
+                  "name":"pageNo","type":"long","required":false,"description":"页码"
+               },{
+                  "name":"pageSize","type":"long","required":false,"description":"页数"
+               },{
+                  "name":"status","type":"string","required":true,"description":"状态（1：成功；0：失败）"
+               },{
+                  "name":"msg","type":"string","required":true,"description":"状态说明"
+               },{
+                  "name":"result","type":"object","required":true,"description":"返回数据"
+               }
+
+            ],"responseClassDtos":
+            [
+               {
+                  "className":"DemoVo","responseDataDtos":
+                  [
+                     {
+                        "name":"id","type":"string","description":"主键2","className":"DemoVo","grade":1,"sequence":1
+                     },{
+                        "name":"name","type":"string","description":"姓名","className":"DemoVo","grade":1,"sequence":2
+                     },{
+                        "name":"socre","type":"Double","description":"分数","className":"DemoVo","grade":1,"sequence":3
+                     },{
+                        "name":"carVo","type":"class","description":"车","childNode":"carVo","className":"DemoVo","responseDataDtos":
+                        [
+                           {
+                              "name":"carName","type":"string","description":"车名","className":"DemoVo","grade":2,"sequence":4
+                           },{
+                              "name":"weig","type":"Double","description":"重量","className":"DemoVo","grade":2,"sequence":5
+                           },{
+                              "name":"color","type":"string","description":"颜色","className":"DemoVo","grade":2,"sequence":6
+                           },{
+                              "name":"displacement","type":"string","description":"排量","className":"DemoVo","grade":2,"sequence":7
+                           },{
+                              "name":"price","type":"Double","description":"售价","className":"DemoVo","grade":2,"sequence":8
+                           },{
+                              "name":"teachar","type":"class","description":"老师信息","childNode":"teachar","className":"DemoVo","responseDataDtos":
+                              [
+                                 {
+                                    "name":"teacharName","type":"string","description":"姓名","className":"DemoVo","grade":3,"sequence":9
+                                 },{
+                                    "name":"subject","type":"string","description":"学科","className":"DemoVo","grade":3,"sequence":10
+                                 }
+
+                              ],"grade":3,"sequence":11
+                           }
+
+                        ],"grade":2,"sequence":12
+                     },{
+                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"DemoVo","grade":2,"sequence":13
+                     },{
+                        "name":"msg","type":"string","description":"状态说明","className":"DemoVo","grade":2,"sequence":14
+                     },{
+                        "name":"result","type":"object","description":"返回数据","className":"DemoVo","grade":2,"sequence":15
+                     }
+
+                  ],"grade":2,"fieldType":"object"
+               }
+
+            ],"baseResponseDataDtos":
+            [
+               {
+                  "name":"status","type":"string","description":"状态（1：成功；0：失败）","grade":0,"sequence":0
+               },{
+                  "name":"msg","type":"string","description":"状态说明","grade":0,"sequence":0
+               },{
+                  "name":"result","type":"object","description":"返回数据","responseDataDtos":
+                  [
+                     {
+                        "name":"id","type":"string","description":"主键2","className":"DemoVo","grade":1,"sequence":1
+                     },{
+                        "name":"name","type":"string","description":"姓名","className":"DemoVo","grade":1,"sequence":2
+                     },{
+                        "name":"socre","type":"Double","description":"分数","className":"DemoVo","grade":1,"sequence":3
+                     },{
+                        "name":"carVo","type":"class","description":"车","childNode":"carVo","className":"DemoVo","responseDataDtos":
+                        [
+                           {
+                              "name":"carName","type":"string","description":"车名","className":"DemoVo","grade":2,"sequence":4
+                           },{
+                              "name":"weig","type":"Double","description":"重量","className":"DemoVo","grade":2,"sequence":5
+                           },{
+                              "name":"color","type":"string","description":"颜色","className":"DemoVo","grade":2,"sequence":6
+                           },{
+                              "name":"displacement","type":"string","description":"排量","className":"DemoVo","grade":2,"sequence":7
+                           },{
+                              "name":"price","type":"Double","description":"售价","className":"DemoVo","grade":2,"sequence":8
+                           },{
+                              "name":"teachar","type":"class","description":"老师信息","childNode":"teachar","className":"DemoVo","responseDataDtos":
+                              [
+                                 {
+                                    "name":"teacharName","type":"string","description":"姓名","className":"DemoVo","grade":3,"sequence":9
+                                 },{
+                                    "name":"subject","type":"string","description":"学科","className":"DemoVo","grade":3,"sequence":10
+                                 }
+
+                              ],"grade":3,"sequence":11
+                           }
+
+                        ],"grade":2,"sequence":12
+                     },{
+                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"DemoVo","grade":2,"sequence":13
+                     },{
+                        "name":"msg","type":"string","description":"状态说明","className":"DemoVo","grade":2,"sequence":14
+                     },{
+                        "name":"result","type":"object","description":"返回数据","className":"DemoVo","grade":2,"sequence":15
+                     }
+
+                  ],"grade":0,"sequence":0
+               }
+
+            ],"methodKey":"ac078268-db55-4962-8532-7d1cb8ba087b"
+         },{
+            "methodDescription":"获老师信息test","type":"POST","url":"/test/getTeacharInfo2","requestParamDtos":
+            [
+               {
+                  "name":"id","type":"string","required":true,"description":"主键"
+               },{
+                  "name":"name","type":"string","required":true,"description":"姓名"
+               }
+
+            ],"responseClassDtos":
+            [
+               {
+                  "className":"DemoVo","responseDataDtos":
+                  [
+                     {
+                        "name":"id","type":"string","description":"主键2","className":"DemoVo","grade":1,"sequence":1
+                     },{
+                        "name":"name","type":"string","description":"姓名","className":"DemoVo","grade":1,"sequence":2
+                     },{
+                        "name":"socre","type":"Double","description":"分数","className":"DemoVo","grade":1,"sequence":3
+                     },{
+                        "name":"carVo","type":"class","description":"车","childNode":"carVo","className":"DemoVo","responseDataDtos":
+                        [
+                           {
+                              "name":"carName","type":"string","description":"车名","className":"DemoVo","grade":2,"sequence":4
+                           },{
+                              "name":"weig","type":"Double","description":"重量","className":"DemoVo","grade":2,"sequence":5
+                           },{
+                              "name":"color","type":"string","description":"颜色","className":"DemoVo","grade":2,"sequence":6
+                           },{
+                              "name":"displacement","type":"string","description":"排量","className":"DemoVo","grade":2,"sequence":7
+                           },{
+                              "name":"price","type":"Double","description":"售价","className":"DemoVo","grade":2,"sequence":8
+                           },{
+                              "name":"teachar","type":"class","description":"老师信息","childNode":"teachar","className":"DemoVo","responseDataDtos":
+                              [
+                                 {
+                                    "name":"teacharName","type":"string","description":"姓名","className":"DemoVo","grade":3,"sequence":9
+                                 },{
+                                    "name":"subject","type":"string","description":"学科","className":"DemoVo","grade":3,"sequence":10
+                                 }
+
+                              ],"grade":3,"sequence":11
+                           }
+
+                        ],"grade":2,"sequence":12
+                     },{
+                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"DemoVo","grade":2,"sequence":13
+                     },{
+                        "name":"msg","type":"string","description":"状态说明","className":"DemoVo","grade":2,"sequence":14
+                     },{
+                        "name":"result","type":"object","description":"返回数据","className":"DemoVo","grade":2,"sequence":15
+                     }
+
+                  ],"grade":2,"fieldType":"object"
+               }
+
+            ],"baseResponseDataDtos":
+            [
+               
+            ],"methodKey":"4717f25d-5c32-4156-9d36-02709606c6c8"
+         }
+
+      ]
+
+   }
+
 ]

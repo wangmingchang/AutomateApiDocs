@@ -29,12 +29,16 @@ public class ConstantsUtil {
     public static final String[] EXPLAIN_ARR = {"@explain", "@Explain", "@description" ,"@Description"};
     /**类或者方法说明的开头数组*/
     public static final String[] NO_CHECK_ARR = {"@since"};
+    /**类或者方法requestMapping*/
+    public static final String[] SPRING_REQUEST_MAPPER = {"@RequestMapping", "@PostMapping", "@GetMapping"};
     /**字段作用域-private*/
     public static final String FIELD_SCOPE_PRIVATE = "private";
     /**字段作用域-public*/
     public static final String FIELD_SCOPE_PUBLIC = "public";
     /**字段作用域-class*/
     public static final String FIELD_SCOPE_CLASS = "class";
+    /**字段作用域-interface*/
+    public static final String FIELD_SCOPE_INTERFACE = "interface";
 
 
     /**多行注释开头标记*/
