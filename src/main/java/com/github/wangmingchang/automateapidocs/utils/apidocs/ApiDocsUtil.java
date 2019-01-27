@@ -48,7 +48,8 @@ public class ApiDocsUtil {
 		String savePath = properties.getProperty("savePath");
 		String isWordStr = properties.getProperty("isWord");
 		String isHTMLStr = properties.getProperty("isHTML");
-		
+		Set<String> strings = properties.stringPropertyNames();
+
 		if(StringUtils.isBlank(packageNameStr)) {
 			throw new RuntimeException("在apiDocs.properties配置中没有找到扫瞄包（packageName）的配置");
 		}
@@ -67,15 +68,9 @@ public class ApiDocsUtil {
 		}
 		if (classExplains.size() > 0) {
 			if (isHTML) {
-				HtmlTemlateUtil.setIndexTemplate(savePath, classExplains);
-				for (HtmlMethonContentDto htmlMethonContentDto : htmlMethonContentDtos) {
-					HtmlTemlateUtil.setMethodApiTemplate(savePath, htmlMethonContentDto.getClassExplainDto(),
-							htmlMethonContentDto.getMethodDescriptions(), htmlMethonContentDto.getMethodInfoDtos());
-				}
-				// 添加样式
-				HtmlTemlateUtil.addCss(savePath);
+
 				HtmlTemlateUtil.setApiTemplate(savePath,htmlMethonContentDtos);
-				CreateFileUtil.createJsonFile(new Gson().toJson(htmlMethonContentDtos), "D:\\idea-repository\\wangmingchang\\AutomateApiDocs\\src\\main\\resources\\apiDocs\\api-html", "apiData");
+				CreateFileUtil.createJsonFile(new Gson().toJson(htmlMethonContentDtos), savePath + "/apiDocs/api-html", "apiData");
 			}
 			if (isWord) {
 				WordTemlateUtil.setWordTemplate(savePath, wordContentDtos);
