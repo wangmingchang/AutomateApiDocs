@@ -42,13 +42,47 @@ public class ConstantsUtil {
 
 
     /**多行注释开头标记*/
-    public static String MORE_START_FLAG = "/**";
+    public static final String MORE_START_FLAG = "/**";
     /**多行注释结束标记*/
-    public static String MORE_END_FLAG = "*/";
+    public static final String MORE_END_FLAG = "*/";
     /**多行注释星（*）标记*/
-    public static String STAR_FLAG = "*";
+    public static final String STAR_FLAG = "*";
     /**单行注释（//）标记*/
-    public static String ONE_WAY_FLAG = "//";
+    public static final String ONE_WAY_FLAG = "//";
+
+    /**保存备注value的key*/
+    public static final String METHOD_DESCRIPTION_VALUE_KEY = "methodDescriptionValue";
+    /**保存备注key的key*/
+    public static final String METHOD_KEY = "methodKey";
+
+    /**properties配置的controller*/
+    public static final String PROPERTIES_CONTROLLER = "apiDocs.key.controller.";
+    /**properties配置的entry*/
+    public static final String PROPERTIES_ENTRY = "apiDocs.key.entry.";
+    /**properties配置的reference*/
+    public static final String PROPERTIES_REFERENCE = "apiDocs.key.reference.";
+    /**properties配置的sys*/
+    public static final String PROPERTIES_SYS = "apiDocs.sys.";
+    /**properties配置的controller的方法前缀*/
+    public static final String PROPERTIES_CONTROLLER_START = "${controller.";
+    /**保存在Map的key*/
+    public static final String PROPERTIES_CONTROLLER_METHOD_NAME = "methodNameKey";
+
+    /**properties配置的method的方法信息的后缀*/
+    public static final String APIDOCS_METHOD_URL = "ApiDocsMethod.url";
+    public static final String APIDOCS_METHOD_TYP = "ApiDocsMethod.typ";
+    public static final String APIDOCS_METHOD_METHOD_EXPLAIN = "ApiDocsMethod.methodExplain";
+    public static final String APIDOCS_METHOD_REQUEST_BEAN = "ApiDocsMethod.requestBean";
+    public static final String APIDOCS_METHOD_BASE_RESPONSE_BEAN = "ApiDocsMethod.baseResponseBean";
+    public static final String APIDOCS_METHOD_BASE_RESPONSE_BEAN_GENERICITY = "ApiDocsMethod.baseResponseBeanGenericity";
+    public static final String APIDOCS_METHOD_RESPONSE_BEAN = "ApiDocsMethod.responseBean";
+    public static final String APIDOCS_METHOD_RESPONSE_BEANS = "ApiDocsMethod.responseBeans";
+    public static final String APIDOCS_PARAM_REQUEST_FALSE = "ApiDocsParam.request.false";
+    public static final String APIDOCS_PARAM_REQUEST_TRUE = "ApiDocsParam.request.true";
+    public static final String APIDOCS_PARAM_REQUEST_ISSHOW_FALSE = "ApiDocsParam.request.isShow.false";
+    public static final String APIDOCS_PARAM_REQUEST_ISSHOW_TRUE = "ApiDocsParam.request.isShow.true";
+    public static final String APIDOCS_PARAM_RESPONSE_ISSHOW_TRUE = "ApiDocsParam.response.isShow.true";
+    public static final String APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE = "ApiDocsParam.response.isShow.false";
 
 
 }

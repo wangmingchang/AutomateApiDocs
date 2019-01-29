@@ -18,4 +18,12 @@ public @interface ApiDocsParam {
 	 * @return true or false
 	 */
 	boolean value() default true;
+
+	/**
+	 * 字段是否显示
+	 * @author wangmingchang
+	 * @date 2019/1/28 10:42
+	 * @return true or false
+	 **/
+	boolean isShow() default  true;
 }

@@ -44,10 +44,10 @@ public class ApiDocsUtil {
 		String rootPate = classpath.getPath();
 		// String rootPate = path + "/resources/";
 		Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties");
-		String packageNameStr = properties.getProperty("packageName");
-		String savePath = properties.getProperty("savePath");
-		String isWordStr = properties.getProperty("isWord");
-		String isHTMLStr = properties.getProperty("isHTML");
+		String packageNameStr = properties.getProperty("apiDocs.sys.packageName");
+		String savePath = properties.getProperty("apiDocs.sys.savePath");
+		String isWordStr = properties.getProperty("apiDocs.sys.isWord");
+		String isHTMLStr = properties.getProperty("apiDocs.sys.isHTML");
 		Set<String> strings = properties.stringPropertyNames();
 
 		if(StringUtils.isBlank(packageNameStr)) {
