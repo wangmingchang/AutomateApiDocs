@@ -18,19 +18,19 @@ public class PropertiesUtil {
     /**
      * 保存方法的信息map,key:方法名称
      */
-    private static Map<String, Map<String, Object>> methodInfoMap = new HashMap();
+    private static Map<String, Map<String, Object>> methodInfoMap = new HashMap<String, Map<String, Object>>();
     /**
      * 保存监听controller的根路径的信息map,key:${reference.request}
      */
-    private static Map<String, String> referenceMap = new HashMap<>();
+    private static Map<String, String> referenceMap = new HashMap<String, String>();
     /**
      * 保存Controller的配置的信息map,key:${controller.HtmlController}
      */
-    private static Map<String, String> controllerMap = new HashMap<>();
+    private static Map<String, String> controllerMap = new HashMap<String, String>();
     /**
      * 保存C请求和响应的实体的信息map,key:${entry.Fish}
      */
-    private static Map<String, String> entryMap = new HashMap<>();
+    private static Map<String, String> entryMap = new HashMap<String, String>();
 
     /**
      * 加载属性文件
