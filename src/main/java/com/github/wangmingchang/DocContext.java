@@ -11,8 +11,6 @@ public class DocContext {
 
     
 	public static void main(String[] args) {
-		
 		ApiDocsUtil.init();
-
 	}
 }

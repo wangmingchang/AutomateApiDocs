@@ -426,7 +426,6 @@ public class ClassUtil {
                 }
             }
             classFiedInfoDto.setName(fieldName);
-
             String type = getClassFieldType(field.getType());
             if (type.equals("list")) {
                 Type listType = field.getGenericType();
@@ -453,13 +452,21 @@ public class ClassUtil {
                 }
                 classFiedInfoDto.setGrade(gradeNum + 1);
             } else if (type.indexOf("class") != -1) {
-                // 可能字段是一个对象
-                Class<?> forName = Class.forName(type.substring(6, type.length()));
-                // 设置子节点
-                classFiedInfoDto.setChildNode(fieldName);
-                getClassFieldAndMethodForChildNode(forName, fieldName, gradeNum + 1);
-                type = "class";
-                classFiedInfoDto.setGrade(gradeNum + 1);
+                Type t = field.getGenericType();
+                //当前字段的真实类型
+                String typeName = t.getTypeName();
+                if(typeName.equals("T")){
+                    //如果字段是泛型，则不获取它的真实对象字段信息
+                    type = "object";
+                }else {
+                    // 可能字段是一个对象
+                    Class<?> forName = Class.forName(type.substring(6, type.length()));
+                    // 设置子节点
+                    classFiedInfoDto.setChildNode(fieldName);
+                    getClassFieldAndMethodForChildNode(forName, fieldName, gradeNum + 1);
+                    classFiedInfoDto.setGrade(gradeNum + 1);
+                    type = "class";
+                }
             } else {
                 classFiedInfoDto.setGrade(gradeNum);
             }
@@ -471,8 +478,8 @@ public class ClassUtil {
         }
 
         if (currentClass.getSuperclass() != null && currentClass.getSuperclass() != Object.class) {
+            //有父类
             getClassFieldAndMethod(currentClass.getSuperclass(), false, gradeNum + 1);
-            // .out.println("父类：" + currentClass.getSuperclass());
         }
         return fieldInfos;
     }
@@ -546,13 +553,21 @@ public class ClassUtil {
                 }
                 classFiedInfoDto.setGrade(gradeNum + 1);
             } else if (type.indexOf("class") != -1) {
-                // 可能字段是一个对象
-                Class<?> forName = Class.forName(type.substring(6, type.length()));
-                // 设置子节点
-                classFiedInfoDto.setChildNode(fieldName);
-                getClassFieldAndMethodForChildNode(forName, fieldName, gradeNum + 1);
-                type = "class";
-                classFiedInfoDto.setGrade(gradeNum + 1);
+                Type t = field.getGenericType();
+                //当前字段的真实类型
+                String typeName = t.getTypeName();
+                if(typeName.equals("T")){
+                    //如果字段是泛型，则不获取它的真实对象字段信息
+                    type = "object";
+                }else {
+                    // 可能字段是一个对象
+                    Class<?> forName = Class.forName(type.substring(6, type.length()));
+                    // 设置子节点
+                    classFiedInfoDto.setChildNode(fieldName);
+                    getClassFieldAndMethodForChildNode(forName, fieldName, gradeNum + 1);
+                    type = "class";
+                    classFiedInfoDto.setGrade(gradeNum + 1);
+                }
             } else {
                 classFiedInfoDto.setGrade(gradeNum);
             }
@@ -628,13 +643,21 @@ public class ClassUtil {
                 }
                 classFiedInfoDto.setGrade(gradeNum + 1);
             } else if (type.indexOf("class") != -1) {
-                // 可能字段是一个对象
-                Class<?> forName = Class.forName(type.substring(6, type.length()));
-                // 设置子节点
-                classFiedInfoDto.setChildNode(fieldName);
-                getClassFieldAndMethodForChildNode(forName, fieldName, gradeNum + 1);
-                type = "class";
-                classFiedInfoDto.setGrade(gradeNum + 1);
+                Type t = field.getGenericType();
+                //当前字段的真实类型
+                String typeName = t.getTypeName();
+                if(typeName.equals("T")){
+                    //如果字段是泛型，则不获取它的真实对象字段信息
+                    type = "object";
+                }else {
+                    // 可能字段是一个对象
+                    Class<?> forName = Class.forName(type.substring(6, type.length()));
+                    // 设置子节点
+                    classFiedInfoDto.setChildNode(fieldName);
+                    getClassFieldAndMethodForChildNode(forName, fieldName, gradeNum + 1);
+                    type = "class";
+                    classFiedInfoDto.setGrade(gradeNum + 1);
+                }
             } else {
                 classFiedInfoDto.setGrade(gradeNum);
             }
@@ -1005,7 +1028,7 @@ public class ClassUtil {
                             requestParamDtos.add(requestParamDto);
                         }
                     }
-                    if (StringUtil.isNotBlank(explain)) {
+                    if (StringUtil.isNotBlank(StringUtil.substringBefore(explain, "@"))) {
                         MethodExplainDto methodExplainDto = new MethodExplainDto();
                         methodExplainDto.setExplain(explain);
                         methodExplainDto.setMethodPath(mUrl);

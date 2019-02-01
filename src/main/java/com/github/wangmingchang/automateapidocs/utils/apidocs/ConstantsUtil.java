@@ -1,11 +1,23 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 常量util
  * @author wangmingchang
  * @data 2019\1\20 0020 20:43
  **/
 public class ConstantsUtil {
+
+    /**默认编码:UTF-8*/
+    public static final String DEFAULT_CHARSET_CODE = "UTF-8";
+    /**横线字符串：-*/
+    public static final String TRANSVERSE_LINE = "-";
+    /**字符串默认值：NA*/
+    public static final String DEFAULT_STRING = "NA";
+    /**集合默认值：new*/
+    public static final List DEFAULT_COLLECTION = new ArrayList();
 
     /**保存多行注释方法的Map的key*/
     public static final String METHOD_MAP_KEY = "methodMapKey";
@@ -78,10 +90,7 @@ public class ConstantsUtil {
     public static final String APIDOCS_METHOD_RESPONSE_BEAN = "ApiDocsMethod.responseBean";
     public static final String APIDOCS_METHOD_RESPONSE_BEANS = "ApiDocsMethod.responseBeans";
     public static final String APIDOCS_PARAM_REQUEST_FALSE = "ApiDocsParam.request.false";
-    public static final String APIDOCS_PARAM_REQUEST_TRUE = "ApiDocsParam.request.true";
     public static final String APIDOCS_PARAM_REQUEST_ISSHOW_FALSE = "ApiDocsParam.request.isShow.false";
-    public static final String APIDOCS_PARAM_REQUEST_ISSHOW_TRUE = "ApiDocsParam.request.isShow.true";
-    public static final String APIDOCS_PARAM_RESPONSE_ISSHOW_TRUE = "ApiDocsParam.response.isShow.true";
     public static final String APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE = "ApiDocsParam.response.isShow.false";
 
 

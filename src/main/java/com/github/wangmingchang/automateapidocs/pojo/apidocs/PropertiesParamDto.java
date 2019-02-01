@@ -21,12 +21,25 @@ public class PropertiesParamDto {
     private String baseResponseBeanGenericityCn; //响应泛型包名
     private String responseBeanCn; //响应类包名
     private List<String> responseBeansCns; //响应类包名(多个)
-    private List<String> requestFalses; //请求字段不是必传的
-    private List<String> requestTrues; //请求字段是必传的（默认必传）
-    private List<String> requestIsShowFalse; //请求字段不显示
-    private List<String> requestIsShowTrues; //请求字段显示（默认显示）
-    private List<String> responseIsShowFalse; //响应字段不显示
-    private List<String> responseIsShowTrues; //响应字段显示（默认显示）
+    private List<String> requestFalses; //请求字段不是必传的（默认必传）
+    private List<String> requestIsShowFalse; //请求字段不显示（默认显示）
+    private List<String> responseIsShowFalse; //响应字段不显示（默认显示）
+
+    public PropertiesParamDto(){
+        this.className = "NA";
+        this.methodName = "NA";
+        this.url = "NA";
+        this.type = "NA";
+        this.methodExplain = "NA";
+        this.requestBeanCn = "NA";
+        this.baseResponseBeanCn = "NA";
+        this.baseResponseBeanGenericityCn = "NA";
+        this.responseBeanCn = "NA";
+        this.responseBeansCns = null;
+        this.requestFalses = null;
+        this.requestIsShowFalse = null;
+        this.responseIsShowFalse = null;
+    }
 
     public String getClassName() {
         return className;
@@ -116,14 +129,6 @@ public class PropertiesParamDto {
         this.requestFalses = requestFalses;
     }
 
-    public List<String> getRequestTrues() {
-        return requestTrues;
-    }
-
-    public void setRequestTrues(List<String> requestTrues) {
-        this.requestTrues = requestTrues;
-    }
-
     public List<String> getRequestIsShowFalse() {
         return requestIsShowFalse;
     }
@@ -132,28 +137,12 @@ public class PropertiesParamDto {
         this.requestIsShowFalse = requestIsShowFalse;
     }
 
-    public List<String> getRequestIsShowTrues() {
-        return requestIsShowTrues;
-    }
-
-    public void setRequestIsShowTrues(List<String> requestIsShowTrues) {
-        this.requestIsShowTrues = requestIsShowTrues;
-    }
-
     public List<String> getResponseIsShowFalse() {
         return responseIsShowFalse;
     }
 
     public void setResponseIsShowFalse(List<String> responseIsShowFalse) {
         this.responseIsShowFalse = responseIsShowFalse;
-    }
-
-    public List<String> getResponseIsShowTrues() {
-        return responseIsShowTrues;
-    }
-
-    public void setResponseIsShowTrues(List<String> responseIsShowTrues) {
-        this.responseIsShowTrues = responseIsShowTrues;
     }
 
     @Override
@@ -170,11 +159,8 @@ public class PropertiesParamDto {
                 ", responseBeanCn='" + responseBeanCn + '\'' +
                 ", responseBeansCns=" + responseBeansCns +
                 ", requestFalses=" + requestFalses +
-                ", requestTrues=" + requestTrues +
                 ", requestIsShowFalse=" + requestIsShowFalse +
-                ", requestIsShowTrues=" + requestIsShowTrues +
                 ", responseIsShowFalse=" + responseIsShowFalse +
-                ", responseIsShowTrues=" + responseIsShowTrues +
                 '}';
     }
 }

@@ -2,10 +2,9 @@ package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.PropertiesParamDto;
 
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -42,8 +41,31 @@ public class PropertiesUtil {
     public static Properties loadProps(String filePath) {
         Properties properties = new Properties();
         try {
-            InputStream in = new BufferedInputStream(new FileInputStream(filePath));
-            properties.load(in);
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            InputStreamReader reader = new InputStreamReader(fileInputStream, "UTF-8");
+            properties.load(reader);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
+
+    /**
+     * 加载属性文件
+     *
+     * @param filePath     文件路径
+     * @param charsentCode 编码格式
+     * @return 加载属性文件
+     */
+    public static Properties loadProps(String filePath, String charsentCode) {
+        Properties properties = new Properties();
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            if (StringUtil.isBlank(charsentCode)) {
+                charsentCode = ConstantsUtil.DEFAULT_CHARSET_CODE;
+            }
+            InputStreamReader reader = new InputStreamReader(fileInputStream, charsentCode);
+            properties.load(reader);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +93,6 @@ public class PropertiesUtil {
      */
     public static void updateProperty(Properties properties, String filePath, String keyname, String keyvalue) {
         try {
-
             // 从输入流中读取属性列表（键和元素对）
             properties.setProperty(keyname, keyvalue);
             FileOutputStream outputFile = new FileOutputStream(filePath);
@@ -84,17 +105,16 @@ public class PropertiesUtil {
     }
 
     /**
-     * 根据配置文件获取Controller
+     * 根据配置文件获取Controller的方法信息
      *
      * @param properties
-     * @return
+     * @return key如：com.github.wangmingchang.automateapidocs.controller-index，value:方法的信息
      * @author wangmingchang
      * @date 2019/1/28 10:00
      **/
-    public static Object getController(Properties properties) {
+    public static Map<String, PropertiesParamDto> getControllerMethodInfo(Properties properties) {
         //key为controller的包名+方法名称
         Map<String, PropertiesParamDto> propertiesParamDtoMap = new HashMap<>();
-
         Map<String, Map<String, String>> controllerMethodMap = new HashMap<>();
         Set<String> propertiesKeys = properties.stringPropertyNames();
         for (String key : propertiesKeys) {
@@ -105,7 +125,7 @@ public class PropertiesUtil {
             String mapKey = key;
             if (key.contains(ConstantsUtil.PROPERTIES_REFERENCE)) {
                 mapKey = key.split(ConstantsUtil.PROPERTIES_REFERENCE)[1];
-                mapKey = "${refernce." + mapKey + "}";
+                mapKey = "${reference." + mapKey + "}";
                 referenceMap.put(mapKey, propertyVaule);
             } else if (key.contains(ConstantsUtil.PROPERTIES_CONTROLLER)) {
                 mapKey = key.split(ConstantsUtil.PROPERTIES_CONTROLLER)[1];
@@ -129,12 +149,9 @@ public class PropertiesUtil {
                 continue;
             }
         }
-        Set<Map.Entry<String, String>> referenceEntries = referenceMap.entrySet();
-        Set<Map.Entry<String, String>> entryEntries = entryMap.entrySet();
         controllerMap = replaceValue(controllerMap, referenceMap);
         entryMap = replaceValue(entryMap, referenceMap);
         Set<Map.Entry<String, String>> controllerEntries = controllerMap.entrySet();
-        PropertiesParamDto propertiesParamDto = new PropertiesParamDto();
         for (Map.Entry<String, String> controllerEntry : controllerEntries) {
             String controllerKey = controllerEntry.getKey();
             //controller的包名
@@ -145,30 +162,55 @@ public class PropertiesUtil {
             for (Map.Entry<String, String> methodEntry : methodEntries) {
                 String methodKey = methodEntry.getKey();
                 String methodValue = methodEntry.getValue();
-                getMethodInfo(methodKey, methodValue);
+                setMethodInfo(methodKey, methodValue);
             }
             Set<Map.Entry<String, Map<String, Object>>> methodInfoEntries = methodInfoMap.entrySet();
 
-            for (Map.Entry<String, Map<String, Object>> methodInfoEntry : methodInfoEntries){
-                String key = methodInfoEntry.getKey();
-                Map<String, Object> value = methodInfoEntry.getValue();
-
-
-
+            for (Map.Entry<String, Map<String, Object>> methodInfoEntry : methodInfoEntries) {
+                PropertiesParamDto propertiesParamDto = new PropertiesParamDto();
+                propertiesParamDto.setClassName(controllerValue);
+                String methodInfoKey = methodInfoEntry.getKey();
+                Map<String, Object> methodInfoValueMap = methodInfoEntry.getValue();
+                Set<Map.Entry<String, Object>> valueEntries = methodInfoValueMap.entrySet();
+                for (Map.Entry<String, Object> entry : valueEntries) {
+                    String methodKey = entry.getKey();
+                    Object infoValue = entry.getValue();
+                    if (methodKey.equals(ConstantsUtil.PROPERTIES_CONTROLLER_METHOD_NAME)) {
+                        propertiesParamDto.setMethodName(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_URL)) {
+                        propertiesParamDto.setUrl(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_TYP)) {
+                        propertiesParamDto.setType(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_METHOD_EXPLAIN)) {
+                        propertiesParamDto.setMethodExplain(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_REQUEST_BEAN)) {
+                        propertiesParamDto.setRequestBeanCn(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN)) {
+                        propertiesParamDto.setBaseResponseBeanCn(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN_GENERICITY)) {
+                        propertiesParamDto.setBaseResponseBeanGenericityCn(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEAN)) {
+                        propertiesParamDto.setResponseBeanCn(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS)) {
+                        propertiesParamDto.setResponseBeansCns((List<String>) infoValue);
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_PARAM_REQUEST_FALSE)) {
+                        propertiesParamDto.setRequestFalses((List<String>) infoValue);
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_FALSE)) {
+                        propertiesParamDto.setRequestIsShowFalse((List<String>) infoValue);
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE)) {
+                        propertiesParamDto.setResponseIsShowFalse((List<String>) infoValue);
+                    }
+                }
+                propertiesParamDtoMap.put(methodInfoKey, propertiesParamDto);
             }
-
-
-        }
-        Set<Map.Entry<String, Map<String, String>>> controllMotheEntries = controllerMethodMap.entrySet();
-        for (Map.Entry<String, Map<String, String>> controllerMethodEntry : controllMotheEntries) {
-
         }
 
-        return null;
+
+        return propertiesParamDtoMap;
     }
 
     /**
-     * 获取每个方法信息
+     * 设置每个方法信息
      *
      * @param methodKey
      * @param methodValue
@@ -176,21 +218,22 @@ public class PropertiesUtil {
      * @author wangmingchang
      * @date 2019/1/29 14:19
      **/
-    private static void getMethodInfo(String methodKey, String methodValue) {
+    private static void setMethodInfo(String methodKey, String methodValue) {
         Map<String, Object> map = new HashMap<>();
-        String[] keyArr = methodKey.split(".");
+        String[] keyArr = methodKey.split("\\.");
         String methodName = "";
         for (String key : keyArr) {
             if (key.contains("()")) {
-                methodName = key.split("()")[0];
+                methodName = key.split("\\(\\)")[0];
                 break;
             }
         }
-        int index = methodKey.indexOf(".", 2);
+        int index = methodKey.indexOf("}") + 1;
         //获取方法所在的controller的包名
         String controllKey = methodKey.substring(0, index);
         String controllValue = controllerMap.get(controllKey);
-        String key = controllValue + "-" + methodName;
+        String key = StringUtil.compound(controllValue , ConstantsUtil.TRANSVERSE_LINE , methodName);
+
         Map<String, Object> existMap = methodInfoMap.get(key);
         if (null != existMap && !existMap.isEmpty()) {
             map = existMap;
@@ -207,72 +250,60 @@ public class PropertiesUtil {
             } else {
                 infoValue = getValueInfo(methodValue, entryMap);
             }
-
         } else {
             infoValue = methodValue;
         }
-
-        if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_URL)) {
+        String newMethodKey = StringUtil.substringAfter(methodKey,"()");
+        newMethodKey = newMethodKey.substring(1, newMethodKey.length());
+        if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_URL)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_URL, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_TYP)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_TYP)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_TYP, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_METHOD_EXPLAIN)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_METHOD_EXPLAIN)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_METHOD_EXPLAIN, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_REQUEST_BEAN)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_REQUEST_BEAN)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_REQUEST_BEAN, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN_GENERICITY)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN_GENERICITY)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN_GENERICITY, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEAN)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEAN)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEAN, infoValue);
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS)) {
             if (infoList.size() > 0) {
                 map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS, infoList);
             } else {
-                map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS, infoValue);
+                infoList.add(infoValue);
+                map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS, infoList);
             }
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_PARAM_REQUEST_FALSE)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_PARAM_REQUEST_FALSE)) {
             if (infoList.size() > 0) {
                 map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_FALSE, infoList);
             } else {
-                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_FALSE, infoValue);
+                infoList.add(infoValue);
+                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_FALSE, infoList);
             }
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_PARAM_REQUEST_TRUE)) {
-            if (infoList.size() > 0) {
-                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_TRUE, infoList);
-            } else {
-                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_TRUE, infoValue);
-            }
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_FALSE)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_FALSE)) {
             if (infoList.size() > 0) {
                 map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_FALSE, infoList);
             } else {
-                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_FALSE, infoValue);
+                infoList.add(infoValue);
+                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_FALSE, infoList);
             }
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_TRUE)) {
-            if (infoList.size() > 0) {
-                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_TRUE, infoList);
-            } else {
-                map.put(ConstantsUtil.APIDOCS_PARAM_REQUEST_ISSHOW_TRUE, infoValue);
-            }
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_TRUE)) {
-            if (infoList.size() > 0) {
-                map.put(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_TRUE, infoList);
-            } else {
-                map.put(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_TRUE, infoValue);
-            }
-        } else if (methodKey.contains(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE)) {
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE)) {
             if (infoList.size() > 0) {
                 map.put(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE, infoList);
             } else {
-                map.put(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE, infoValue);
+                infoList.add(infoValue);
+                map.put(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE, infoList);
             }
-
         }
         if (!map.isEmpty()) {
-            map.put(ConstantsUtil.PROPERTIES_CONTROLLER_METHOD_NAME, methodName);
-            PropertiesUtil.methodInfoMap.put(key, map);
+            String existMethodName = (String) map.get(ConstantsUtil.PROPERTIES_CONTROLLER_METHOD_NAME);
+            if (StringUtil.isBlank(existMethodName)) {
+                map.put(ConstantsUtil.PROPERTIES_CONTROLLER_METHOD_NAME, methodName);
+            }
+            methodInfoMap.put(key, map);
         }
 
     }
@@ -280,19 +311,24 @@ public class PropertiesUtil {
     /**
      * 解析方法信息的value
      *
-     * @param value
+     * @param source
      * @param entryMap
      * @return
      * @author wangmingchang
      * @date 2019/1/29 15:18
      **/
-    private static String getValueInfo(String value, Map<String, String> entryMap) {
-        value = StringUtil.removeSymbol(value);
-        int index = value.indexOf(".", 2);
-        String key = value.substring(0, index);
-        String entryValue = entryMap.get(key);
-        value = StringUtil.replaceCustomBlank(value, key, entryValue);
-        return value;
+    private static String getValueInfo(String source, Map<String, String> entryMap) {
+        source = StringUtil.removeSymbol(source);
+        Set<Map.Entry<String, String>> entries = entryMap.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (source.contains(key)) {
+                source = StringUtil.replaceCustomBlank(source, key, value);
+                break;
+            }
+        }
+        return source;
     }
 
 

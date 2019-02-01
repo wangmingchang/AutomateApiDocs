@@ -96,6 +96,8 @@
         .nav-tabs li a, .nav-tabs li span:hover {border-color: #eee #eee #ddd;}
         .panel-child{margin-bottom: 0px; font-size: 12px;}
         .table-child{margin-bottom: 0px;}
+        #table-responseClassDtos div{text-align: left;}
+        #table-responseClassDtos div table{text-align: left;}
 
     </style>
 </head>
@@ -110,7 +112,7 @@
         </div>
     </div>
 </nav>
-<div style="overflow: hidden;position: relative;">
+<div id="main" style="overflow: hidden;position: relative;">
     <!--左边菜单-->
     <div class="main-left" style="">
         <div class="list-group">
@@ -177,7 +179,7 @@
                             <th>描述</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table-responseClassDtos">
                         </tbody>
                     </table>
                     <div class="panel panel-default">
@@ -192,6 +194,9 @@
 
         </div>
     </div>
+    <!--临时数据区-->
+    <div id="panel-data-div"></div>
+    <div id="child-data-div"></div>
 </div>
 
 </body>
@@ -218,15 +223,12 @@
         });
         $.getJSON("apiData.json", function (data) {
             $.each(data, function (i, htmlMethonContentDto) {
-                console.log(htmlMethonContentDto);
                 var methodInfoDtoArr = htmlMethonContentDto.methodInfoDtos;
-                console.log(methodInfoDtoArr);
                 for (var i = 0; i< methodInfoDtoArr.length; i++){
                     methodInfoDtos.push(methodInfoDtoArr[i]);
                 }
-                console.log(methodInfoDtos);
             })
-        })
+        });
         init();
     });
 
@@ -323,7 +325,7 @@
             $(this).removeClass("active");
         });
     }
-
+    var chidIndex = 0;
     /**
      * 设置数据
      * */
@@ -335,7 +337,7 @@
             var methodKey = methodInfoDto.methodKey;
             var requestParamDtos = methodInfoDto.requestParamDtos;
             var responseClassDtos = methodInfoDto.baseResponseDataDtos;
-            if(responseClassDtos == null || responseClassDtos.length < 0){
+            if(responseClassDtos == null || responseClassDtos.length <= 0){
                 responseClassDtos = methodInfoDto.responseClassDtos;
             }
             if(methodKey == liId){
@@ -360,7 +362,13 @@
                         }else {
                             className = '';
                         }
-                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+requestParamDtos[j].required+'</td><td>'+requestParamDtos[j].description+'</td></tr>';
+                        var required = requestParamDtos[j].required;
+                        if(required){
+                            required = 'Y';
+                        }else {
+                            required = 'N';
+                        }
+                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+requestParamDtos[j].description+'</td></tr>';
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
 
@@ -368,6 +376,7 @@
                     $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
                 }
                 if(responseClassDtos.length > 0){
+                    chidIndex = 0;
                     for(var j = 0; j < responseClassDtos.length; j++){
                         var className = 'active';
                         var responseDataDtos = responseClassDtos[j].responseDataDtos;
@@ -381,11 +390,38 @@
                         }else {
                             className = '';
                         }
-                        var html_str = '<tr class="'+ className +'"><td >'+responseClassDtos[j].name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+responseClassDtos[j].description+'</td></tr>';
-                        $("#table-responseClassDtos tbody").append(html_str);
-                        if(null != responseDataDtos && responseDataDtos.length > 0){
-                            //有子类
-                            setResponseDataDtos(responseDataDtos, responseClassDtos[j].name, "table-responseClassDtos");
+                        var name = responseClassDtos[j].name;
+                        var tableId = "table-responseClassDtos";
+                        if(isNotBank(name)){
+                            var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+responseClassDtos[j].description+'</td></tr>';
+                            $("#"+tableId+" ." + tableId).append(html_str);
+                            if(null != responseDataDtos && responseDataDtos.length > 0){
+                                //有子类
+                                var childTableId = 'table-child-' + name + "-" + uuid(8, 10);
+                                var childDivId = 'div-child-' + name + "-" + uuid(8, 10);
+                                var childFlag = "childFlag-" + j;
+                                $("#child-data-div").data(childFlag, childTableId);
+                                $("#panel-data-div").data(childFlag, childDivId);
+                                setResponseDataDtos(responseDataDtos, name, tableId, childTableId,childFlag);
+                            }
+                        }else {
+                            if(null != responseDataDtos && responseDataDtos.length > 0){
+                                for (var i = 0; i < responseDataDtos.length; i ++){
+                                    var name = responseDataDtos[i].name;
+                                    var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+responseDataDtos[i].description+'</td></tr>';
+                                    $("#"+tableId+" ." + tableId).append(html_str);
+                                    var childResponseDataDtos = responseDataDtos[i].responseDataDtos;
+                                    if(null != childResponseDataDtos && childResponseDataDtos.length > 0){
+                                        //有子类
+                                        var childTableId = 'table-child-' + name + "-" + uuid(8, 10);
+                                        var childDivId = 'div-child-' + name + "-" + uuid(8, 10);
+                                        var childFlag = "childFlag-" + j + "-" + i;
+                                        $("#child-data-div").data(childFlag, childTableId);
+                                        $("#panel-data-div").data(childFlag, childDivId);
+                                        setResponseDataDtos(childResponseDataDtos, name, tableId, childTableId,childFlag);
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -407,35 +443,51 @@
         $("#request-url").text('');
         $("#table-requestParamDtos tbody td").remove();
         $("#table-responseClassDtos tbody td").remove();
+        $("#child-data-div").remove();
+        $("#panel-data-div").remove();
+        var html_str = '<div id="panel-data-div"></div> <div id="child-data-div"></div>';
+        $("#main").append(html_str);
     }
 
     /**
      * 设置子类响应结果
      * @param responseDataDtos
      */
-    function setResponseDataDtos(dataArr, fieldName, tableId) {
+    function setResponseDataDtos(dataArr, fieldName, parentTableId, childTableId, childFlag) {
         if(dataArr.length > 0){
-            var div_id = 'panel-' + fieldName;
-            var table_id = 'table-child-' + fieldName;
-            var html_str = '<tr><td colspan="3" style="text-align:center"><div id="'+ div_id +'" class="panel panel-info panel-child">\n' +
-                '                        <div class="panel-heading">'+ fieldName +' 对象的信息</div>\n' +
-                '                        <div class="panel-body">\n' +
-                '                            <table id="'+ table_id +'" class="table table-bordered table-child">\n' +
-                '                                <thead>\n' +
-                '                                <tr>\n' +
-                '                                    <th width="20%">参数名称</th>\n' +
-                '                                    <th width="15%">类型</th>\n' +
-                '                                    <th>描述</th>\n' +
-                '                                </tr>\n' +
-                '                                </thead>\n' +
-                '                                <tbody>\n' +
-                '                                </tbody>\n' +
-                '                            </table>\n' +
-                '                        </div>\n' +
-                '                    </div></td></tr>';
-            $("#"+ tableId +" tbody").append(html_str);
+            var panel_id;
+            var panelFlagValue = $("#panel-data-div").data(childFlag);
+            var $panelDiv = null;
+            if(isNotBank(panelFlagValue)){
+                $panelDiv = $("#" + panelFlagValue);
+            }
+            if(null == $panelDiv || $panelDiv.length <= 0){
+                panel_id = 'div-child-' + fieldName + "-" + uuid(8,10);
+                $("#panel-data-div").data(childFlag,panel_id);
+                var html_str = '<tr><td colspan="3" style="text-align:center"><div id="'+ panel_id +'" class="panel panel-info panel-child">\n' +
+                    '                        <div class="panel-heading">'+ fieldName +' 对象的信息</div>\n' +
+                    '                        <div class="panel-body">\n' +
+                    '                            <table id="'+ childTableId +'" class="table table-bordered table-child">\n' +
+                    '                                <thead>\n' +
+                    '                                <tr>\n' +
+                    '                                    <th width="20%">参数名称</th>\n' +
+                    '                                    <th width="15%">类型</th>\n' +
+                    '                                    <th>描述</th>\n' +
+                    '                                </tr>\n' +
+                    '                                </thead>\n' +
+                    '                                <tbody class="'+ childTableId+'">\n' +
+                    '                                </tbody>\n' +
+                    '                            </table>\n' +
+                    '                        </div>\n' +
+                    '                    </div></td></tr>';
+                $("#"+ parentTableId +" ." + parentTableId).append(html_str);
+            }
         }
         for(var i = 0; i < dataArr.length; i++){
+            var childFlagValue =  $("#child-data-div").data(childFlag);
+            if(isNotBank(childFlagValue)){
+                childTableId = childFlagValue;
+            }
             var className = 'active';
             var responseDataDtos = dataArr[i].responseDataDtos;
             for(var h = 0; h < javaTypes.length; h++){
@@ -449,14 +501,53 @@
                 className = '';
             }
             var html_str = '<tr class="'+ className +'"><td >'+dataArr[i].name+'</td><td>'+dataArr[i].type+'</td><td>'+dataArr[i].description+'</td></tr>';
-            $("#"+table_id+" tbody").append(html_str);
+            $("#"+childTableId+" ." + childTableId).append(html_str);
             if(null != responseDataDtos && responseDataDtos.length > 0){
+                var childFlag = childFlag + "-" + i;
                 //有子类
-                setResponseDataDtos(responseDataDtos, dataArr[i].name, table_id);
+                var nextChildId = 'table-child-' + fieldName + "-" + uuid(8, 10);
+                var childDivId = 'div-child-' + fieldName + "-" + uuid(8,10);
+                $("#child-data-div").data(childFlag, nextChildId);
+                $("#panel-data-div").data(childFlag, childDivId);
+                setResponseDataDtos(responseDataDtos, dataArr[i].name, childTableId, nextChildId, childFlag);
+            }
+        }
+    }
+
+    //判断值是否不为空
+    function isNotBank(nameVal) {
+        if(nameVal == null || nameVal == "" || nameVal == undefined){
+            return false;
+        }
+        return true;
+    }
+    function uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [], i;
+        radix = radix || chars.length;
+
+        if (len) {
+            // Compact form
+            for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+        } else {
+            // rfc4122, version 4 form
+            var r;
+
+            // rfc4122 requires these characters
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+            uuid[14] = '4';
+
+            // Fill in random data.  At i==19 set the high bits of clock sequence as
+            // per rfc4122, sec. 4.1.5
+            for (i = 0; i < 36; i++) {
+                if (!uuid[i]) {
+                    r = 0 | Math.random()*16;
+                    uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+                }
             }
         }
 
+        return uuid.join('');
     }
-
 </script>
 </html>

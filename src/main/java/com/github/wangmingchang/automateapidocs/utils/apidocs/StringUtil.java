@@ -104,16 +104,13 @@ public class StringUtil extends StringUtils {
                 if (j == 0) {
                     map.put(START_INDEX_KEY, i);
                     startFlag = true;
-                    System.out.println("endIndex-->c:" + c + "  i:" + i);
                     if (regexArr.length == 1) {
                         endFlag = true;
                         map.put("endIndex", i);
-                        System.out.println("endIndex-->c:" + c + "  i:" + i);
                     }
                 } else if (j == lastIndex) {
                     endFlag = true;
                     map.put("endIndex", i);
-                    System.out.println("endIndex-->c:" + c + "  i:" + i);
                 }
                 j++;
             } else {
@@ -327,6 +324,17 @@ public class StringUtil extends StringUtils {
         }
         return arr[0];
 
+    }
+
+    /**
+     * 合成字符串
+     * @param start
+     * @param centre
+     * @param end
+     * @return
+     */
+    public static String compound(String start, String centre, String end){
+        return start + centre + end;
     }
 
     public static void main(String[] arg) {

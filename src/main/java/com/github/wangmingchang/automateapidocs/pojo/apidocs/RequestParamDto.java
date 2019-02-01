@@ -8,9 +8,14 @@ package com.github.wangmingchang.automateapidocs.pojo.apidocs;
  */
 public class RequestParamDto {
 	private String name; // 参数名称
-	private String type = "string"; // 参数类型
-	private boolean required = true; // 是否必须
+	private String type; // 参数类型
+	private boolean required; // 是否必须
 	private String description; // 参数说明
+
+	public RequestParamDto(){
+		this.type = "string";
+		this.required = true;
+	}
 
 	public String getName() {
 		return name;
