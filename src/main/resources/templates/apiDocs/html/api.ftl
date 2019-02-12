@@ -371,7 +371,7 @@
                         }else {
                             required = 'N';
                         }
-                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+rdescription+'</td></tr>';
+                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+description+'</td></tr>';
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
 
