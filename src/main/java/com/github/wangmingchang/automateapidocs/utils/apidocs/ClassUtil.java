@@ -826,10 +826,10 @@ public class ClassUtil {
             path = Paths.get(f1.getPath() + "\\" + className.getSimpleName() + ".java").toString();
             path = path.replaceAll("target", "src");
             path = path.replaceAll("classes", "main");
-            String[] split = path.split("main");
+            String[] split = path.split("\\\\main\\\\");
             for (int i = 0; i < split.length; i++) {
                 if (i == 0) {
-                    path = split[i] + "main\\java";
+                    path = split[i] + "\\main\\java\\";
                 } else {
                     path += split[i];
                 }
