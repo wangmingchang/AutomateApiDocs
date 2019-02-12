@@ -447,7 +447,7 @@ public class ClassUtil {
                     }
                 }
                 classFiedInfoDto.setGrade(gradeNum + 1);
-            } else if (type.indexOf("class") != -1) {
+            } else if (type.indexOf("class") != -1 || type.indexOf("Serializable") != -1) {
                 Type t = field.getGenericType();
                 //当前字段的真实类型
                 String typeName = t.getTypeName();
@@ -732,7 +732,8 @@ public class ClassUtil {
                     }
                     if(startFlag){
                         if(temp.contains(ConstantsUtil.FIELD_SCOPE_PUBLIC)){
-                            endFlag = true;
+                            //endFlag = true;
+                            continue;
                         }
                         if(temp.contains(ConstantsUtil.STAR_FLAG) || StringUtil.indexOf(temp, ConstantsUtil.SPECIAL_FLAG_ARR)) {
                             flag = true;
@@ -766,7 +767,11 @@ public class ClassUtil {
                     }
                     if(strArr[0].contains(ConstantsUtil.MORE_START_FLAG)){
                         //有多行注释
-                        remark = StringUtil.replaceSlashBlank(StringUtil.replaceStarBlank(strArr[0]));
+                        String arr0 = strArr[0];
+                        int index = arr0.lastIndexOf(ConstantsUtil.MORE_START_FLAG);
+                        arr0 = arr0.substring(index, arr0.length());
+
+                        remark = StringUtil.replaceSlashBlank(StringUtil.replaceStarBlank(arr0));
                         remark = StringUtil.substringBefore(remark, "@");
                         String[] nameArr = strArr[1].split("\\s+");
                         for (String nameStr : nameArr){
