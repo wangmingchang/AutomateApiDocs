@@ -362,12 +362,16 @@
                             className = '';
                         }
                         var required = requestParamDtos[j].required;
+                        var description = requestParamDtos[j].description;
+                        if(!isNotBank(description)){
+                            description = '';
+                        }
                         if(required){
                             required = 'Y';
                         }else {
                             required = 'N';
                         }
-                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+requestParamDtos[j].description+'</td></tr>';
+                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+rdescription+'</td></tr>';
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
 
@@ -390,9 +394,13 @@
                             className = '';
                         }
                         var name = responseClassDtos[j].name;
+                        var description = responseClassDtos[j].description;
+                        if(!isNotBank(description)){
+                            description = '';
+                        }
                         var tableId = "table-responseClassDtos";
                         if(isNotBank(name)){
-                            var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+responseClassDtos[j].description+'</td></tr>';
+                            var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+description+'</td></tr>';
                             $("#"+tableId+" ." + tableId).append(html_str);
                             if(null != responseDataDtos && responseDataDtos.length > 0){
                                 //有子类
@@ -407,7 +415,11 @@
                             if(null != responseDataDtos && responseDataDtos.length > 0){
                                 for (var i = 0; i < responseDataDtos.length; i ++){
                                     var name = responseDataDtos[i].name;
-                                    var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+responseDataDtos[i].description+'</td></tr>';
+                                    var description = responseDataDtos[i].description;
+                                    if(!isNotBank(description)){
+                                        description = '';
+                                    }
+                                    var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+description+'</td></tr>';
                                     $("#"+tableId+" ." + tableId).append(html_str);
                                     var childResponseDataDtos = responseDataDtos[i].responseDataDtos;
                                     if(null != childResponseDataDtos && childResponseDataDtos.length > 0){
