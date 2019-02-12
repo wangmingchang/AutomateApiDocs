@@ -23,7 +23,6 @@
             right: 0px;
             top: 0px;
             bottom: 0px;
-            height: 890px;
             z-index: 0;
             display: block;
             visibility: visible;

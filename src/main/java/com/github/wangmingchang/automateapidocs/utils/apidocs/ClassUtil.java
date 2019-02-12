@@ -5,8 +5,6 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.management.RuntimeErrorException;
 import java.io.*;
@@ -32,8 +30,6 @@ import java.util.jar.JarFile;
  */
 public class ClassUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(ClassUtil.class);
-
     private static List<ClassFiedInfoDto> fieldInfoList = new CopyOnWriteArrayList<ClassFiedInfoDto>();
     /**
      * 属性名和类型集合
@@ -55,7 +51,7 @@ public class ClassUtil {
     public static void main(String[] args) throws Exception {
         List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
         for (Class clas : classes) {
-            logger.info(clas.getName());
+            LoggerUtil.info(clas.getName());
         }
     }
 
@@ -404,10 +400,10 @@ public class ClassUtil {
             }
         }
         //TODO
-        logger.info("fields长度：" + fields.size());
-        logger.info("fields：" + fields);
-        logger.info("pojoRemarkMap长度：" + pojoRemarkMap.size());
-        logger.info("pojoRemarkMap：" + new Gson().toJson(pojoRemarkMap));
+        LoggerUtil.info("fields长度：" + fields.size());
+        LoggerUtil.info("fields：" + fields);
+        LoggerUtil.info("pojoRemarkMap长度：" + pojoRemarkMap.size());
+        LoggerUtil.info("pojoRemarkMap：" + new Gson().toJson(pojoRemarkMap));
 
         /*
          * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
@@ -759,7 +755,7 @@ public class ClassUtil {
                         startFlag = true;
                     }
                 }
-                logger.info("sb:" + "\n" +  sb);
+                LoggerUtil.info("sb:" + "\n" +  sb);
                 String[] sbArr = sb.toString().split("\n");
                 for (String str : sbArr){
                     String remark = "";
@@ -804,15 +800,15 @@ public class ClassUtil {
 
 
             } catch (IOException e) {
-                logger.error("类：" + className + "文件读取失败", e);
+                LoggerUtil.error("类：" + className + "文件读取失败", e);
             } finally {
                 breader.close();
                 freader.close();
             }
         } catch (FileNotFoundException e) {
-            logger.error("类：" + className + "文件不存在", e);
+            LoggerUtil.error("类：" + className + "文件不存在", e);
         } catch (IOException e) {
-            logger.error("类：" + className + "文件读取失败", e);
+            LoggerUtil.error("类：" + className + "文件读取失败", e);
         }
         return remarkMap;
     }
@@ -839,7 +835,7 @@ public class ClassUtil {
                 }
             }
         } catch (Exception e) {
-            logger.info("类：" + className + "文件不存在");
+            LoggerUtil.info("类：" + className + "文件不存在");
         }
         return path;
     }
@@ -882,7 +878,7 @@ public class ClassUtil {
                 String sbMapKey = "";
                 //读取文件内容
                 while ((temp = breader.readLine()) != null) {
-                    //logger.info("temp:" + temp);
+                    //LoggerUtil.info("temp:" + temp);
                     if(StringUtil.isBlank(temp)){
                         continue;
                     }
@@ -922,18 +918,18 @@ public class ClassUtil {
                             if (temp.contains(ConstantsUtil.API_DOCS_CLASS_STR)) {
                                 tempSb = moreSb;
                                 classRemarkSb = tempSb;
-                                logger.info("moreSb:" + tempSb);
+                                LoggerUtil.info("moreSb:" + tempSb);
                                 moreSb = new StringBuilder();
-                                logger.info("tempSb:" + tempSb);
+                                LoggerUtil.info("tempSb:" + tempSb);
                                 isExistApiDocsMethod = false;
                             } else if (temp.contains(ConstantsUtil.API_DOCS_METHOD)) {
                                 currentNum++;
                                 tempSb = moreSb;
-                                logger.info("moreSb:" + moreSb);
+                                LoggerUtil.info("moreSb:" + moreSb);
                                 sbMapKey = ConstantsUtil.METHOD_MAP_KEY + currentNum;
                                 sbMap.put(sbMapKey, tempSb);
                                 moreSb = new StringBuilder();
-                                logger.info("tempSb:" + tempSb);
+                                LoggerUtil.info("tempSb:" + tempSb);
                                 isExistApiDocsMethod = true;
                             }else if(StringUtil.indexOf(temp, ConstantsUtil.SPRING_REQUEST_MAPPER)){
                                 if(isOneRequestMappingFlag){
@@ -941,7 +937,7 @@ public class ClassUtil {
                                 }else {
                                     if(isExistApiDocsMethod){
                                         url = methodRootPath + getMethodPath(temp);
-                                        logger.info("url:" + url);
+                                        LoggerUtil.info("url:" + url);
                                         StringBuilder sbMapValue = sbMap.get(sbMapKey);
                                         sbMap.put(url, sbMapValue);
                                         sbMap.remove(sbMapKey);
@@ -1033,8 +1029,8 @@ public class ClassUtil {
                         methodExplainDto.setExplain(explain);
                         methodExplainDto.setMethodPath(mUrl);
                         methodExplainDto.setParamDtos(requestParamDtos);
-                        logger.info("mUrl:" + mUrl);
-                        logger.info("methodExplainDto:" + new Gson().toJson(methodExplainDto));
+                        LoggerUtil.info("mUrl:" + mUrl);
+                        LoggerUtil.info("methodExplainDto:" + new Gson().toJson(methodExplainDto));
                         methodExplainDtoMap.put(mUrl, methodExplainDto);
                     }
                 }
@@ -1042,15 +1038,15 @@ public class ClassUtil {
 
 
             } catch (IOException e) {
-                logger.error("类：" + className + "文件读取失败", e);
+                LoggerUtil.error("类：" + className + "文件读取失败", e);
             } finally {
                 breader.close();
                 freader.close();
             }
         } catch (FileNotFoundException e) {
-            logger.error("类：" + className + "文件不存在", e);
+            LoggerUtil.error("类：" + className + "文件不存在", e);
         } catch (IOException e) {
-            logger.error("类：" + className + "文件读取失败", e);
+            LoggerUtil.error("类：" + className + "文件读取失败", e);
         }
         return classMoreRemarkDto;
     }

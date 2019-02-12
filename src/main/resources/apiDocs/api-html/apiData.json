@@ -6,11 +6,11 @@
       },"methodDescriptions":
       [
          {
-            "methodDescriptionValue":"index方法-2","methodKey":"233e3b7e-f74a-4eb9-b645-619ce35a3a44"
+            "methodDescriptionValue":"index方法-2","methodKey":"a8d8ea93-cd85-4282-84ec-8c86d7692427"
          },{
-            "methodDescriptionValue":"获取老师信息","methodKey":"76888b2b-cfa3-4483-8e5a-93b978e58a73"
+            "methodDescriptionValue":"hell方法","methodKey":"d800c602-1e7c-40b4-b3f4-afb5d837cc5e"
          },{
-            "methodDescriptionValue":"hell方法","methodKey":"8304e568-6d9f-472a-9d58-ce9598f2a816"
+            "methodDescriptionValue":"获取老师信息","methodKey":"e221c01f-9c7e-44fc-b8e6-f131bcdf84a9"
          }
 
       ],"methodInfoDtos":
@@ -100,48 +100,7 @@
                   ],"grade":0,"sequence":0
                }
 
-            ],"methodKey":"233e3b7e-f74a-4eb9-b645-619ce35a3a44"
-         },{
-            "methodDescription":"获取老师信息","type":"GET","url":"/api/index/v1/getTeacharInfo","requestParamDtos":
-            [
-               {
-                  "name":"id","type":"string","required":true,"description":"id信息"
-               },{
-                  "name":"name","type":"string","required":true,"description":"name信息"
-               }
-
-            ],"responseClassDtos":
-            [
-               {
-                  "className":"BaseResponseVo","responseDataDtos":
-                  [
-                     {
-                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"BaseResponseVo","grade":1,"sequence":1
-                     },{
-                        "name":"msg","type":"string","description":"状态说明","className":"BaseResponseVo","grade":1,"sequence":2
-                     },{
-                        "name":"result","type":"object","description":"返回数据","className":"BaseResponseVo","grade":1,"sequence":3
-                     },{
-                        "name":"dogVo","type":"class","description":"小狗","childNode":"dogVo","className":"BaseResponseVo","responseDataDtos":
-                        [
-                           {
-                              "name":"color","type":"string","description":"颜色","className":"BaseResponseVo","grade":2,"sequence":4
-                           },{
-                              "name":"name","type":"string","description":"名字","className":"BaseResponseVo","grade":2,"sequence":5
-                           },{
-                              "name":"age","type":"int","description":"年龄","className":"BaseResponseVo","grade":2,"sequence":6
-                           }
-
-                        ],"grade":2,"sequence":7
-                     }
-
-                  ],"grade":1,"fieldType":"class"
-               }
-
-            ],"baseResponseDataDtos":
-            [
-               
-            ],"methodKey":"76888b2b-cfa3-4483-8e5a-93b978e58a73"
+            ],"methodKey":"a8d8ea93-cd85-4282-84ec-8c86d7692427"
          },{
             "methodDescription":"hell方法","type":"POST","url":"/api/index/v1/helloHtml","requestParamDtos":
             [
@@ -301,7 +260,48 @@
                   ],"grade":0,"sequence":0
                }
 
-            ],"methodKey":"8304e568-6d9f-472a-9d58-ce9598f2a816"
+            ],"methodKey":"d800c602-1e7c-40b4-b3f4-afb5d837cc5e"
+         },{
+            "methodDescription":"获取老师信息","type":"GET","url":"/api/index/v1/getTeacharInfo","requestParamDtos":
+            [
+               {
+                  "name":"id","type":"string","required":true,"description":"id信息"
+               },{
+                  "name":"name","type":"string","required":true,"description":"name信息"
+               }
+
+            ],"responseClassDtos":
+            [
+               {
+                  "className":"BaseResponseVo","responseDataDtos":
+                  [
+                     {
+                        "name":"status","type":"string","description":"状态（1：成功；0：失败）","className":"BaseResponseVo","grade":1,"sequence":1
+                     },{
+                        "name":"msg","type":"string","description":"状态说明","className":"BaseResponseVo","grade":1,"sequence":2
+                     },{
+                        "name":"result","type":"object","description":"返回数据","className":"BaseResponseVo","grade":1,"sequence":3
+                     },{
+                        "name":"dogVo","type":"class","description":"小狗","childNode":"dogVo","className":"BaseResponseVo","responseDataDtos":
+                        [
+                           {
+                              "name":"color","type":"string","description":"颜色","className":"BaseResponseVo","grade":2,"sequence":4
+                           },{
+                              "name":"name","type":"string","description":"名字","className":"BaseResponseVo","grade":2,"sequence":5
+                           },{
+                              "name":"age","type":"int","description":"年龄","className":"BaseResponseVo","grade":2,"sequence":6
+                           }
+
+                        ],"grade":2,"sequence":7
+                     }
+
+                  ],"grade":1,"fieldType":"class"
+               }
+
+            ],"baseResponseDataDtos":
+            [
+               
+            ],"methodKey":"e221c01f-9c7e-44fc-b8e6-f131bcdf84a9"
          }
 
       ]

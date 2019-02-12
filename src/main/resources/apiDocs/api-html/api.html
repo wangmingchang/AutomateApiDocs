@@ -23,7 +23,6 @@
             right: 0px;
             top: 0px;
             bottom: 0px;
-            height: 890px;
             z-index: 0;
             display: block;
             visibility: visible;
@@ -123,9 +122,9 @@
                             <span> HTML-controller</span>
                         </a>
                     <ul>
-                            <li id="233e3b7e-f74a-4eb9-b645-619ce35a3a44" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
-                            <li id="76888b2b-cfa3-4483-8e5a-93b978e58a73" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
-                            <li id="8304e568-6d9f-472a-9d58-ce9598f2a816" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
+                            <li id="a8d8ea93-cd85-4282-84ec-8c86d7692427" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
+                            <li id="d800c602-1e7c-40b4-b3f4-afb5d837cc5e" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
+                            <li id="e221c01f-9c7e-44fc-b8e6-f131bcdf84a9" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
                         </ul>
                     </li>
 
@@ -525,11 +524,18 @@
         radix = radix || chars.length;
 
         if (len) {
+            // Compact form
             for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
         } else {
+            // rfc4122, version 4 form
             var r;
+
+            // rfc4122 requires these characters
             uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
             uuid[14] = '4';
+
+            // Fill in random data.  At i==19 set the high bits of clock sequence as
+            // per rfc4122, sec. 4.1.5
             for (i = 0; i < 36; i++) {
                 if (!uuid[i]) {
                     r = 0 | Math.random()*16;

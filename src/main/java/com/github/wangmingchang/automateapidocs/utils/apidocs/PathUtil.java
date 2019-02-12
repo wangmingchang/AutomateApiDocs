@@ -1,8 +1,5 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URL;
 
 /**
@@ -12,8 +9,6 @@ import java.net.URL;
  * @since 2017年10月18日
  */
 public class PathUtil {
-
-	private static Logger logger = LoggerFactory.getLogger(PathUtil.class);
 
 	/**
 	 * 获取当前项目Class路径
@@ -66,11 +61,11 @@ public class PathUtil {
 			java.io.File myFilePath = new java.io.File(txt);
 			txt = folderPath;
 			if (!myFilePath.exists()) {
-				logger.info("====================目录不存在,重新创建====================");
+				LoggerUtil.info("====================目录不存在,重新创建====================");
 				myFilePath.mkdirs();
 			}
 		} catch (Exception e) {
-			logger.error("创建目录操作出错", e);
+			LoggerUtil.error("创建目录操作出错", e);
 		}
 		return txt;
 	}

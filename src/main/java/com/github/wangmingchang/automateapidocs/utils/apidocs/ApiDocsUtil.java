@@ -5,8 +5,6 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +21,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author 王明昌
  */
 public class ApiDocsUtil {
-
-    private static Logger logger = LoggerFactory.getLogger(ApiDocsUtil.class);
-
     private static boolean isWord; // 是否生成word格式api;
     private static boolean isHTML; // 是否生成HTML格式api;
 
@@ -39,7 +34,7 @@ public class ApiDocsUtil {
      * 执行自动生成api方法
      */
     public static void init() {
-        logger.info("**************************执行自动生成api***************************");
+        LoggerUtil.info("**************************执行自动生成api***************************");
         URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
         String rootPate = classpath.getPath();
         // String rootPate = path + "/resources/";
@@ -64,7 +59,7 @@ public class ApiDocsUtil {
             savePath = rootPate + "apiDocs";
         }
         controllerMethodInfo = PropertiesUtil.getControllerMethodInfo(dataProperties);
-        logger.info("controllerMethodInfo:" + new Gson().toJson(controllerMethodInfo));
+        LoggerUtil.info("controllerMethodInfo:" + new Gson().toJson(controllerMethodInfo));
         String[] packageNames = packageNameStr.split(",");
         for (String packageName : packageNames) {
             generateApi(packageName, savePath);
@@ -78,7 +73,7 @@ public class ApiDocsUtil {
                 WordTemlateUtil.setWordTemplate(savePath, wordContentDtos);
             }
         }
-        logger.info("**************************生成完成***************************");
+        LoggerUtil.info("**************************生成完成***************************");
     }
 
     /**
@@ -98,7 +93,7 @@ public class ApiDocsUtil {
 
                 Class<?> className = Class.forName(classNameStr);
                 if (!className.isAnnotationPresent(ApiDocsClass.class)) {
-                    logger.info(className + "没有在类上注解ApiDocsClass");
+                    LoggerUtil.info(className + "没有在类上注解ApiDocsClass");
                     // 不是生成api文档类
                     continue;
                 }
@@ -435,15 +430,15 @@ public class ApiDocsUtil {
                         methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
                         methodInfoDto.setMethodKey(methodKey);
                         methodInfoDtos.add(methodInfoDto);
-                        logger.info("*****************************************");
-                        logger.info("类的说明 ：" + classExplainDto.getExplain());
-                        logger.info("方法业务说明：" + methodDescription);
-                        logger.info("方法请求路径：" + url);
-                        logger.info("请求方法方式：" + type);
-                        logger.info("请求字段信息：" + new Gson().toJson(requestParamDtos));
-                        logger.info("响应字段信息：" + new Gson().toJson(responseClassDtos));
-                        logger.info("响应字段basRespons信息：" + new Gson().toJson(baseResponseDataDtos));
-                        logger.info("methodKey：" + methodKey);
+                        LoggerUtil.info("*****************************************");
+                        LoggerUtil.info("类的说明 ：" + classExplainDto.getExplain());
+                        LoggerUtil.info("方法业务说明：" + methodDescription);
+                        LoggerUtil.info("方法请求路径：" + url);
+                        LoggerUtil.info("请求方法方式：" + type);
+                        LoggerUtil.info("请求字段信息：" + new Gson().toJson(requestParamDtos));
+                        LoggerUtil.info("响应字段信息：" + new Gson().toJson(responseClassDtos));
+                        LoggerUtil.info("响应字段basRespons信息：" + new Gson().toJson(baseResponseDataDtos));
+                        LoggerUtil.info("methodKey：" + methodKey);
 
                     }
                 }
