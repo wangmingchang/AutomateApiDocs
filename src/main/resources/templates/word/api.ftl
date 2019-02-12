@@ -433,7 +433,7 @@
 							</w:pPr>
 							<w:r wsp:rsidRPr="00EF7CE5">
 								<w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" /><wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-								<w:t>${baseResponseDataDto.description}</w:t>
+								<w:t>${baseResponseDataDto.description!''}</w:t>
 							</w:r>
 						</w:p>
 					</w:tc>
@@ -491,7 +491,7 @@
 									<w:proofErr w:type="spellStart" />
 										<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 											<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-											<w:t>${responseDataDto.name}（${responseDataDto.description}）</w:t>
+											<w:t>${responseDataDto.name}（${responseDataDto.description!''}）</w:t>
 										</w:r>
 									<w:proofErr w:type="spellEnd" />
 								</w:p>
@@ -524,7 +524,7 @@
 									</w:pPr>
 									<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
 										<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-										<w:t>${responseDataDto.description}</w:t>
+										<w:t>${responseDataDto.description!''}</w:t>
 									</w:r>
 								</w:p>
 							</w:tc>
@@ -562,7 +562,7 @@
 									<w:proofErr w:type="spellStart" />
 										<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" />
 											<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /><w:sz-cs w:val="22" /></w:rPr>
-											<w:t>${responseDataChildDto.name}（${responseDataChildDto.description}）</w:t>
+											<w:t>${responseDataChildDto.name}（${responseDataChildDto.description!''}）</w:t>
 										</w:r>
 									<w:proofErr w:type="spellEnd" />
 								</w:p>
@@ -595,7 +595,7 @@
 										</w:pPr>
 										<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
 											<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-											<w:t>${responseDataChildDto.description}</w:t>
+											<w:t>${responseDataChildDto.description!''}</w:t>
 										</w:r>
 									</w:p>
 								</w:tc>
@@ -642,7 +642,7 @@
 											</w:pPr>
 											<w:r wsp:rsidRPr="00EF7CE5"><w:rPr><w:rFonts w:ascii="Times New Roman" w:h-ansi="Times New Roman" w:hint="fareast" />
 												<wx:font wx:val="Times New Roman" /><w:kern w:val="0" /></w:rPr>
-												<w:t>${responseDataChildChildDto.description}</w:t>
+												<w:t>${responseDataChildChildDto.description!''}</w:t>
 											</w:r>
 										</w:p>
 									</w:tc>
