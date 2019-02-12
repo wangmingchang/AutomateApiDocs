@@ -49,6 +49,35 @@ public class PropertiesUtil {
         }
         return properties;
     }
+    /**
+     * 加载属性文件
+     *
+     * @param filePath 文件路径
+     * @param isThrow 是否抛错
+     * @return 加载属性文件
+     */
+    public static Properties loadProps(String filePath, boolean isThrow){
+        Properties properties = new Properties();
+        try {
+            FileInputStream fileInputStream = null;
+            try {
+                fileInputStream = new FileInputStream(filePath);
+                InputStreamReader reader = new InputStreamReader(fileInputStream, "UTF-8");
+                properties.load(reader);
+            } catch (Exception e) {
+                if(isThrow){
+                    e.printStackTrace();
+                }
+            }finally {
+                if(fileInputStream != null){
+                    fileInputStream.close();
+                }
+            }
+        }catch (Exception e){
+
+        }
+        return properties;
+    }
 
     /**
      * 加载属性文件

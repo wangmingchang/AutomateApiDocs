@@ -38,7 +38,7 @@ public class ApiDocsUtil {
         URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
         String rootPate = classpath.getPath();
         // String rootPate = path + "/resources/";
-        Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties");
+        Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties", false);
         String packageNameStr = properties.getProperty("apiDocs.sys.packageName");
         String savePath = properties.getProperty("apiDocs.sys.savePath");
         String isWordStr = properties.getProperty("apiDocs.sys.isWord");
