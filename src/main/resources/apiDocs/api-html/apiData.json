@@ -6,11 +6,13 @@
       },"methodDescriptions":
       [
          {
-            "methodDescriptionValue":"index方法-2","methodKey":"a8d8ea93-cd85-4282-84ec-8c86d7692427"
+            "methodDescriptionValue":"index方法-2","methodKey":"35801e35-e279-4855-964f-ecf8b9504182"
          },{
-            "methodDescriptionValue":"hell方法","methodKey":"d800c602-1e7c-40b4-b3f4-afb5d837cc5e"
+            "methodDescriptionValue":"获取路径","methodKey":"5d066ab7-79fc-48ce-8362-d8bf8be1351c"
          },{
-            "methodDescriptionValue":"获取老师信息","methodKey":"e221c01f-9c7e-44fc-b8e6-f131bcdf84a9"
+            "methodDescriptionValue":"hell方法","methodKey":"8fda12c7-4a6f-4404-afd6-6742f4221cb0"
+         },{
+            "methodDescriptionValue":"获取老师信息","methodKey":"a54110c8-980b-4fd9-8308-5c081f9f6dba"
          }
 
       ],"methodInfoDtos":
@@ -100,7 +102,38 @@
                   ],"grade":0,"sequence":0
                }
 
-            ],"methodKey":"a8d8ea93-cd85-4282-84ec-8c86d7692427"
+            ],"methodKey":"35801e35-e279-4855-964f-ecf8b9504182"
+         },{
+            "methodDescription":"获取路径","type":"GET","url":"/api/index/v1/getUrl","requestParamDtos":
+            [
+               {
+                  "name":"path","type":"string","required":true,"description":"url"
+               }
+
+            ],"responseClassDtos":
+            [
+               {
+                  "className":"Student","responseDataDtos":
+                  [
+                     {
+                        "name":"age","type":"int","description":"年龄1","className":"Student","grade":1,"sequence":1
+                     },{
+                        "name":"name","type":"string","description":"姓名","className":"Student","grade":1,"sequence":2
+                     },{
+                        "name":"socre","type":"double","description":"分数","className":"Student","grade":1,"sequence":3
+                     },{
+                        "name":"teacharName","type":"string","description":"姓名","className":"Student","grade":2,"sequence":4
+                     },{
+                        "name":"subject","type":"string","description":"学科","className":"Student","grade":2,"sequence":5
+                     }
+
+                  ],"grade":2,"fieldType":"string"
+               }
+
+            ],"baseResponseDataDtos":
+            [
+               
+            ],"methodKey":"5d066ab7-79fc-48ce-8362-d8bf8be1351c"
          },{
             "methodDescription":"hell方法","type":"POST","url":"/api/index/v1/helloHtml","requestParamDtos":
             [
@@ -260,7 +293,7 @@
                   ],"grade":0,"sequence":0
                }
 
-            ],"methodKey":"d800c602-1e7c-40b4-b3f4-afb5d837cc5e"
+            ],"methodKey":"8fda12c7-4a6f-4404-afd6-6742f4221cb0"
          },{
             "methodDescription":"获取老师信息","type":"GET","url":"/api/index/v1/getTeacharInfo","requestParamDtos":
             [
@@ -301,7 +334,7 @@
             ],"baseResponseDataDtos":
             [
                
-            ],"methodKey":"e221c01f-9c7e-44fc-b8e6-f131bcdf84a9"
+            ],"methodKey":"a54110c8-980b-4fd9-8308-5c081f9f6dba"
          }
 
       ]

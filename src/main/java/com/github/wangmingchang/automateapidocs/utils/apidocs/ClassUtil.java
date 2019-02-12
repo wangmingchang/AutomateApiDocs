@@ -968,6 +968,7 @@ public class ClassUtil {
                         }
                     }
                 }
+                classExplain = StringUtil.substringBefore(classExplain, "@");
                 classExplainDto.setExplain(classExplain);
                 classExplainDto.setAuthor(classAuthor);
                 classExplainDto.setCreateDate(classCreateDate);

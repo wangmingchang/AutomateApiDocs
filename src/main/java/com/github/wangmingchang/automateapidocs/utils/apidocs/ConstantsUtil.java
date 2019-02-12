@@ -27,7 +27,7 @@ public class ConstantsUtil {
     public static final String API_DOCS_METHOD = "@ApiDocsMethod";
 
     /**author的开关数组*/
-    public static final String[] AUTHOR_ARR = {"@author", "@Author"};
+    public static final String[] AUTHOR_ARR = {"@author", "@Author","@auther", "@Auther"};
     /**date的开头数组*/
     public static final String[] DATE_ARR = {"@date", "@Date"};
     /**param的开头*/

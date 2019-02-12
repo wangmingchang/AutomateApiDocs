@@ -122,9 +122,10 @@
                             <span> HTML-controller</span>
                         </a>
                     <ul>
-                            <li id="a8d8ea93-cd85-4282-84ec-8c86d7692427" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
-                            <li id="d800c602-1e7c-40b4-b3f4-afb5d837cc5e" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
-                            <li id="e221c01f-9c7e-44fc-b8e6-f131bcdf84a9" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
+                            <li id="35801e35-e279-4855-964f-ecf8b9504182" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
+                            <li id="5d066ab7-79fc-48ce-8362-d8bf8be1351c" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取路径</a></li>
+                            <li id="8fda12c7-4a6f-4404-afd6-6742f4221cb0" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
+                            <li id="a54110c8-980b-4fd9-8308-5c081f9f6dba" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
                         </ul>
                     </li>
 
@@ -360,12 +361,16 @@
                             className = '';
                         }
                         var required = requestParamDtos[j].required;
+                        var description = requestParamDtos[j].description;
+                        if(!isNotBank(description)){
+                            description = '';
+                        }
                         if(required){
                             required = 'Y';
                         }else {
                             required = 'N';
                         }
-                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+requestParamDtos[j].description+'</td></tr>';
+                        var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+description+'</td></tr>';
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
 
@@ -388,9 +393,13 @@
                             className = '';
                         }
                         var name = responseClassDtos[j].name;
+                        var description = responseClassDtos[j].description;
+                        if(!isNotBank(description)){
+                            description = '';
+                        }
                         var tableId = "table-responseClassDtos";
                         if(isNotBank(name)){
-                            var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+responseClassDtos[j].description+'</td></tr>';
+                            var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseClassDtos[j].type+'</td><td>'+description+'</td></tr>';
                             $("#"+tableId+" ." + tableId).append(html_str);
                             if(null != responseDataDtos && responseDataDtos.length > 0){
                                 //有子类
@@ -405,7 +414,11 @@
                             if(null != responseDataDtos && responseDataDtos.length > 0){
                                 for (var i = 0; i < responseDataDtos.length; i ++){
                                     var name = responseDataDtos[i].name;
-                                    var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+responseDataDtos[i].description+'</td></tr>';
+                                    var description = responseDataDtos[i].description;
+                                    if(!isNotBank(description)){
+                                        description = '';
+                                    }
+                                    var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+description+'</td></tr>';
                                     $("#"+tableId+" ." + tableId).append(html_str);
                                     var childResponseDataDtos = responseDataDtos[i].responseDataDtos;
                                     if(null != childResponseDataDtos && childResponseDataDtos.length > 0){
