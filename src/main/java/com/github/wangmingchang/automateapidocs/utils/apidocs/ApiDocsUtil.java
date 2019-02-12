@@ -38,13 +38,13 @@ public class ApiDocsUtil {
         URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
         String rootPate = classpath.getPath();
         // String rootPate = path + "/resources/";
-        Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties", false);
+        Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties");
         String packageNameStr = properties.getProperty("apiDocs.sys.packageName");
         String savePath = properties.getProperty("apiDocs.sys.savePath");
         String isWordStr = properties.getProperty("apiDocs.sys.isWord");
         String isHTMLStr = properties.getProperty("apiDocs.sys.isHTML");
         String charsetCode = properties.getProperty("apiDocs.sys.charsetCode");
-        Properties dataProperties = PropertiesUtil.loadProps(rootPate + "apiDocsData.properties", charsetCode);
+        Properties dataProperties = PropertiesUtil.loadProps(rootPate + "apiDocsData.properties", charsetCode, false);
 
         if (StringUtils.isBlank(packageNameStr)) {
             throw new RuntimeException("在apiDocs.properties配置中没有找到扫瞄包（packageName）的配置");

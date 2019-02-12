@@ -40,29 +40,44 @@ public class PropertiesUtil {
      */
     public static Properties loadProps(String filePath) {
         Properties properties = new Properties();
+        FileInputStream fileInputStream = null;
         try {
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            InputStreamReader reader = new InputStreamReader(fileInputStream, "UTF-8");
-            properties.load(reader);
-        } catch (Exception e) {
+            try {
+                fileInputStream = new FileInputStream(filePath);
+                InputStreamReader reader = new InputStreamReader(fileInputStream, "UTF-8");
+                properties.load(reader);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                if(fileInputStream != null){
+                    fileInputStream.close();
+                }
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
         return properties;
     }
+
     /**
      * 加载属性文件
      *
-     * @param filePath 文件路径
+     * @param filePath     文件路径
+     * @param charsentCode 编码格式
      * @param isThrow 是否抛错
      * @return 加载属性文件
      */
-    public static Properties loadProps(String filePath, boolean isThrow){
+    public static Properties loadProps(String filePath, String charsentCode, boolean isThrow) {
         Properties properties = new Properties();
         try {
+
             FileInputStream fileInputStream = null;
             try {
                 fileInputStream = new FileInputStream(filePath);
-                InputStreamReader reader = new InputStreamReader(fileInputStream, "UTF-8");
+                if (StringUtil.isBlank(charsentCode)) {
+                    charsentCode = ConstantsUtil.DEFAULT_CHARSET_CODE;
+                }
+                InputStreamReader reader = new InputStreamReader(fileInputStream, charsentCode);
                 properties.load(reader);
             } catch (Exception e) {
                 if(isThrow){
@@ -74,11 +89,10 @@ public class PropertiesUtil {
                 }
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return properties;
     }
-
     /**
      * 加载属性文件
      *
