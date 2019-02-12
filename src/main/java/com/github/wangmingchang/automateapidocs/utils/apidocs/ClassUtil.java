@@ -734,7 +734,7 @@ public class ClassUtil {
                         if(temp.contains(ConstantsUtil.FIELD_SCOPE_PUBLIC)){
                             endFlag = true;
                         }
-                        if(temp.contains(ConstantsUtil.STAR_FLAG)) {
+                        if(temp.contains(ConstantsUtil.STAR_FLAG) || StringUtil.indexOf(temp, ConstantsUtil.SPECIAL_FLAG_ARR)) {
                             flag = true;
                         } else {
                             flag = false;

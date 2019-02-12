@@ -59,6 +59,8 @@ public class ConstantsUtil {
     public static final String MORE_END_FLAG = "*/";
     /**多行注释星（*）标记*/
     public static final String STAR_FLAG = "*";
+    /**特殊符号，如：@，标记*/
+    public static final String[] SPECIAL_FLAG_ARR = {"@"};
     /**单行注释（//）标记*/
     public static final String ONE_WAY_FLAG = "//";
 
