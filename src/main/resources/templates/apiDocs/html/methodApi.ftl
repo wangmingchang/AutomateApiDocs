@@ -41,7 +41,7 @@
 				<tr>
 					<td>${requestParamDto.name}</td>
 					<td>${requestParamDto.type}</td>
-					<td>${requestParamDto.description}</td>
+					<td>${requestParamDto.description!''}</td>
 					<td>${requestParamDto.required?string('YES' , 'NO')}</td>
 				</tr>
 				</#list>

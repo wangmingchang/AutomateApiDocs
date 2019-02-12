@@ -314,7 +314,7 @@
 					</w:tc>
 					<w:tc>
 						<w:tcPr><w:tcW w:w="3256" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
-						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>${requestParamDto.description}</w:t></w:r></w:p>
+						<w:p wsp:rsidR="005F16F9" wsp:rsidRDefault="00EF7CE5"><w:r><w:rPr><w:rFonts w:hint="fareast" /></w:rPr><w:t>${requestParamDto.description!''}</w:t></w:r></w:p>
 					</w:tc>
 					<w:tc>
 						<w:tcPr><w:tcW w:w="1340" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2" /></w:tcPr>
