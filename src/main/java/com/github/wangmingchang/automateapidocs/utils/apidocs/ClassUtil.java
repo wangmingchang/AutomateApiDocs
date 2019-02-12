@@ -1024,7 +1024,8 @@ public class ClassUtil {
                             requestParamDtos.add(requestParamDto);
                         }
                     }
-                    if (StringUtil.isNotBlank(StringUtil.substringBefore(explain, "@"))) {
+                    explain = StringUtil.substringBefore(explain, "@");
+                    if (StringUtil.isNotBlank(explain)) {
                         MethodExplainDto methodExplainDto = new MethodExplainDto();
                         methodExplainDto.setExplain(explain);
                         methodExplainDto.setMethodPath(mUrl);
