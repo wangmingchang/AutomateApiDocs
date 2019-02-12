@@ -767,6 +767,7 @@ public class ClassUtil {
                     if(strArr[0].contains(ConstantsUtil.MORE_START_FLAG)){
                         //有多行注释
                         remark = StringUtil.replaceSlashBlank(StringUtil.replaceStarBlank(strArr[0]));
+                        remark = StringUtil.substringBefore(remark, "@");
                         String[] nameArr = strArr[1].split("\\s+");
                         for (String nameStr : nameArr){
                             if(nameStr.contains(";")){
