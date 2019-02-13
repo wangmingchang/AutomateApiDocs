@@ -37,7 +37,7 @@ public class ApiDocsUtil {
         LoggerUtil.info("**************************执行自动生成api***************************");
         URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
         String rootPate = classpath.getPath();
-        // String rootPate = path + "/resources/";
+        String apiDocsDataUrl = rootPate + "apiDocsData.json";
         Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties");
         String packageNameStr = properties.getProperty("apiDocs.sys.packageName");
         String savePath = properties.getProperty("apiDocs.sys.savePath");
@@ -67,10 +67,15 @@ public class ApiDocsUtil {
         if (classExplains.size() > 0) {
             if (isHTML) {
                 HtmlTemlateUtil.setApiTemplate(savePath, htmlMethonContentDtos);
-                CreateFileUtil.createJsonFile(new Gson().toJson(htmlMethonContentDtos), savePath + "/apiDocs/api-html", "apiData");
+                FileUtil.createJsonFile(new Gson().toJson(htmlMethonContentDtos), savePath + "/apiDocs/api-html", "apiData");
             }
             if (isWord) {
                 WordTemlateUtil.setWordTemplate(savePath, wordContentDtos);
+            }
+            boolean existFile = FileUtil.isExistFile(apiDocsDataUrl);
+            if(existFile){
+                String newApiDocsDataUrl = savePath + "/apiDocs/api-html/apiExampleData.json";
+                FileUtil.copyFile(apiDocsDataUrl, newApiDocsDataUrl);
             }
         }
         LoggerUtil.info("**************************生成完成***************************");
@@ -149,6 +154,8 @@ public class ApiDocsUtil {
                         List<String> requestFalses = ConstantsUtil.DEFAULT_COLLECTION; //请求字段不是必传的（默认必传）
                         List<String> requestIsShowFalse = ConstantsUtil.DEFAULT_COLLECTION; //请求字段不显示（默认显示）
                         List<String> responseIsShowFalse = ConstantsUtil.DEFAULT_COLLECTION; //响应字段不显示（默认显示）
+                        String requestBeanJsonKey = apiDocs.requestBeanJsonKey(); //请求参数样例的key
+                        String responseBeanJsonKey = apiDocs.responseBeanJsonKey(); //响应结果样例的key
                         if (null != propertiesParamDto) {
                             String  propertiesMethodExplain = propertiesParamDto.getMethodExplain();
                             if (StringUtil.isNotBlank(propertiesMethodExplain) && !ConstantsUtil.DEFAULT_STRING.equals(propertiesMethodExplain)) {
@@ -206,6 +213,14 @@ public class ApiDocsUtil {
                             requestFalses = propertiesParamDto.getRequestFalses();
                             requestIsShowFalse = propertiesParamDto.getRequestIsShowFalse();
                             responseIsShowFalse = propertiesParamDto.getResponseIsShowFalse();
+                            String pRequestBeanJsonKey = propertiesParamDto.getRequestBeanJsonKey();
+                            if (StringUtil.isNotBlank(pRequestBeanJsonKey) && !ConstantsUtil.DEFAULT_STRING.equals(pRequestBeanJsonKey)) {
+                                requestBeanJsonKey = pRequestBeanJsonKey;
+                            }
+                            String pResponseBeanJsonKey = propertiesParamDto.getResponseBeanJsonKey();
+                            if (StringUtil.isNotBlank(pResponseBeanJsonKey) && !ConstantsUtil.DEFAULT_STRING.equals(pResponseBeanJsonKey)) {
+                                responseBeanJsonKey = pResponseBeanJsonKey;
+                            }
                         }
                         //获取方法请求类型
                         if((StringUtil.isBlank(type) || StringUtils.isBlank(url))){
@@ -435,6 +450,8 @@ public class ApiDocsUtil {
                         methodInfoDto.setResponseClassDtos(responseClassDtos);
                         methodInfoDto.setBaseResponseDataDtos(baseResponseDataDtos);
                         methodInfoDto.setMethodKey(methodKey);
+                        methodInfoDto.setRequestBeanJsonKey(requestBeanJsonKey);
+                        methodInfoDto.setResponseBeanJsonKey(responseBeanJsonKey);
                         methodInfoDtos.add(methodInfoDto);
                         LoggerUtil.info("*****************************************");
                         LoggerUtil.info("类的说明 ：" + classExplainDto.getExplain());

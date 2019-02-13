@@ -24,8 +24,10 @@ public class PropertiesParamDto {
     private List<String> requestFalses; //请求字段不是必传的（默认必传）
     private List<String> requestIsShowFalse; //请求字段不显示（默认显示）
     private List<String> responseIsShowFalse; //响应字段不显示（默认显示）
+    private String requestBeanJsonKey; //请求参数样例的key
+    private String responseBeanJsonKey; //响应结果样例的key
 
-    public PropertiesParamDto(){
+    public PropertiesParamDto() {
         this.className = "NA";
         this.methodName = "NA";
         this.url = "NA";
@@ -39,6 +41,24 @@ public class PropertiesParamDto {
         this.requestFalses = null;
         this.requestIsShowFalse = null;
         this.responseIsShowFalse = null;
+        this.requestBeanJsonKey = "NA";
+        this.responseBeanJsonKey = "NA";
+    }
+
+    public String getRequestBeanJsonKey() {
+        return requestBeanJsonKey;
+    }
+
+    public void setRequestBeanJsonKey(String requestBeanJsonKey) {
+        this.requestBeanJsonKey = requestBeanJsonKey;
+    }
+
+    public String getResponseBeanJsonKey() {
+        return responseBeanJsonKey;
+    }
+
+    public void setResponseBeanJsonKey(String responseBeanJsonKey) {
+        this.responseBeanJsonKey = responseBeanJsonKey;
     }
 
     public String getClassName() {
@@ -161,6 +181,8 @@ public class PropertiesParamDto {
                 ", requestFalses=" + requestFalses +
                 ", requestIsShowFalse=" + requestIsShowFalse +
                 ", responseIsShowFalse=" + responseIsShowFalse +
+                ", requestBeanJsonKey='" + requestBeanJsonKey + '\'' +
+                ", responseBeanJsonKey='" + responseBeanJsonKey + '\'' +
                 '}';
     }
 }

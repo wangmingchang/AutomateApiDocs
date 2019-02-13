@@ -122,10 +122,10 @@
                             <span> HTML-controller</span>
                         </a>
                     <ul>
-                            <li id="35801e35-e279-4855-964f-ecf8b9504182" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
-                            <li id="5d066ab7-79fc-48ce-8362-d8bf8be1351c" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取路径</a></li>
-                            <li id="8fda12c7-4a6f-4404-afd6-6742f4221cb0" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
-                            <li id="a54110c8-980b-4fd9-8308-5c081f9f6dba" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
+                            <li id="cc78edae-224f-425e-a87f-54daa086a76c" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
+                            <li id="82ca0f0e-bfe2-436f-94af-3785a7837969" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取路径</a></li>
+                            <li id="46631eef-9a83-4824-8964-c13c2c8e535d" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
+                            <li id="74424eb8-43eb-4c3e-9a6b-71fac36f3351" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
                         </ul>
                     </li>
 
@@ -163,8 +163,11 @@
                         </tbody>
                     </table>
                     <div class="panel panel-default">
-                        <div class="panel-heading">请求参数样例</div>
-                        <div class="panel-body">
+                        <div class="panel-heading" style="height: 55px;">
+                            <span style="float: left;line-height: 30px;">请求参数样例</span>
+                            <button id="btn-request-example" class="btn btn-default" type="text" style="float: right;" onclick="formatExample(this)">格式化</button>
+                        </div>
+                        <div id="request-example" class="panel-body">
                             无！
                         </div>
                     </div>
@@ -181,8 +184,11 @@
                         </tbody>
                     </table>
                     <div class="panel panel-default">
-                        <div class="panel-heading">响应结果样例</div>
-                        <div class="panel-body">
+                        <div class="panel-heading" style="height: 55px;">
+                            <span style="float: left;line-height: 30px;">响应结果样例</span>
+                            <button id="btn-response-example" class="btn btn-default" type="text" style="float: right;" onclick="formatExample(this)">格式化</button>
+                        </div>
+                        <div id="response-example" class="panel-body">
                             无！
                         </div>
                     </div>
@@ -225,10 +231,18 @@
                 for (var i = 0; i< methodInfoDtoArr.length; i++){
                     methodInfoDtos.push(methodInfoDtoArr[i]);
                 }
-            })
+            });
         });
+
+        $.getJSON("apiExampleData.json", function (data) {
+            $.each(data, function (i, jsonData) {
+                console.log("jsonData",jsonData);
+            });
+        });
+
         init();
     });
+
 
     function init() {
         $(".nav-tabs li").hover(function () {
@@ -327,7 +341,7 @@
     /**
      * 设置数据
      * */
-    function setData(liId) {
+    async function setData(liId) {
         removeData();
         var noExecuteNum = 0;
         for(var i = 0; i < methodInfoDtos.length; i ++){
@@ -335,6 +349,8 @@
             var methodKey = methodInfoDto.methodKey;
             var requestParamDtos = methodInfoDto.requestParamDtos;
             var responseClassDtos = methodInfoDto.baseResponseDataDtos;
+            var requestBeanJsonKey = methodInfoDto.requestBeanJsonKey;
+            var responseBeanJsonKey = methodInfoDto.responseBeanJsonKey;
             if(responseClassDtos == null || responseClassDtos.length <= 0){
                 responseClassDtos = methodInfoDto.responseClassDtos;
             }
@@ -374,6 +390,11 @@
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
 
+                    var requestExampleData = await getExampleData(requestBeanJsonKey);
+                    if(isNotBank(requestExampleData)){
+                        $("#request-example").text(requestExampleData);
+                    }
+                    console.log("requestExampleData",requestExampleData);
                 }else {
                     $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
                 }
@@ -434,7 +455,11 @@
                             }
                         }
                     }
-
+                    var responseExampleData = await getExampleData(responseBeanJsonKey);
+                    if(isNotBank(responseExampleData)){
+                        $("#response-example").text(responseExampleData);
+                    }
+                    console.log("responseExampleData",responseExampleData);
                 }else {
                     $("#table-responseClassDtos tbody").append('<tr><td colspan="3" style="text-align:center">无响应结果！</td></tr>');
                 }
@@ -447,7 +472,7 @@
     /**
      * 清空数据
      */
-    function removeData() {
+    async function removeData() {
         $("#methodDescription").text('');
         $("#request-type").text('');
         $("#request-url").text('');
@@ -463,7 +488,7 @@
      * 设置子类响应结果
      * @param responseDataDtos
      */
-    function setResponseDataDtos(dataArr, fieldName, parentTableId, childTableId, childFlag) {
+    async function setResponseDataDtos(dataArr, fieldName, parentTableId, childTableId, childFlag) {
         if(dataArr.length > 0){
             var panel_id;
             var panelFlagValue = $("#panel-data-div").data(childFlag);
@@ -558,6 +583,59 @@
         }
 
         return uuid.join('');
+    }
+
+    //获取样例数据
+    function getExampleData(key) {
+        var resultData = '';
+        return new Promise(function(resolve) {
+            //异步操作
+            $.getJSON("apiExampleData.json", function (data) {
+                $.each(data, function (i, jsonData) {
+                    console.log("jsonData.key",jsonData.key);
+                    console.log("key",key);
+                    if(key == jsonData.key){
+                        console.log("jsonData-str",JSON.stringify(jsonData.data));
+                        resultData = JSON.stringify(jsonData.data);
+                        resolve(resultData);
+
+                    }
+                });
+            });
+
+        });
+    }
+    //格式化json数据
+    function formatExample(obj) {
+        if(obj.id == 'btn-request-example'){
+            var $example = $("#request-example pre");
+            if(isNotBank($example) && $example.length > 0){
+                var jsonStr = $("#request-example pre").text();
+                jsonStr = JSON.stringify(jsonStr);
+                $("#request-example pre").remove();
+                $("#request-example").text(jsonStr);
+                $(obj).text("格式化");
+            }else {
+                var jsonStr = $("#request-example").text();
+                jsonStr = JSON.stringify(JSON.parse(jsonStr), null, 4);
+                $("#request-example").html("<pre>"+jsonStr+"</pre>");
+                $(obj).text("压缩");
+            }
+        }else {
+            var $example = $("#response-example pre");
+            if(isNotBank($example) && $example.length > 0){
+                var jsonStr = $("#response-example pre").text();
+                jsonStr = JSON.stringify(jsonStr);
+                $("#response-example pre").remove();
+                $("#response-example").text(jsonStr);
+                $(obj).text("格式化");
+            }else {
+                var jsonStr = $("#response-example").text();
+                jsonStr = JSON.stringify(JSON.parse(jsonStr), null, 4);
+                $("#response-example").html("<pre>"+jsonStr+"</pre>");
+                $(obj).text("压缩");
+            }
+        }
     }
 </script>
 </html>

@@ -17,6 +17,24 @@ public class MethodInfoDto {
 	List<ResponseClassDto> responseClassDtos; // 返回类的信息
 	List<ResponseDataDto> baseResponseDataDtos; // 基础返回类信息
 	private String methodKey; //方法的唯一标识，UUID
+	private String requestBeanJsonKey; //请求参数样例的key
+	private String responseBeanJsonKey; //响应结果样例的key
+
+	public String getRequestBeanJsonKey() {
+		return requestBeanJsonKey;
+	}
+
+	public void setRequestBeanJsonKey(String requestBeanJsonKey) {
+		this.requestBeanJsonKey = requestBeanJsonKey;
+	}
+
+	public String getResponseBeanJsonKey() {
+		return responseBeanJsonKey;
+	}
+
+	public void setResponseBeanJsonKey(String responseBeanJsonKey) {
+		this.responseBeanJsonKey = responseBeanJsonKey;
+	}
 
 	public String getMethodKey() {
 		return methodKey;
@@ -84,6 +102,8 @@ public class MethodInfoDto {
 				", responseClassDtos=" + responseClassDtos +
 				", baseResponseDataDtos=" + baseResponseDataDtos +
 				", methodKey='" + methodKey + '\'' +
+				", requestBeanJsonKey='" + requestBeanJsonKey + '\'' +
+				", responseBeanJsonKey='" + responseBeanJsonKey + '\'' +
 				'}';
 	}
 }

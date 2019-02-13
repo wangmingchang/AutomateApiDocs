@@ -94,6 +94,8 @@ public class ConstantsUtil {
     public static final String APIDOCS_PARAM_REQUEST_FALSE = "ApiDocsParam.request.false";
     public static final String APIDOCS_PARAM_REQUEST_ISSHOW_FALSE = "ApiDocsParam.request.isShow.false";
     public static final String APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE = "ApiDocsParam.response.isShow.false";
+    public static final String APIDOCS_METHOD_REQUESTBEAN_JSON_KEY = "ApiDocsMethod.requestBean.json.key";
+    public static final String APIDOCS_METHOD_RESPONSE_JSON_KEY = "ApiDocsMethod.responseBean.json.key";
 
     /**解析java文件时，忽略的字符串*/
     public static final String[] SB_IGNORE_STR_ARR = {"public", "class", "{","return", "}", "this", "@", "super", "='", "=\""};

@@ -61,6 +61,16 @@ public @interface ApiDocsMethod {
 	 * @return 返回方法说明
 	 */
 	String methodExplain() default "";
+	/**
+	 * 方法的请求参数样例的key
+	 * @return 返回请求参数样例的key
+	 */
+	String requestBeanJsonKey() default "";
+	/**
+	 * 方法的响应结果样例的key
+	 * @return 返回响应结果样例的key
+	 */
+	String responseBeanJsonKey() default "";
 
     final class Null{
 

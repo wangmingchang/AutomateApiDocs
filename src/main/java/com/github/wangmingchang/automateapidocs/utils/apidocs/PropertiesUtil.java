@@ -242,6 +242,10 @@ public class PropertiesUtil {
                         propertiesParamDto.setRequestIsShowFalse((List<String>) infoValue);
                     } else if (methodKey.equals(ConstantsUtil.APIDOCS_PARAM_RESPONSE_ISSHOW_FALSE)) {
                         propertiesParamDto.setResponseIsShowFalse((List<String>) infoValue);
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_REQUESTBEAN_JSON_KEY)) {
+                        propertiesParamDto.setRequestBeanJsonKey(String.valueOf(infoValue));
+                    } else if (methodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_JSON_KEY)) {
+                        propertiesParamDto.setResponseBeanJsonKey(String.valueOf(infoValue));
                     }
                 }
                 propertiesParamDtoMap.put(methodInfoKey, propertiesParamDto);
@@ -312,6 +316,10 @@ public class PropertiesUtil {
             map.put(ConstantsUtil.APIDOCS_METHOD_BASE_RESPONSE_BEAN_GENERICITY, infoValue);
         } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEAN)) {
             map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEAN, infoValue);
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_REQUESTBEAN_JSON_KEY)) {
+            map.put(ConstantsUtil.APIDOCS_METHOD_REQUESTBEAN_JSON_KEY, infoValue);
+        } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_JSON_KEY)) {
+            map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_JSON_KEY, infoValue);
         } else if (newMethodKey.equals(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS)) {
             if (infoList.size() > 0) {
                 map.put(ConstantsUtil.APIDOCS_METHOD_RESPONSE_BEANS, infoList);
