@@ -731,7 +731,7 @@ public class ClassUtil {
                         continue;
                     }
                     if(startFlag){
-                        if(temp.contains(ConstantsUtil.FIELD_SCOPE_PUBLIC)){
+                        if(temp.contains(ConstantsUtil.FIELD_SCOPE_PUBLIC) || StringUtil.indexOf(temp, ConstantsUtil.SB_IGNORE_STR_ARR)){
                             //endFlag = true;
                             continue;
                         }
@@ -940,6 +940,10 @@ public class ClassUtil {
                             }else if(StringUtil.indexOf(temp, ConstantsUtil.SPRING_REQUEST_MAPPER)){
                                 if(isOneRequestMappingFlag){
                                     methodRootPath = getMethodPath(temp);
+                                    int lastIndex = methodRootPath.lastIndexOf("/");
+                                    if(lastIndex == (methodRootPath.length() - 1)){
+                                        methodRootPath = methodRootPath.substring(0, lastIndex);
+                                    }
                                 }else {
                                     if(isExistApiDocsMethod){
                                         url = methodRootPath + getMethodPath(temp);

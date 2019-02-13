@@ -240,15 +240,21 @@ public class ApiDocsUtil {
                                     if (!str.startsWith("/")) {
                                         str = "/" + str;
                                     }
-                                    methodPath = path + str;
+                                    String sPath = path.toString();
+                                    int lastIndex = sPath.lastIndexOf("/");
+                                    if(lastIndex == (sPath.length() - 1)){
+                                        sPath = sPath.substring(0, lastIndex);
+                                    }
+                                    methodPath = sPath + str;
                                 }
                             }
+
                             url = StringUtils.isBlank(url) ? methodPath : path + url;
                         }
 
                         MethodExplainDto methodExplainDto = methodExplainDtoMap.get(url);
                         if(null == methodExplainDto){
-                            throw new RuntimeException("当前类：" + classNameStr+" 的 "+methodName+"() 没有路径：" + url);
+                            throw new RuntimeException("当前类：" + classNameStr+"."+methodName+"() 方法的路径为：" + url + " 不正确，请核实！");
                         }
                         requestParamDtos = methodExplainDto.getParamDtos();
                         if (StringUtils.isBlank(methodDescription)) {
