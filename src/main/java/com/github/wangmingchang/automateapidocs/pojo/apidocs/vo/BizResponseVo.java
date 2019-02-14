@@ -57,4 +57,14 @@ public class BizResponseVo<T extends BaseResponseVo> {
     public void setData(T data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "BizResponseVo{" +
+                "code='" + code + '\'' +
+                ", msg='" + msg + '\'' +
+                ", sysTime='" + sysTime + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

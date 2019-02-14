@@ -47,7 +47,11 @@ public class DemoVo extends BaseResponseVo{
 
 	@Override
 	public String toString() {
-		return "DemoVo [id=" + id + ", name=" + name + ", socre=" + socre + "]";
+		return "DemoVo{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", socre=" + socre +
+				", carVo=" + carVo +
+				'}';
 	}
-
 }

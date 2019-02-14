@@ -4,76 +4,90 @@ import java.io.Serializable;
 
 /**
  * 车信息
- * 
+ *
  * @author 王明昌
  * @since 2017年9月12日
  */
 public class CarVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private String carName; // 车名
-	private Double weig; // 重量
-	private String color; // 颜色
-	private String displacement; // 排量
-	private Double price; // 售价
+    private static final long serialVersionUID = 1L;
+    private String carName; // 车名
+    private Double weig; // 重量
+    private String color; // 颜色
+    private String displacement; // 排量
+    private Double price; // 售价
+    private Teachar teachar; //老师信息
 
-	public CarVo() {
-		super();
-	}
+    public Teachar getTeachar() {
+        return teachar;
+    }
 
-	public CarVo(String carName, Double weig, String color, String displacement, Double price) {
-		super();
-		this.carName = carName;
-		this.weig = weig;
-		this.color = color;
-		this.displacement = displacement;
-		this.price = price;
-	}
+    public void setTeachar(Teachar teachar) {
+        this.teachar = teachar;
+    }
 
-	public String getCarName() {
-		return carName;
-	}
+    public CarVo() {
+        super();
+    }
 
-	public void setCarName(String carName) {
-		this.carName = carName;
-	}
+    public CarVo(String carName, Double weig, String color, String displacement, Double price) {
+        super();
+        this.carName = carName;
+        this.weig = weig;
+        this.color = color;
+        this.displacement = displacement;
+        this.price = price;
+    }
 
-	public Double getWeig() {
-		return weig;
-	}
+    public String getCarName() {
+        return carName;
+    }
 
-	public void setWeig(Double weig) {
-		this.weig = weig;
-	}
+    public void setCarName(String carName) {
+        this.carName = carName;
+    }
 
-	public String getColor() {
-		return color;
-	}
+    public Double getWeig() {
+        return weig;
+    }
 
-	public void setColor(String color) {
-		this.color = color;
-	}
+    public void setWeig(Double weig) {
+        this.weig = weig;
+    }
 
-	public String getDisplacement() {
-		return displacement;
-	}
+    public String getColor() {
+        return color;
+    }
 
-	public void setDisplacement(String displacement) {
-		this.displacement = displacement;
-	}
+    public void setColor(String color) {
+        this.color = color;
+    }
 
-	public Double getPrice() {
-		return price;
-	}
+    public String getDisplacement() {
+        return displacement;
+    }
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    public void setDisplacement(String displacement) {
+        this.displacement = displacement;
+    }
 
-	@Override
-	public String toString() {
-		return "CarVo [carName=" + carName + ", weig=" + weig + ", color=" + color + ", displacement=" + displacement
-				+ ", price=" + price + "]";
-	}
+    public Double getPrice() {
+        return price;
+    }
 
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "CarVo{" +
+                "carName='" + carName + '\'' +
+                ", weig=" + weig +
+                ", color='" + color + '\'' +
+                ", displacement='" + displacement + '\'' +
+                ", price=" + price +
+                ", teachar=" + teachar +
+                '}';
+    }
 }

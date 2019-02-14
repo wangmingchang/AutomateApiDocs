@@ -235,12 +235,6 @@
             });
         });
 
-        $.getJSON("apiExampleData.json", function (data) {
-            $.each(data, function (i, jsonData) {
-                console.log("jsonData",jsonData);
-            });
-        });
-
         init();
     });
 
@@ -394,8 +388,8 @@
                     var requestExampleData = await getExampleData(requestBeanJsonKey);
                     if(isNotBank(requestExampleData)){
                         $("#request-example").text(requestExampleData);
+                        $("#btn-request-example").show();
                     }
-                    console.log("requestExampleData",requestExampleData);
                 }else {
                     $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
                 }
@@ -459,8 +453,8 @@
                     var responseExampleData = await getExampleData(responseBeanJsonKey);
                     if(isNotBank(responseExampleData)){
                         $("#response-example").text(responseExampleData);
+                        $("#btn-response-example").show();
                     }
-                    console.log("responseExampleData",responseExampleData);
                 }else {
                     $("#table-responseClassDtos tbody").append('<tr><td colspan="3" style="text-align:center">无响应结果！</td></tr>');
                 }
@@ -483,6 +477,11 @@
         $("#panel-data-div").remove();
         var html_str = '<div id="panel-data-div"></div> <div id="child-data-div"></div>';
         $("#main").append(html_str);
+        $("#request-example").text("无！");
+        $("#response-example").text("无！");
+        $("#btn-request-example").hide();
+        $("#btn-response-example").hide();
+
     }
 
     /**
@@ -561,20 +560,12 @@
         var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
         var uuid = [], i;
         radix = radix || chars.length;
-
         if (len) {
-            // Compact form
             for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
         } else {
-            // rfc4122, version 4 form
             var r;
-
-            // rfc4122 requires these characters
             uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
             uuid[14] = '4';
-
-            // Fill in random data.  At i==19 set the high bits of clock sequence as
-            // per rfc4122, sec. 4.1.5
             for (i = 0; i < 36; i++) {
                 if (!uuid[i]) {
                     r = 0 | Math.random()*16;
@@ -582,7 +573,6 @@
                 }
             }
         }
-
         return uuid.join('');
     }
 
@@ -593,10 +583,7 @@
             //异步操作
             $.getJSON("apiExampleData.json", function (data) {
                 $.each(data, function (i, jsonData) {
-                    console.log("jsonData.key",jsonData.key);
-                    console.log("key",key);
                     if(key == jsonData.key){
-                        console.log("jsonData-str",JSON.stringify(jsonData.data));
                         resultData = JSON.stringify(jsonData.data);
                         resolve(resultData);
 
@@ -612,6 +599,7 @@
             var $example = $("#request-example pre");
             if(isNotBank($example) && $example.length > 0){
                 var jsonStr = $("#request-example pre").text();
+                jsonStr = JSON.parse(jsonStr);
                 jsonStr = JSON.stringify(jsonStr);
                 $("#request-example pre").remove();
                 $("#request-example").text(jsonStr);
@@ -626,6 +614,7 @@
             var $example = $("#response-example pre");
             if(isNotBank($example) && $example.length > 0){
                 var jsonStr = $("#response-example pre").text();
+                jsonStr = JSON.parse(jsonStr);
                 jsonStr = JSON.stringify(jsonStr);
                 $("#response-example pre").remove();
                 $("#response-example").text(jsonStr);

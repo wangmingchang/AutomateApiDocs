@@ -5,6 +5,7 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -466,6 +467,22 @@ public class ApiDocsUtil {
                     }
                 }
                 if (isHTML) {
+
+                    for (int i = 0; i < 10000; i++){
+                        String methodKey = UUID.randomUUID().toString();
+                        String methodDescription = "测试菜单" + i;
+                        MethodInfoDto newMethodInfoDto = new MethodInfoDto();
+                        MethodInfoDto methodInfoDto = methodInfoDtos.get(0);
+                        BeanUtils.copyProperties(methodInfoDto, newMethodInfoDto);
+                        newMethodInfoDto.setMethodKey(methodKey);
+                        newMethodInfoDto.setMethodDescription(methodDescription);
+                        methodInfoDtos.add(newMethodInfoDto);
+                        Map<String, String> methodDescriptionMap = new LinkedHashMap<>();
+                        methodDescriptionMap.put(ConstantsUtil.METHOD_DESCRIPTION_VALUE_KEY, methodDescription);
+                        methodDescriptionMap.put(ConstantsUtil.METHOD_KEY, methodKey);
+                        methodDescriptions.add(methodDescriptionMap);
+                    }
+
                     HtmlMethonContentDto htmlMethonContentDto = new HtmlMethonContentDto(classExplainDto,
                             methodDescriptions, methodInfoDtos);
                     htmlMethonContentDtos.add(htmlMethonContentDto);

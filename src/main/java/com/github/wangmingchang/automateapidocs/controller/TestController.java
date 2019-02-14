@@ -1,6 +1,5 @@
 package com.github.wangmingchang.automateapidocs.controller;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.*;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/test")
-@ApiDocsClass
+//@ApiDocsClass
 public class TestController {
 	private PageDto PageDto;
 
