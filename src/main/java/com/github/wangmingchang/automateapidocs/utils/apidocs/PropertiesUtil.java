@@ -159,6 +159,7 @@ public class PropertiesUtil {
         //key为controller的包名+方法名称
         Map<String, PropertiesParamDto> propertiesParamDtoMap = new HashMap<>();
         Map<String, Map<String, String>> controllerMethodMap = new HashMap<>();
+        Map<String, String> classExplainMap = new HashMap<>();
         Set<String> propertiesKeys = properties.stringPropertyNames();
         for (String key : propertiesKeys) {
             if (key.contains(ConstantsUtil.PROPERTIES_SYS)) {
@@ -179,15 +180,21 @@ public class PropertiesUtil {
                 mapKey = "entry." + mapKey;
                 entryMap.put(mapKey, propertyVaule);
             } else if (key.startsWith(ConstantsUtil.PROPERTIES_CONTROLLER_START)) {
-                String controllerKey = key.split("}")[0] + "}"; //${controller.HtmlController}
-                Map<String, String> methodMap = controllerMethodMap.get(controllerKey);
-                if (null != methodMap && methodMap.size() > 0) {
-                    methodMap.put(key, propertyVaule);
-                } else {
-                    methodMap = new HashMap<>();
-                    methodMap.put(key, propertyVaule);
+                if(key.contains(ConstantsUtil.PROPERTIES_CLASSEXPLAIN)){
+                    //类的描述
+                    referenceMap.put(key, propertyVaule);
+                }else {
+                    //方法信息
+                    String controllerKey = key.split("}")[0] + "}";
+                    Map<String, String> methodMap = controllerMethodMap.get(controllerKey);
+                    if (null != methodMap && methodMap.size() > 0) {
+                        methodMap.put(key, propertyVaule);
+                    } else {
+                        methodMap = new HashMap<>();
+                        methodMap.put(key, propertyVaule);
+                    }
+                    controllerMethodMap.put(controllerKey, methodMap);
                 }
-                controllerMethodMap.put(controllerKey, methodMap);
             } else {
                 continue;
             }
@@ -199,6 +206,11 @@ public class PropertiesUtil {
             String controllerKey = controllerEntry.getKey();
             //controller的包名
             String controllerValue = controllerEntry.getValue();
+            //类的描述
+            String classExplainKey = controllerValue + ConstantsUtil.PROPERTIES_CLASSEXPLAIN;
+            String classExplain = referenceMap.get(controllerKey);
+
+
             Map<String, String> methodMap = controllerMethodMap.get(controllerKey);
             //方法信息
             Set<Map.Entry<String, String>> methodEntries = methodMap.entrySet();
@@ -212,6 +224,7 @@ public class PropertiesUtil {
             for (Map.Entry<String, Map<String, Object>> methodInfoEntry : methodInfoEntries) {
                 PropertiesParamDto propertiesParamDto = new PropertiesParamDto();
                 propertiesParamDto.setClassName(controllerValue);
+                //propertiesParamDto.setClassExplain();
                 String methodInfoKey = methodInfoEntry.getKey();
                 Map<String, Object> methodInfoValueMap = methodInfoEntry.getValue();
                 Set<Map.Entry<String, Object>> valueEntries = methodInfoValueMap.entrySet();

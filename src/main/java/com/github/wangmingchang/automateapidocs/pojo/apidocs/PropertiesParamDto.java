@@ -26,6 +26,7 @@ public class PropertiesParamDto {
     private List<String> responseIsShowFalse; //响应字段不显示（默认显示）
     private String requestBeanJsonKey; //请求参数样例的key
     private String responseBeanJsonKey; //响应结果样例的key
+    private String classExplain; //controller类的描述
 
     public PropertiesParamDto() {
         this.className = "NA";
@@ -43,6 +44,15 @@ public class PropertiesParamDto {
         this.responseIsShowFalse = null;
         this.requestBeanJsonKey = "NA";
         this.responseBeanJsonKey = "NA";
+        this.classExplain = "NA";
+    }
+
+    public String getClassExplain() {
+        return classExplain;
+    }
+
+    public void setClassExplain(String classExplain) {
+        this.classExplain = classExplain;
     }
 
     public String getRequestBeanJsonKey() {

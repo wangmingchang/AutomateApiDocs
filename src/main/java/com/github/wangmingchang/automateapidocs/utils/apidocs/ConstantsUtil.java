@@ -71,6 +71,8 @@ public class ConstantsUtil {
 
     /**properties配置的controller*/
     public static final String PROPERTIES_CONTROLLER = "apiDocs.key.controller.";
+    /**properties配置的controller类的描述*/
+    public static final String PROPERTIES_CLASSEXPLAIN = ".classExplain";
     /**properties配置的entry*/
     public static final String PROPERTIES_ENTRY = "apiDocs.key.entry.";
     /**properties配置的reference*/
