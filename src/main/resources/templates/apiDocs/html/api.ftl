@@ -342,14 +342,14 @@
         for(var i = 0; i < methodInfoDtos.length; i ++){
             var methodInfoDto = methodInfoDtos[i];
             var methodKey = methodInfoDto.methodKey;
-            var requestParamDtos = methodInfoDto.requestParamDtos;
-            var responseClassDtos = methodInfoDto.baseResponseDataDtos;
-            var requestBeanJsonKey = methodInfoDto.requestBeanJsonKey;
-            var responseBeanJsonKey = methodInfoDto.responseBeanJsonKey;
-            if(responseClassDtos == null || responseClassDtos.length <= 0){
-                responseClassDtos = methodInfoDto.responseClassDtos;
-            }
             if(methodKey == liId){
+                var requestParamDtos = methodInfoDto.requestParamDtos;
+                var responseClassDtos = methodInfoDto.baseResponseDataDtos;
+                var requestBeanJsonKey = methodInfoDto.requestBeanJsonKey;
+                var responseBeanJsonKey = methodInfoDto.responseBeanJsonKey;
+                if(responseClassDtos == null || responseClassDtos.length <= 0){
+                    responseClassDtos = methodInfoDto.responseClassDtos;
+                }
                 $("#methodDescription").text(methodInfoDto.methodDescription);
                 $("#request-type").text(methodInfoDto.type);
                 $("#request-url").text(methodInfoDto.url);
@@ -384,11 +384,12 @@
                         var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+description+'</td></tr>';
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
-
-                    var requestExampleData = await getExampleData(requestBeanJsonKey);
-                    if(isNotBank(requestExampleData)){
-                        $("#request-example").text(requestExampleData);
-                        $("#btn-request-example").show();
+                    if(isNotBank(requestBeanJsonKey)){
+                        var requestExampleData = await getExampleData(requestBeanJsonKey);
+                        if(isNotBank(requestExampleData)){
+                            $("#request-example").text(requestExampleData);
+                            $("#btn-request-example").show();
+                        }
                     }
                 }else {
                     $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
@@ -434,6 +435,11 @@
                                     if(!isNotBank(description)){
                                         description = '';
                                     }
+                                    if(i % 2 == 0){
+                                        className = 'active';
+                                    }else {
+                                        className = '';
+                                    }
                                     var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+description+'</td></tr>';
                                     $("#"+tableId+" ." + tableId).append(html_str);
                                     var childResponseDataDtos = responseDataDtos[i].responseDataDtos;
@@ -450,10 +456,12 @@
                             }
                         }
                     }
-                    var responseExampleData = await getExampleData(responseBeanJsonKey);
-                    if(isNotBank(responseExampleData)){
-                        $("#response-example").text(responseExampleData);
-                        $("#btn-response-example").show();
+                    if(isNotBank(responseBeanJsonKey)){
+                        var responseExampleData = await getExampleData(responseBeanJsonKey);
+                        if(isNotBank(responseExampleData)){
+                            $("#response-example").text(responseExampleData);
+                            $("#btn-response-example").show();
+                        }
                     }
                 }else {
                     $("#table-responseClassDtos tbody").append('<tr><td colspan="3" style="text-align:center">无响应结果！</td></tr>');
@@ -471,8 +479,8 @@
         $("#methodDescription").text('');
         $("#request-type").text('');
         $("#request-url").text('');
-        $("#table-requestParamDtos tbody td").remove();
-        $("#table-responseClassDtos tbody td").remove();
+        $("#table-requestParamDtos tbody tr").remove();
+        $("#table-responseClassDtos tbody tr").remove();
         $("#child-data-div").remove();
         $("#panel-data-div").remove();
         var html_str = '<div id="panel-data-div"></div> <div id="child-data-div"></div>';

@@ -6,13 +6,13 @@
       },"methodDescriptions":
       [
          {
-            "methodDescriptionValue":"index方法-2","methodKey":"c7d190fe-b133-41ed-8c10-0cd7ee95aac4"
+            "methodDescriptionValue":"index方法-2","methodKey":"c54cbb62-e4c0-469a-9974-9b1c14604384"
          },{
-            "methodDescriptionValue":"获取路径","methodKey":"2385cba8-abf3-448d-986c-75a53133e727"
+            "methodDescriptionValue":"获取路径","methodKey":"55778706-9271-4847-be9e-ed4fc89cb599"
          },{
-            "methodDescriptionValue":"hell方法","methodKey":"df36a0ff-a1f9-40b9-8c6c-5ca72d79c292"
+            "methodDescriptionValue":"hell方法","methodKey":"4d9ff5a4-0087-4d1a-a37b-4d47eee76da1"
          },{
-            "methodDescriptionValue":"获取老师信息","methodKey":"2f804f3f-6845-4fe9-b171-72ecf70c8c0f"
+            "methodDescriptionValue":"获取老师信息","methodKey":"422d5621-743d-46a9-94d1-625ee771f239"
          }
 
       ],"methodInfoDtos":
@@ -74,7 +74,7 @@
                   ],"grade":0,"sequence":0
                }
 
-            ],"methodKey":"c7d190fe-b133-41ed-8c10-0cd7ee95aac4","requestBeanJsonKey":"request-index-BizResponseVo","responseBeanJsonKey":"response-index-BizResponseVo"
+            ],"methodKey":"c54cbb62-e4c0-469a-9974-9b1c14604384","requestBeanJsonKey":"request-index-BizResponseVo","responseBeanJsonKey":"response-index-BizResponseVo"
          },{
             "methodDescription":"获取路径","type":"GET","url":"/api/index/v1/getUrl","requestParamDtos":
             [
@@ -103,7 +103,7 @@
             ],"baseResponseDataDtos":
             [
                
-            ],"methodKey":"2385cba8-abf3-448d-986c-75a53133e727","requestBeanJsonKey":"","responseBeanJsonKey":""
+            ],"methodKey":"55778706-9271-4847-be9e-ed4fc89cb599","requestBeanJsonKey":"","responseBeanJsonKey":""
          },{
             "methodDescription":"hell方法","type":"POST","url":"/api/index/v1/helloHtml","requestParamDtos":
             [
@@ -219,7 +219,7 @@
                   ],"grade":0,"sequence":0
                }
 
-            ],"methodKey":"df36a0ff-a1f9-40b9-8c6c-5ca72d79c292","requestBeanJsonKey":"","responseBeanJsonKey":""
+            ],"methodKey":"4d9ff5a4-0087-4d1a-a37b-4d47eee76da1","requestBeanJsonKey":"","responseBeanJsonKey":""
          },{
             "methodDescription":"获取老师信息","type":"GET","url":"/api/index/v1/getTeacharInfo","requestParamDtos":
             [
@@ -248,7 +248,7 @@
             ],"baseResponseDataDtos":
             [
                
-            ],"methodKey":"2f804f3f-6845-4fe9-b171-72ecf70c8c0f","requestBeanJsonKey":"","responseBeanJsonKey":""
+            ],"methodKey":"422d5621-743d-46a9-94d1-625ee771f239","requestBeanJsonKey":"","responseBeanJsonKey":""
          }
 
       ]

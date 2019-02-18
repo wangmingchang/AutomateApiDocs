@@ -122,10 +122,10 @@
                             <span> 测试类-1</span>
                         </a>
                     <ul>
-                            <li id="c7d190fe-b133-41ed-8c10-0cd7ee95aac4" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
-                            <li id="2385cba8-abf3-448d-986c-75a53133e727" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取路径</a></li>
-                            <li id="df36a0ff-a1f9-40b9-8c6c-5ca72d79c292" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
-                            <li id="2f804f3f-6845-4fe9-b171-72ecf70c8c0f" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
+                            <li id="c54cbb62-e4c0-469a-9974-9b1c14604384" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">index方法-2</a></li>
+                            <li id="55778706-9271-4847-be9e-ed4fc89cb599" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取路径</a></li>
+                            <li id="4d9ff5a4-0087-4d1a-a37b-4d47eee76da1" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">hell方法</a></li>
+                            <li id="422d5621-743d-46a9-94d1-625ee771f239" onclick="listGroupItemChildClick(this)" class="list-group-item-child"><a href="javascript:void(0);">获取老师信息</a></li>
                         </ul>
                     </li>
 
@@ -341,14 +341,14 @@
         for(var i = 0; i < methodInfoDtos.length; i ++){
             var methodInfoDto = methodInfoDtos[i];
             var methodKey = methodInfoDto.methodKey;
-            var requestParamDtos = methodInfoDto.requestParamDtos;
-            var responseClassDtos = methodInfoDto.baseResponseDataDtos;
-            var requestBeanJsonKey = methodInfoDto.requestBeanJsonKey;
-            var responseBeanJsonKey = methodInfoDto.responseBeanJsonKey;
-            if(responseClassDtos == null || responseClassDtos.length <= 0){
-                responseClassDtos = methodInfoDto.responseClassDtos;
-            }
             if(methodKey == liId){
+                var requestParamDtos = methodInfoDto.requestParamDtos;
+                var responseClassDtos = methodInfoDto.baseResponseDataDtos;
+                var requestBeanJsonKey = methodInfoDto.requestBeanJsonKey;
+                var responseBeanJsonKey = methodInfoDto.responseBeanJsonKey;
+                if(responseClassDtos == null || responseClassDtos.length <= 0){
+                    responseClassDtos = methodInfoDto.responseClassDtos;
+                }
                 $("#methodDescription").text(methodInfoDto.methodDescription);
                 $("#request-type").text(methodInfoDto.type);
                 $("#request-url").text(methodInfoDto.url);
@@ -383,11 +383,12 @@
                         var html_str = '<tr class="'+ className +'"><td >'+requestParamDtos[j].name+'</td><td>'+requestParamDtos[j].type+'</td><td>'+required+'</td><td>'+description+'</td></tr>';
                         $("#table-requestParamDtos tbody").append(html_str);
                     }
-
-                    var requestExampleData = await getExampleData(requestBeanJsonKey);
-                    if(isNotBank(requestExampleData)){
-                        $("#request-example").text(requestExampleData);
-                        $("#btn-request-example").show();
+                    if(isNotBank(requestBeanJsonKey)){
+                        var requestExampleData = await getExampleData(requestBeanJsonKey);
+                        if(isNotBank(requestExampleData)){
+                            $("#request-example").text(requestExampleData);
+                            $("#btn-request-example").show();
+                        }
                     }
                 }else {
                     $("#table-requestParamDtos tbody").append('<tr><td colspan="4" style="text-align:center">无请求参数！</td></tr>');
@@ -433,6 +434,11 @@
                                     if(!isNotBank(description)){
                                         description = '';
                                     }
+                                    if(i % 2 == 0){
+                                        className = 'active';
+                                    }else {
+                                        className = '';
+                                    }
                                     var html_str = '<tr class="'+ className +'"><td >'+name+'</td><td>'+responseDataDtos[i].type+'</td><td>'+description+'</td></tr>';
                                     $("#"+tableId+" ." + tableId).append(html_str);
                                     var childResponseDataDtos = responseDataDtos[i].responseDataDtos;
@@ -449,10 +455,12 @@
                             }
                         }
                     }
-                    var responseExampleData = await getExampleData(responseBeanJsonKey);
-                    if(isNotBank(responseExampleData)){
-                        $("#response-example").text(responseExampleData);
-                        $("#btn-response-example").show();
+                    if(isNotBank(responseBeanJsonKey)){
+                        var responseExampleData = await getExampleData(responseBeanJsonKey);
+                        if(isNotBank(responseExampleData)){
+                            $("#response-example").text(responseExampleData);
+                            $("#btn-response-example").show();
+                        }
                     }
                 }else {
                     $("#table-responseClassDtos tbody").append('<tr><td colspan="3" style="text-align:center">无响应结果！</td></tr>');
@@ -470,8 +478,8 @@
         $("#methodDescription").text('');
         $("#request-type").text('');
         $("#request-url").text('');
-        $("#table-requestParamDtos tbody td").remove();
-        $("#table-responseClassDtos tbody td").remove();
+        $("#table-requestParamDtos tbody tr").remove();
+        $("#table-responseClassDtos tbody tr").remove();
         $("#child-data-div").remove();
         $("#panel-data-div").remove();
         var html_str = '<div id="panel-data-div"></div> <div id="child-data-div"></div>';

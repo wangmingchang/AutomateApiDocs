@@ -59,7 +59,7 @@ public class ApiDocsUtil {
             savePath = rootPate + "apiDocs";
         }
         controllerMethodInfo = PropertiesUtil.getControllerMethodInfo(dataProperties);
-        LoggerUtil.info("controllerMethodInfo:" + new Gson().toJson(controllerMethodInfo));
+        //LoggerUtil.info("controllerMethodInfo:" + new Gson().toJson(controllerMethodInfo));
         String[] packageNames = packageNameStr.split(",");
         for (String packageName : packageNames) {
             generateApi(packageName, savePath);
@@ -458,7 +458,7 @@ public class ApiDocsUtil {
                         methodInfoDto.setRequestBeanJsonKey(requestBeanJsonKey);
                         methodInfoDto.setResponseBeanJsonKey(responseBeanJsonKey);
                         methodInfoDtos.add(methodInfoDto);
-                        LoggerUtil.info("*****************************************");
+                        LoggerUtil.info("####################################################################");
                         LoggerUtil.info("类的说明 ：" + classExplainDto.getExplain());
                         LoggerUtil.info("方法业务说明：" + methodDescription);
                         LoggerUtil.info("方法请求路径：" + url);
@@ -467,7 +467,7 @@ public class ApiDocsUtil {
                         LoggerUtil.info("响应字段信息：" + new Gson().toJson(responseClassDtos));
                         LoggerUtil.info("响应字段basRespons信息：" + new Gson().toJson(baseResponseDataDtos));
                         LoggerUtil.info("methodKey：" + methodKey);
-
+                        LoggerUtil.info("####################################################################");
                     }
                 }
                 if (isHTML) {

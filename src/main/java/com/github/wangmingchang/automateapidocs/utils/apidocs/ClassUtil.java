@@ -4,7 +4,6 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass.Null;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
 import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
 import com.github.wangmingchang.automateapidocs.pojo.apidocs.*;
-import com.google.gson.Gson;
 
 import javax.management.RuntimeErrorException;
 import java.io.*;
@@ -399,11 +398,10 @@ public class ClassUtil {
                 fieldNum++;
             }
         }
-        //TODO
-        LoggerUtil.info("fields长度：" + fields.size());
-        LoggerUtil.info("fields：" + fields);
-        LoggerUtil.info("pojoRemarkMap长度：" + pojoRemarkMap.size());
-        LoggerUtil.info("pojoRemarkMap：" + new Gson().toJson(pojoRemarkMap));
+        //LoggerUtil.info("fields长度：" + fields.size());
+        //LoggerUtil.info("fields：" + fields);
+        //LoggerUtil.info("pojoRemarkMap长度：" + pojoRemarkMap.size());
+        //LoggerUtil.info("pojoRemarkMap：" + new Gson().toJson(pojoRemarkMap));
 
         /*
          * if (oneWayRemarks.size() != fieldNum) { throw new RuntimeErrorException(null,
@@ -756,7 +754,7 @@ public class ClassUtil {
                         startFlag = true;
                     }
                 }
-                LoggerUtil.info("sb:" + "\n" +  sb);
+                //LoggerUtil.info("sb:" + "\n" +  sb);
                 String[] sbArr = sb.toString().split("\n");
                 for (String str : sbArr){
                     String remark = "";
@@ -841,7 +839,7 @@ public class ClassUtil {
                 }
             }
         } catch (Exception e) {
-            LoggerUtil.info("类：" + className + "文件不存在");
+            LoggerUtil.error("类：" + className + "文件不存在", e);
         }
         return path;
     }
@@ -924,18 +922,18 @@ public class ClassUtil {
                             if (temp.contains(ConstantsUtil.API_DOCS_CLASS_STR)) {
                                 tempSb = moreSb;
                                 classRemarkSb = tempSb;
-                                LoggerUtil.info("moreSb:" + tempSb);
+                                //LoggerUtil.info("moreSb:" + tempSb);
                                 moreSb = new StringBuilder();
-                                LoggerUtil.info("tempSb:" + tempSb);
+                                //LoggerUtil.info("tempSb:" + tempSb);
                                 isExistApiDocsMethod = false;
                             } else if (temp.contains(ConstantsUtil.API_DOCS_METHOD)) {
                                 currentNum++;
                                 tempSb = moreSb;
-                                LoggerUtil.info("moreSb:" + moreSb);
+                                //LoggerUtil.info("moreSb:" + moreSb);
                                 sbMapKey = ConstantsUtil.METHOD_MAP_KEY + currentNum;
                                 sbMap.put(sbMapKey, tempSb);
                                 moreSb = new StringBuilder();
-                                LoggerUtil.info("tempSb:" + tempSb);
+                                //LoggerUtil.info("tempSb:" + tempSb);
                                 isExistApiDocsMethod = true;
                             }else if(StringUtil.indexOf(temp, ConstantsUtil.SPRING_REQUEST_MAPPER)){
                                 if(isOneRequestMappingFlag){
@@ -947,7 +945,7 @@ public class ClassUtil {
                                 }else {
                                     if(isExistApiDocsMethod){
                                         url = methodRootPath + getMethodPath(temp);
-                                        LoggerUtil.info("url:" + url);
+                                        //LoggerUtil.info("url:" + url);
                                         StringBuilder sbMapValue = sbMap.get(sbMapKey);
                                         sbMap.put(url, sbMapValue);
                                         sbMap.remove(sbMapKey);
@@ -1041,8 +1039,8 @@ public class ClassUtil {
                         methodExplainDto.setExplain(explain);
                         methodExplainDto.setMethodPath(mUrl);
                         methodExplainDto.setParamDtos(requestParamDtos);
-                        LoggerUtil.info("mUrl:" + mUrl);
-                        LoggerUtil.info("methodExplainDto:" + new Gson().toJson(methodExplainDto));
+                        //LoggerUtil.info("mUrl:" + mUrl);
+                        //LoggerUtil.info("methodExplainDto:" + new Gson().toJson(methodExplainDto));
                         methodExplainDtoMap.put(mUrl, methodExplainDto);
                     }
                 }
