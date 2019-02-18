@@ -157,6 +157,10 @@ public class ApiDocsUtil {
                         String requestBeanJsonKey = apiDocs.requestBeanJsonKey(); //请求参数样例的key
                         String responseBeanJsonKey = apiDocs.responseBeanJsonKey(); //响应结果样例的key
                         if (null != propertiesParamDto) {
+                            String  propertiesClassExplain = propertiesParamDto.getClassExplain();
+                            if (StringUtil.isNotBlank(propertiesClassExplain) && !ConstantsUtil.DEFAULT_STRING.equals(propertiesClassExplain)) {
+                                classExplainDto.setExplain(propertiesClassExplain);
+                            }
                             String  propertiesMethodExplain = propertiesParamDto.getMethodExplain();
                             if (StringUtil.isNotBlank(propertiesMethodExplain) && !ConstantsUtil.DEFAULT_STRING.equals(propertiesMethodExplain)) {
                                 methodDescription = propertiesMethodExplain;

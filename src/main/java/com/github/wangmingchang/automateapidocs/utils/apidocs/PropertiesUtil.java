@@ -207,9 +207,8 @@ public class PropertiesUtil {
             //controller的包名
             String controllerValue = controllerEntry.getValue();
             //类的描述
-            String classExplainKey = controllerValue + ConstantsUtil.PROPERTIES_CLASSEXPLAIN;
-            String classExplain = referenceMap.get(controllerKey);
-
+            String classExplainKey = controllerKey + ConstantsUtil.PROPERTIES_CLASSEXPLAIN;
+            String classExplain = referenceMap.get(classExplainKey);
 
             Map<String, String> methodMap = controllerMethodMap.get(controllerKey);
             //方法信息
@@ -224,7 +223,9 @@ public class PropertiesUtil {
             for (Map.Entry<String, Map<String, Object>> methodInfoEntry : methodInfoEntries) {
                 PropertiesParamDto propertiesParamDto = new PropertiesParamDto();
                 propertiesParamDto.setClassName(controllerValue);
-                //propertiesParamDto.setClassExplain();
+                if(StringUtil.isNotBlank(classExplain)){
+                    propertiesParamDto.setClassExplain(classExplain);
+                }
                 String methodInfoKey = methodInfoEntry.getKey();
                 Map<String, Object> methodInfoValueMap = methodInfoEntry.getValue();
                 Set<Map.Entry<String, Object>> valueEntries = methodInfoValueMap.entrySet();
