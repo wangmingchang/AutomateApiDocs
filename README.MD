@@ -152,6 +152,11 @@ public class DocContext {
 }
 
 ```
+**最终输出结果**
+![image](https://github.com/wangmingchang/AutomateApiDocs/blob/master/src/main/resources/static/word-2.png)
+![image](https://github.com/wangmingchang/AutomateApiDocs/blob/master/src/main/resources/static/html-2-1.png)
+![image](https://github.com/wangmingchang/AutomateApiDocs/blob/master/src/main/resources/static/html-2-2.png)
+
 ## 【1.0版本】不使用配置
 1.新增一个名字为apiDocs.properties的文件，或者拷贝git上相同名字文件</br>
 2.在要生成的Controller类上打上相应的注解</br>
