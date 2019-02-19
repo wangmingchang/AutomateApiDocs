@@ -451,7 +451,7 @@
 				</#list>
 				<#if (methodInfoDto.responseClassDtos?size > 0) >
 				<#list methodInfoDto.responseClassDtos as responseClassDto>
-					<#if responseClassDto_index == 0 || (methodInfoDto.responseClassDtos[responseClassDto_index-1].className != responseClassDto.className)>
+					<#if isShowResponseClassName == true && (responseClassDto_index == 0 || (methodInfoDto.responseClassDtos[responseClassDto_index-1].className != responseClassDto.className))>
 						<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
 							<w:tc>
 							<w:tcPr><w:tcW w:w="2500" w:type="dxa" />
@@ -475,7 +475,7 @@
 						</w:tr>
 					</#if>
 				<#list responseClassDto.responseDataDtos as responseDataDto>
-					<#if responseDataDto.type == 'class' || responseDataDto.type == 'list'>
+					<#if isShowResponseClassName == true && ( responseDataDto.type == 'class' || responseDataDto.type == 'list')>
 						<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
 								<w:tc>
 								<w:tcPr><w:tcW w:w="2500" w:type="dxa" />
@@ -546,7 +546,7 @@
 						
 						<#list responseDataDto.responseDataDtos as responseDataChildDto>
 						<!-- list,class信息 -->
-						<#if responseDataChildDto.type == 'class' || responseDataChildDto.type == 'list'>
+						<#if isShowResponseClassName == true && (responseDataChildDto.type == 'class' || responseDataChildDto.type == 'list')>
 							<w:tr wsp:rsidR="005F16F9" wsp:rsidTr="00EF7CE5">
 								<w:tc>
 								<w:tcPr><w:tcW w:w="2500" w:type="dxa" />

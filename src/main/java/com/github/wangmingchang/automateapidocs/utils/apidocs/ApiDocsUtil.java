@@ -44,6 +44,7 @@ public class ApiDocsUtil {
         String isWordStr = properties.getProperty("apiDocs.sys.isWord");
         String isHTMLStr = properties.getProperty("apiDocs.sys.isHTML");
         String charsetCode = properties.getProperty("apiDocs.sys.charsetCode");
+        String isShowResponseClassName = properties.getProperty("apiDocs.sys.word.isShowResponseClassName");
         Properties dataProperties = PropertiesUtil.loadProps(rootPate + "apiDocsData.properties", charsetCode, false);
 
         if (StringUtils.isBlank(packageNameStr)) {
@@ -70,7 +71,13 @@ public class ApiDocsUtil {
                 FileUtil.createJsonFile(new Gson().toJson(htmlMethonContentDtos), savePath + "/apiDocs/api-html", "apiData");
             }
             if (isWord) {
-                WordTemlateUtil.setWordTemplate(savePath, wordContentDtos);
+                boolean isShow = true;
+                if(StringUtil.isNotBlank(isShowResponseClassName)){
+                    if(isShowResponseClassName.equals("false")){
+                        isShow = false;
+                    }
+                }
+                WordTemlateUtil.setWordTemplate(savePath, wordContentDtos, isShow);
             }
             boolean existFile = FileUtil.isExistFile(apiDocsDataUrl);
             if(existFile){
