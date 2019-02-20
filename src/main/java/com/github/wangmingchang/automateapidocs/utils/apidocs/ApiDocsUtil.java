@@ -37,15 +37,18 @@ public class ApiDocsUtil {
         LoggerUtil.info("**************************执行自动生成api***************************");
         URL classpath = Thread.currentThread().getContextClassLoader().getResource("");
         String rootPate = classpath.getPath();
-        String apiDocsDataUrl = rootPate + "apiDocsData.json";
-        Properties properties = PropertiesUtil.loadProps(rootPate + "apiDocs.properties");
+        String apiDocsDataUrl = FileUtil.scanFile(rootPate, "apiDocsData", "json");
+        //String apiDocsDataUrl = rootPate + "apiDocsData.json";
+        String apiDocsUrl = FileUtil.scanFile(rootPate, "apiDocs", "properties");
+        String apiDocsDataPropertiesUrl = FileUtil.scanFile(rootPate, "apiDocsData", "properties");
+        Properties properties = PropertiesUtil.loadProps(apiDocsUrl);
         String packageNameStr = properties.getProperty("apiDocs.sys.packageName");
         String savePath = properties.getProperty("apiDocs.sys.savePath");
         String isWordStr = properties.getProperty("apiDocs.sys.isWord");
         String isHTMLStr = properties.getProperty("apiDocs.sys.isHTML");
         String charsetCode = properties.getProperty("apiDocs.sys.charsetCode");
         String isShowResponseClassName = properties.getProperty("apiDocs.sys.word.isShowResponseClassName");
-        Properties dataProperties = PropertiesUtil.loadProps(rootPate + "apiDocsData.properties", charsetCode, false);
+        Properties dataProperties = PropertiesUtil.loadProps(apiDocsDataPropertiesUrl, charsetCode, false);
 
         if (StringUtils.isBlank(packageNameStr)) {
             throw new RuntimeException("在apiDocs.properties配置中没有找到扫瞄包（packageName）的配置");

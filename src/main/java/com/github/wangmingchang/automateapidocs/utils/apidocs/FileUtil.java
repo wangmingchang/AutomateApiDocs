@@ -1,6 +1,8 @@
 package com.github.wangmingchang.automateapidocs.utils.apidocs;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @escription
@@ -8,6 +10,8 @@ import java.io.*;
  * @date: 2019/1/23 13:44
  */
 public class FileUtil {
+    private static List<String> canonicalPaths = new ArrayList<>();
+
     /**
      * 生成.json格式文件
      */
@@ -165,4 +169,65 @@ public class FileUtil {
         }
         return false;
     }
+
+    /**
+     * 根据路径扫描包下的文件名相同的文件
+     *
+     * @param path     需要扫描的路径
+     * @param fileName 需要获取的文件名
+     * @param suffix   文件后缀
+     * @return
+     */
+    public static String scanFile(String path, String fileName, String suffix) {
+        String canonicalPath = "";
+        canonicalPaths.clear();
+        scanFileList(path, fileName, suffix, canonicalPaths);
+        if(null != canonicalPaths && canonicalPaths.size() > 0){
+            canonicalPath = canonicalPaths.get(0);
+        }
+        return canonicalPath;
+    }
+
+    private static void scanFileList(String path, String fileName, String suffix, List<String> canonicalPaths) {
+
+        File file = new File(path);
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isFile()) {
+                    //这一段是测试在console里面打印输出所有扫描到的文件，仅作调试使用。
+                    try {
+                        System.out.println("查找中:" + f.getCanonicalPath());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    String name = f.getName();
+                    if (StringUtil.isNotBlank(suffix)) {
+                        String newfileName = fileName + "." + suffix;
+                        System.out.println(name);
+                        System.out.println(newfileName);
+                        if (name.equals(newfileName)) {
+                            try {
+                                canonicalPaths.add(f.getCanonicalPath());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        if (f.getName().indexOf(fileName) >= 0) {
+                            try {
+                                canonicalPaths.add(f.getCanonicalPath());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } else if (f.isDirectory()) {
+                    scanFileList(f.getPath(), fileName, suffix, canonicalPaths);
+                }
+            }
+        }
+
+    }
+
 }
