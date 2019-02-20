@@ -97,7 +97,8 @@
         .table-child{margin-bottom: 0px;}
         #table-responseClassDtos div{text-align: left;}
         #table-responseClassDtos div table{text-align: left;}
-
+        #request-example{word-wrap: break-word;}
+        #response-example{word-wrap: break-word;}
     </style>
 </head>
 <body>
