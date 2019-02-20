@@ -1,4 +1,4 @@
-package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
+package com.github.wangmingchang.automateapidocs.apidocs.vo;
 /**
  * 老师类
  * @author 王明昌

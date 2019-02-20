@@ -1,4 +1,6 @@
-package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
+package com.github.wangmingchang.automateapidocs.apidocs.domain;
+
+import com.github.wangmingchang.automateapidocs.apidocs.vo.Teachar;
 
 /**
  * 学生类

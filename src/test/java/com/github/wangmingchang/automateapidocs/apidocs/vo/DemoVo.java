@@ -1,6 +1,4 @@
-package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
-
-import java.util.List;
+package com.github.wangmingchang.automateapidocs.apidocs.vo;
 
 /**
  * 测试返回类
@@ -8,21 +6,12 @@ import java.util.List;
  * @author 王明昌
  * @since 2017年9月9日
  */
-public class DemoVo {
-
+public class DemoVo extends BaseResponseVo {
+	/**主键2*/
 	private String id; // 主键
 	private String name; // 姓名
 	private Double socre; // 分数
 	private CarVo carVo; // 车
-	private List<DemoVo> demoVos; // 路径集合
-
-	public List<DemoVo> getDemoVos() {
-		return demoVos;
-	}
-
-	public void setDemoVos(List<DemoVo> demoVos) {
-		this.demoVos = demoVos;
-	}
 
 	public CarVo getCarVo() {
 		return carVo;
@@ -58,7 +47,11 @@ public class DemoVo {
 
 	@Override
 	public String toString() {
-		return "DemoVo [id=" + id + ", name=" + name + ", socre=" + socre + "]";
+		return "DemoVo{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", socre=" + socre +
+				", carVo=" + carVo +
+				'}';
 	}
-
 }

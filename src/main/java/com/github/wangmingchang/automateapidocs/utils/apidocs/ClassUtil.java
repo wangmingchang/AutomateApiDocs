@@ -47,13 +47,6 @@ public class ClassUtil {
         return classUtil;
     }
 
-    public static void main(String[] args) throws Exception {
-        List<Class> classes = ClassUtil.getAllClassByInterface(Class.forName("com.threeti.dao.base.IGenericDao"));
-        for (Class clas : classes) {
-            LoggerUtil.info(clas.getName());
-        }
-    }
-
     /**
      * 取得某个接口下所有实现这个接口的类
      *

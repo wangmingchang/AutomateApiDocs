@@ -1,5 +1,5 @@
 
-package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
+package com.github.wangmingchang.automateapidocs.apidocs.vo;
 
 /**
  * 业务响应

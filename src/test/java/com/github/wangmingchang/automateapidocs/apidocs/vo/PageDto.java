@@ -1,6 +1,4 @@
-package com.github.wangmingchang.automateapidocs.pojo.apidocs.vo;
-
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
+package com.github.wangmingchang.automateapidocs.apidocs.vo;
 
 /**
  * 分页DTO
@@ -9,9 +7,7 @@ import com.github.wangmingchang.automateapidocs.annotation.ApiDocsParam;
  * @since 2017年9月9日
  */
 public class PageDto extends BaseResponseVo {
-	@ApiDocsParam(false)
 	private long pageNo; // 页码
-	@ApiDocsParam(false)
 	private long pageSize; // 页数
 
 	public PageDto(long pageNo, long pageSize) {

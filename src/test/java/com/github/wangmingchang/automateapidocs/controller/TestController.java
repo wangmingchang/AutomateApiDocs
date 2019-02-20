@@ -1,20 +1,17 @@
 package com.github.wangmingchang.automateapidocs.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
+import com.github.wangmingchang.automateapidocs.apidocs.vo.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.BaseResponseVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.CarVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.DemoVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.PageDto;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 测试Controller
  * @author 王明昌
@@ -24,59 +21,54 @@ import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.PageDto;
 @RequestMapping("/test")
 //@ApiDocsClass
 public class TestController {
-	private PageDto PageDto;
+	private com.github.wangmingchang.automateapidocs.apidocs.vo.PageDto PageDto;
 
 	/**
-	 * index方法
-	 * 
+	 * index方法test
+	 *
 	 * @return 请求的路径
 	 */
+	@ApiDocsMethod(requestBean = Fish.class,baseResponseBean= BaseResponseVo.class,responseBean = DemoVo.class)
 	@RequestMapping("/")
-	@ApiDocsMethod(baseResponseBean=BaseResponseVo.class,methodExplain="index方法",responseBean = DemoVo.class)
 	public String index() {
 		return "index";
 	}
 
 	/**
-	 * hell方法
-	 * 
+	 * 获取路径test
+	 * @param path
+	 * @return 请求的路径
+	 */
+	private String getUrl(String path) {
+		return path;
+	}
+
+	/**
+	 * hell方法test
+	 *
 	 * @param map
 	 *            请求参数
 	 * @return 请求的路径
 	 */
-	@RequestMapping("/helloHtml")
-	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean=BaseResponseVo.class ,responseBean = DemoVo.class, type = "post",methodExplain="hell方法")
+	@ApiDocsMethod(requestBean = PageDto.class, baseResponseBean=BaseResponseVo.class ,responseBean = DemoVo.class)
+	@RequestMapping("/ht")
 	public String helloHtml(@RequestBody Map<String, Object> map) {
 		List<PageDto> pageDtos;
-		
+
 		map.put("hello", "from TemplateController.helloHtml");
 		return "/helloHtml";
 	}
-	/**
-	 * 获老师信息
-	 * 
-	 * @param id 主键
-	 * @param name 姓名
-	 * @return 请求的路径
-	 */
-	@RequestMapping("/getTeacharInfo")
-	@ApiDocsMethod(responseBean = DemoVo.class,methodExplain="获老师信息")
-	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
 
-		return "/helloHtml";
-	}
-
-	
 	/**
-	 * 返回数据
+	 * 返回数据test
 	 * @return 返回数据
 	 */
-	@RequestMapping("/getData")
+	@RequestMapping("/getData3")
 	public BaseResponseVo getData(){
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<CarVo> list = new ArrayList<CarVo>();
 		list.add(new CarVo("小咪", 5.0, "橙色", "2.0T", 15.0));
-		
+
 		map.put("pageDto", new PageDto(1,10));
 		map.put("list", list);
 		BaseResponseVo baseResponseVo = new BaseResponseVo();
@@ -85,15 +77,23 @@ public class TestController {
 		baseResponseVo.setResult(map);
 		return baseResponseVo;
 	}
-	
-	
+
 	/**
-	 * 获取路径
-	 * @param path
+	 * 获老师信息test
+	 *
+	 * @param id 主键
+	 * @param name 姓名
 	 * @return 请求的路径
 	 */
-	private String getUrl(String path) {
-		return path;
+	@ApiDocsMethod(responseBean = DemoVo.class)
+	@RequestMapping("/getTeacharInfo2")
+	public String getTeacharInfo(@RequestParam String id, @RequestParam String name) {
+
+		return "/helloHtml";
 	}
 
+
+
+	
+	
 }

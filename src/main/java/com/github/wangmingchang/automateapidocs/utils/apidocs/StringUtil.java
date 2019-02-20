@@ -337,17 +337,5 @@ public class StringUtil extends StringUtils {
         return start + centre + end;
     }
 
-    public static void main(String[] arg) {
-//        String str = "SSabcfdFDeacFDxxXxxADVCFDFDOOOP";
-//        String s = StringUtil.replaceCustomBlank(str, "x", "A");
-//        String s2 = StringUtil.replaceCustomBlank(str, new String[]{"FD", "OOO", "xx", "S"}, "Zz");
-//        System.out.println("str----------》" + str);
-//        System.out.println("s----------》" + s);
-//        System.out.println("s2----------》" + s2);
 
-
-        String s3 = "${abc";
-        System.out.println("s3----------》" + StringUtil.removeSymbol(s3));
-
-    }
 }

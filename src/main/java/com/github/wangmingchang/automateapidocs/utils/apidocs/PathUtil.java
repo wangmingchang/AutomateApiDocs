@@ -70,8 +70,4 @@ public class PathUtil {
 		return txt;
 	}
 
-	public static void main(String[] args) throws Exception {
-	//	System.out.println(getResourcePath());
-
-	}
 }

@@ -20,7 +20,7 @@
  * the third party without the agreement of wandaph. If Any problem cannot be solved in the
  * procedure of programming should be feedback to wandaph Co,. Ltd Inc in time, Thank you!
  */
-package com.github.wangmingchang.automateapidocs.pojo.apidocs.domain;
+package com.github.wangmingchang.automateapidocs.apidocs.domain;
 
 import java.io.Serializable;
 

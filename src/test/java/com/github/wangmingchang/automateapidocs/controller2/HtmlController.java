@@ -1,23 +1,17 @@
 package com.github.wangmingchang.automateapidocs.controller2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
+import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
+import com.github.wangmingchang.automateapidocs.apidocs.vo.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsClass;
-import com.github.wangmingchang.automateapidocs.annotation.ApiDocsMethod;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.BaseResponseVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.CarVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.CatVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.DemoVo;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.Fish;
-import com.github.wangmingchang.automateapidocs.pojo.apidocs.vo.PageDto;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * HTML-controller2
