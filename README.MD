@@ -67,7 +67,7 @@ public class DemoVo {
 
 ```
 ### 第三步
-**新增 apiDocs.properties配置、apiDocsData.properties配置**
+**新增 apiDocs.properties配置、apiDocsData.properties配置、apiDocs.json数据**
 
 ### 配置文件
 #### 1. apiDocs.properties配置
@@ -136,10 +136,38 @@ ${controller.HtmlController}.index().ApiDocsMethod.requestBean.json.key=request-
 ${controller.HtmlController}.index().ApiDocsMethod.responseBean.json.key=response-index-BizResponseVo
 
 ```
-
-
+#### 3. apiDocs.json数据
+**这里放置的样例数据**
+``` json
+[
+  {
+    "key": "request-index-BizResponseVo",
+    "data": {
+    }
+  },
+  {
+    "key": "response-index-BizResponseVo",
+    "data": {
+      "code": "0000",
+      "msg": "成功",
+      "sysTime": "2019-02-13 10:54",
+      "data": {
+        "id": "123",
+        "name": "小狗狗",
+        "carVo": {
+          "carName": "卡丁车",
+          "color": "红色",
+          "teachar": {
+            "teacharName": "老赵"
+          }
+        }
+      }
+    }
+  }
+]
+```
 ### 第四步
-**执行调用**
+**执行调用,注意：执行前一定要先编译项目，否则可能会出错哦！！！**
 ``` java
 public class DocContext {
 
@@ -227,7 +255,7 @@ public class DemoVo {
 }
 
 ```
-**执行调用**
+**执行调用，注意：执行前一定要先编译项目，否则可能会出错哦！！！**
 ``` java
 public class DocContext {
 
